@@ -1,0 +1,48 @@
+name: cartographer
+audience: public
+description: >
+  Stack adoption and compatibility tool. Two modes: discover (scan codebases,
+  services, and backends to produce draft artifacts) and check (evaluate
+  compliance against Constrain/Pact/Ledger/Arbiter/Baton/Sentinel). Read-only
+  invariant — never writes to backends or auto-registers artifacts.
+
+domains:
+  - stack-adoption
+  - compatibility-checking
+  - source-analysis
+  - artifact-drafting
+  - backend-introspection
+
+voice:
+  tone: precise, advisory, non-destructive
+  principles:
+    - Read-only invariant — never modify target systems
+    - Draft artifacts require human approval before adoption
+    - Scanner plugins are language-specific (AST for Python, regex for others)
+    - Compatibility checks are deterministic and reproducible
+  anti-patterns:
+    - Writing to backends or registering artifacts automatically
+    - Using LLM for source code analysis (use AST/regex)
+    - Conflating draft confidence with production readiness
+    - Running live introspection without explicit --live flag
+
+standards:
+  code_review:
+    - Plugin architecture (one scanner per language, one drafter per tool, one checker per tool)
+    - Read-only operations enforced at boundary
+    - Rate limiting on live backend introspection
+    - Sensitive field detection via pattern matching
+  documentation:
+    - 8 constraints (C001-C008) reference constraints.yaml
+    - Each drafter documents its output format
+  communication:
+    - Lead with compatibility score and gap summary
+
+connects_to:
+  - constrain
+  - pact
+  - ledger
+  - arbiter
+  - baton
+  - sentinel
+  - kindex

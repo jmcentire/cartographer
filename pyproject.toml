@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cartographer"
-version = "0.1.1"
+version = "0.1.2"
 description = "Stack adoption and compatibility tool for Constrain/Pact/Ledger/Arbiter/Baton/Sentinel"
 readme = "prompt.md"
 license = "MIT"

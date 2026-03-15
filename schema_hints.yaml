@@ -1,0 +1,74 @@
+version: "1.0"
+generated_by: constrain
+session_id: cartographer_discovery_001
+
+storage_backends:
+  - owner_component: cli_orchestrator
+    type: filesystem
+    description: >
+      Local filesystem storage for draft artifacts, compatibility reports,
+      and discovery job state. Default path: .cartographer/drafts/.
+      No database required — all output is YAML/JSON files on disk.
+
+  - owner_component: http_api
+    type: filesystem
+    description: >
+      Job state for async discovery and check operations. Stored as JSON
+      files in a jobs directory. Includes job ID, status, timestamps,
+      and result references.
+
+field_hints:
+  - backend_owner: cli_orchestrator
+    field_description: "Draft artifact content (YAML/JSON files written to output_dir)"
+    likely_classification: PUBLIC
+    likely_annotations: []
+    rationale: "Draft artifacts contain structural metadata, not live data values"
+
+  - backend_owner: cli_orchestrator
+    field_description: "Compatibility report content including check results and scores"
+    likely_classification: PUBLIC
+    likely_annotations: []
+    rationale: "Reports contain pass/warn/fail status, not sensitive data"
+
+  - backend_owner: backend_introspector
+    field_description: "Connection hints for live backends (postgres, redis, kafka URLs)"
+    likely_classification: AUTH
+    likely_annotations: [encrypted_at_rest]
+    rationale: "Connection strings may contain credentials even when they shouldn't — treat as AUTH"
+
+  - backend_owner: backend_introspector
+    field_description: "Discovered schema column names and types from information_schema"
+    likely_classification: PUBLIC
+    likely_annotations: []
+    rationale: "Schema metadata (column names, types) is structural, not data values"
+
+  - backend_owner: backend_introspector
+    field_description: "Sampled field values used for type inference (e.g., Redis key patterns)"
+    likely_classification: PII
+    likely_annotations: [gdpr_erasable]
+    rationale: "Sampled values from production backends may contain PII — classify conservatively"
+
+  - backend_owner: service_prober
+    field_description: "OpenAPI spec content and endpoint definitions"
+    likely_classification: PUBLIC
+    likely_annotations: []
+    rationale: "API specifications are structural documentation"
+
+  - backend_owner: ast_scanner
+    field_description: "Discovered ORM model field names and type annotations"
+    likely_classification: PUBLIC
+    likely_annotations: []
+    rationale: "Code-level field definitions are structural, not data values"
+
+  - backend_owner: ast_scanner
+    field_description: "Detected PACT keys and their source file locations"
+    likely_classification: PUBLIC
+    likely_annotations: []
+    rationale: "PACT key strings and file paths are operational metadata"
+
+notes: >
+  Cartographer itself has minimal storage needs — it writes files to disk and
+  reads from target systems. The primary data sensitivity concern is connection
+  hints (which may contain credentials) and sampled field values from live
+  backend introspection. All other data is structural metadata derived from
+  code analysis or API specifications.

@@ -1,0 +1,470 @@
+{
+  "root_id": "root",
+  "nodes": {
+    "root": {
+      "component_id": "root",
+      "name": "Project Root",
+      "description": "Adopted codebase at /Users/jmcentire/Code/cartographer",
+      "depth": 0,
+      "parent_id": "",
+      "children": [
+        "src"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src": {
+      "component_id": "src",
+      "name": "Src",
+      "description": "Package: src",
+      "depth": 1,
+      "parent_id": "root",
+      "children": [
+        "src_cartographer"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer": {
+      "component_id": "src_cartographer",
+      "name": "Cartographer",
+      "description": "Package: src/cartographer",
+      "depth": 2,
+      "parent_id": "src",
+      "children": [
+        "src_cartographer_models",
+        "src_cartographer_compatibility",
+        "src_cartographer_config",
+        "src_cartographer_discovery",
+        "src_cartographer_cli",
+        "src_cartographer_report",
+        "src_cartographer_drafters"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_models": {
+      "component_id": "src_cartographer_models",
+      "name": "Models",
+      "description": "Module src/cartographer/models.py: score_pct, has_failures",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility": {
+      "component_id": "src_cartographer_compatibility",
+      "name": "Compatibility",
+      "description": "Package: src/cartographer/compatibility",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [
+        "src_cartographer_compatibility_arbiter_checker",
+        "src_cartographer_compatibility_base",
+        "src_cartographer_compatibility_baton_checker",
+        "src_cartographer_compatibility_ledger_checker",
+        "src_cartographer_compatibility_pact_checker",
+        "src_cartographer_compatibility_runner",
+        "src_cartographer_compatibility_sentinel_checker"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_arbiter_checker": {
+      "component_id": "src_cartographer_compatibility_arbiter_checker",
+      "name": "Arbiter Checker",
+      "description": "Module src/cartographer/compatibility/arbiter_checker.py: _find_registry, tool_name, check",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_base": {
+      "component_id": "src_cartographer_compatibility_base",
+      "name": "Base",
+      "description": "Module src/cartographer/compatibility/base.py: tool_name, check",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_baton_checker": {
+      "component_id": "src_cartographer_compatibility_baton_checker",
+      "name": "Baton Checker",
+      "description": "Module src/cartographer/compatibility/baton_checker.py: _find_baton_config, _version_lt, tool_name, check",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_ledger_checker": {
+      "component_id": "src_cartographer_compatibility_ledger_checker",
+      "name": "Ledger Checker",
+      "description": "Module src/cartographer/compatibility/ledger_checker.py: _find_registry, tool_name, check",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_pact_checker": {
+      "component_id": "src_cartographer_compatibility_pact_checker",
+      "name": "Pact Checker",
+      "description": "Module src/cartographer/compatibility/pact_checker.py: tool_name, check, _check_contracts, _check_source",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_runner": {
+      "component_id": "src_cartographer_compatibility_runner",
+      "name": "Runner",
+      "description": "Module src/cartographer/compatibility/runner.py: run_checks",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_compatibility_sentinel_checker": {
+      "component_id": "src_cartographer_compatibility_sentinel_checker",
+      "name": "Sentinel Checker",
+      "description": "Module src/cartographer/compatibility/sentinel_checker.py: _find_manifest, tool_name, check",
+      "depth": 4,
+      "parent_id": "src_cartographer_compatibility",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_config": {
+      "component_id": "src_cartographer_config",
+      "name": "Config",
+      "description": "Package: src/cartographer/config",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [
+        "src_cartographer_config_loader"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_config_loader": {
+      "component_id": "src_cartographer_config_loader",
+      "name": "Loader",
+      "description": "Module src/cartographer/config/loader.py: find_config, load_config, write_default_config",
+      "depth": 4,
+      "parent_id": "src_cartographer_config",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery": {
+      "component_id": "src_cartographer_discovery",
+      "name": "Discovery",
+      "description": "Package: src/cartographer/discovery",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [
+        "src_cartographer_discovery_env_vars",
+        "src_cartographer_discovery_pact_keys",
+        "src_cartographer_discovery_scanner",
+        "src_cartographer_discovery_sensitive_fields",
+        "src_cartographer_discovery_plugins"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_env_vars": {
+      "component_id": "src_cartographer_discovery_env_vars",
+      "name": "Env Vars",
+      "description": "Module src/cartographer/discovery/env_vars.py: _match_backend, scan",
+      "depth": 4,
+      "parent_id": "src_cartographer_discovery",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_pact_keys": {
+      "component_id": "src_cartographer_discovery_pact_keys",
+      "name": "Pact Keys",
+      "description": "Module src/cartographer/discovery/pact_keys.py: __init__, scan",
+      "depth": 4,
+      "parent_id": "src_cartographer_discovery",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_scanner": {
+      "component_id": "src_cartographer_discovery_scanner",
+      "name": "Scanner",
+      "description": "Module src/cartographer/discovery/scanner.py: _collect_files, scan_source",
+      "depth": 4,
+      "parent_id": "src_cartographer_discovery",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_sensitive_fields": {
+      "component_id": "src_cartographer_discovery_sensitive_fields",
+      "name": "Sensitive Fields",
+      "description": "Module src/cartographer/discovery/sensitive_fields.py: load_patterns, _extract_identifiers, __init__, scan",
+      "depth": 4,
+      "parent_id": "src_cartographer_discovery",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins": {
+      "component_id": "src_cartographer_discovery_plugins",
+      "name": "Plugins",
+      "description": "Package: src/cartographer/discovery/plugins",
+      "depth": 4,
+      "parent_id": "src_cartographer_discovery",
+      "children": [
+        "src_cartographer_discovery_plugins_base",
+        "src_cartographer_discovery_plugins_go_scanner",
+        "src_cartographer_discovery_plugins_java_scanner",
+        "src_cartographer_discovery_plugins_javascript_scanner",
+        "src_cartographer_discovery_plugins_python_scanner",
+        "src_cartographer_discovery_plugins_ruby_scanner",
+        "src_cartographer_discovery_plugins_typescript_scanner"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_base": {
+      "component_id": "src_cartographer_discovery_plugins_base",
+      "name": "Base",
+      "description": "Module src/cartographer/discovery/plugins/base.py: scan",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_go_scanner": {
+      "component_id": "src_cartographer_discovery_plugins_go_scanner",
+      "name": "Go Scanner",
+      "description": "Module src/cartographer/discovery/plugins/go_scanner.py: _extract_go_fields, scan, _scan_gorm, _scan_routes, _scan_structs",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_java_scanner": {
+      "component_id": "src_cartographer_discovery_plugins_java_scanner",
+      "name": "Java Scanner",
+      "description": "Module src/cartographer/discovery/plugins/java_scanner.py: scan, _scan_jpa, _scan_spring_routes, _scan_classes",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_javascript_scanner": {
+      "component_id": "src_cartographer_discovery_plugins_javascript_scanner",
+      "name": "Javascript Scanner",
+      "description": "Module src/cartographer/discovery/plugins/javascript_scanner.py: scan",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_python_scanner": {
+      "component_id": "src_cartographer_discovery_plugins_python_scanner",
+      "name": "Python Scanner",
+      "description": "Module src/cartographer/discovery/plugins/python_scanner.py: _collect_imports, _detect_orm, _get_base_names, _attr_to_str, _match_orm_base (+11 more)",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_ruby_scanner": {
+      "component_id": "src_cartographer_discovery_plugins_ruby_scanner",
+      "name": "Ruby Scanner",
+      "description": "Module src/cartographer/discovery/plugins/ruby_scanner.py: scan, _scan_activerecord, _scan_sequel, _scan_rails_routes, _scan_classes",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_discovery_plugins_typescript_scanner": {
+      "component_id": "src_cartographer_discovery_plugins_typescript_scanner",
+      "name": "Typescript Scanner",
+      "description": "Module src/cartographer/discovery/plugins/typescript_scanner.py: _extract_typeorm_fields, scan, _scan_prisma, _scan_typeorm, _scan_sequelize (+4 more)",
+      "depth": 5,
+      "parent_id": "src_cartographer_discovery_plugins",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_cli": {
+      "component_id": "src_cartographer_cli",
+      "name": "Cli",
+      "description": "Package: src/cartographer/cli",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [
+        "src_cartographer_cli_main"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_cli_main": {
+      "component_id": "src_cartographer_cli_main",
+      "name": "Main",
+      "description": "Module src/cartographer/cli/main.py: main, init, discover, check, report (+6 more)",
+      "depth": 4,
+      "parent_id": "src_cartographer_cli",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_report": {
+      "component_id": "src_cartographer_report",
+      "name": "Report",
+      "description": "Package: src/cartographer/report",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [
+        "src_cartographer_report_generator"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_report_generator": {
+      "component_id": "src_cartographer_report_generator",
+      "name": "Generator",
+      "description": "Module src/cartographer/report/generator.py: build_report, format_text, format_json, save_report, _generate_recommendations (+1 more)",
+      "depth": 4,
+      "parent_id": "src_cartographer_report",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters": {
+      "component_id": "src_cartographer_drafters",
+      "name": "Drafters",
+      "description": "Package: src/cartographer/drafters",
+      "depth": 3,
+      "parent_id": "src_cartographer",
+      "children": [
+        "src_cartographer_drafters_base",
+        "src_cartographer_drafters_baton_drafter",
+        "src_cartographer_drafters_constrain_drafter",
+        "src_cartographer_drafters_ledger_drafter",
+        "src_cartographer_drafters_pact_drafter",
+        "src_cartographer_drafters_sentinel_drafter"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters_base": {
+      "component_id": "src_cartographer_drafters_base",
+      "name": "Base",
+      "description": "Module src/cartographer/drafters/base.py: draft",
+      "depth": 4,
+      "parent_id": "src_cartographer_drafters",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters_baton_drafter": {
+      "component_id": "src_cartographer_drafters_baton_drafter",
+      "name": "Baton Drafter",
+      "description": "Module src/cartographer/drafters/baton_drafter.py: _derive_node_name, draft",
+      "depth": 4,
+      "parent_id": "src_cartographer_drafters",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters_constrain_drafter": {
+      "component_id": "src_cartographer_drafters_constrain_drafter",
+      "name": "Constrain Drafter",
+      "description": "Module src/cartographer/drafters/constrain_drafter.py: _build_prompt, _build_component_map, _build_constraints, _build_trust_policy, _build_schema_hints (+1 more)",
+      "depth": 4,
+      "parent_id": "src_cartographer_drafters",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters_ledger_drafter": {
+      "component_id": "src_cartographer_drafters_ledger_drafter",
+      "name": "Ledger Drafter",
+      "description": "Module src/cartographer/drafters/ledger_drafter.py: _build_schema, _orm_to_backend, draft",
+      "depth": 4,
+      "parent_id": "src_cartographer_drafters",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters_pact_drafter": {
+      "component_id": "src_cartographer_drafters_pact_drafter",
+      "name": "Pact Drafter",
+      "description": "Module src/cartographer/drafters/pact_drafter.py: _build_contract, _build_task, _slugify, draft",
+      "depth": 4,
+      "parent_id": "src_cartographer_drafters",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_cartographer_drafters_sentinel_drafter": {
+      "component_id": "src_cartographer_drafters_sentinel_drafter",
+      "name": "Sentinel Drafter",
+      "description": "Module src/cartographer/drafters/sentinel_drafter.py: draft",
+      "depth": 4,
+      "parent_id": "src_cartographer_drafters",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    }
+  }
+}

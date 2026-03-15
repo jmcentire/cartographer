@@ -1,0 +1,211 @@
+{
+  "component_id": "src_cartographer_compatibility_ledger_checker",
+  "name": "Ledger Compatibility Checker",
+  "description": "A compatibility checker module for validating ledger schema files. It scans YAML schema files in a ledger registry to verify field classifications, check for annotation conflicts (gdpr_erasable vs immutable), validate GDPR erasure methods, and ensure audit fields have retention policies. Returns structured CheckResult objects with severity levels.",
+  "version": 1,
+  "types": [
+    {
+      "name": "LedgerChecker",
+      "kind": "struct",
+      "fields": [],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "A compatibility checker class that extends CompatibilityChecker base class. Validates ledger schema files for field classifications, annotation conflicts, and policy compliance."
+    }
+  ],
+  "functions": [
+    {
+      "name": "tool_name",
+      "description": "Property method that returns the identifier for this compatibility checker tool",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "LedgerChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "str",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns the string 'ledger'"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "check",
+      "description": "Performs compatibility checks on ledger schema files. Searches for a ledger registry, loads YAML schema files, and validates field classifications, annotation conflicts, GDPR erasure methods, and audit retention policies.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "LedgerChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object containing stack settings including ledger_registry path",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory to search for ledger registry",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "yaml_parse_error",
+          "condition": "YAML file cannot be parsed",
+          "error_type": "Exception",
+          "error_data": {
+            "handling": "silently caught and ignored with pass statement"
+          }
+        },
+        {
+          "name": "file_read_error",
+          "condition": "File cannot be opened or read",
+          "error_type": "Exception",
+          "error_data": {
+            "handling": "silently caught and ignored with pass statement"
+          }
+        }
+      ],
+      "preconditions": [
+        "config must be a valid CartographerConfig instance",
+        "base_dir must be a valid Path object"
+      ],
+      "postconditions": [
+        "Returns a non-empty list containing at least one CheckResult",
+        "If no registry found, returns single INFO CheckResult with check_id 'ledger_registry_exists'",
+        "Each CheckResult has tool field set to 'ledger'",
+        "Classification check creates one result per schema file",
+        "Annotation conflicts create FAIL results for conflicting fields",
+        "GDPR erasable fields without erasure_method create WARN results",
+        "Audit fields without retention_policy create WARN results"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads YAML files from filesystem in registry_path",
+        "Traverses directory tree using rglob('*.yaml')"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "*.yaml files in ledger registry",
+          "description": "Loads and parses YAML schema files"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_find_registry",
+      "description": "Locates the ledger registry directory by checking configuration settings and common default paths. First checks config.stack.ledger_registry, then falls back to '.ledger/registry' and '.ledger' directories.",
+      "inputs": [
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object that may contain ledger_registry path",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory to resolve relative paths against",
+          "validators": []
+        }
+      ],
+      "output_type": "Path | None",
+      "error_cases": [],
+      "preconditions": [
+        "config must be a valid CartographerConfig instance",
+        "base_dir must be a valid Path object"
+      ],
+      "postconditions": [
+        "Returns Path object if registry exists, otherwise None",
+        "Returned Path exists on filesystem if not None",
+        "Checks config.stack.ledger_registry first if present",
+        "Falls back to '.ledger/registry' then '.ledger' in base_dir"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Checks filesystem for directory existence"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "filesystem paths",
+          "description": "Checks if paths exist on filesystem"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "pathlib.Path",
+    "yaml",
+    "cartographer.compatibility.base.CompatibilityChecker",
+    "cartographer.config.loader.CartographerConfig",
+    "cartographer.models.CheckResult",
+    "cartographer.models.Severity"
+  ],
+  "dependency_contracts": {},
+  "invariants": [
+    "tool_name always returns 'ledger'",
+    "check() always returns at least one CheckResult",
+    "All CheckResult objects have tool='ledger'",
+    "Registry search order: config.stack.ledger_registry, .ledger/registry, .ledger",
+    "Classification FAIL severity when missing_classification > len(fields) // 2, otherwise WARN",
+    "Annotation conflicts between gdpr_erasable and immutable always result in FAIL severity",
+    "GDPR and audit policy violations result in WARN severity"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "filesystem"
+    ],
+    "writes": [],
+    "rationale": "Reads ledger schema YAML files from filesystem to perform validation checks",
+    "side_effects": [
+      {
+        "type": "file_read",
+        "classification": "schema_validation",
+        "fields": [
+          "*.yaml in ledger registry"
+        ],
+        "rationale": "Loads YAML schema files to validate field classifications and annotations"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

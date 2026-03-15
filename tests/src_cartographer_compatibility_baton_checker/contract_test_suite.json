@@ -1,0 +1,440 @@
+{
+  "component_id": "src_cartographer_compatibility_baton_checker",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_tool_name_happy_path",
+      "description": "tool_name returns the literal string 'baton'",
+      "function": "tool_name",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "result == 'baton'"
+      ]
+    },
+    {
+      "id": "test_check_baton_config_not_found",
+      "description": "check returns INFO CheckResult when baton config not found",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "Mock _find_baton_config to return None",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns list with single INFO CheckResult with tool='baton'",
+      "expected_error": "",
+      "assertions": [
+        "len(result) == 1",
+        "result[0].tool == 'baton'",
+        "result[0].level == 'INFO' or result[0].severity == 'INFO'"
+      ]
+    },
+    {
+      "id": "test_check_yaml_parse_error",
+      "description": "check returns FAIL CheckResult when YAML is invalid",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "Mock _find_baton_config to return a path, mock yaml.safe_load to raise Exception",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns list with single FAIL CheckResult with tool='baton'",
+      "expected_error": "yaml_parse_error",
+      "assertions": [
+        "len(result) == 1",
+        "result[0].tool == 'baton'",
+        "result[0].level == 'FAIL' or result[0].severity == 'FAIL'"
+      ]
+    },
+    {
+      "id": "test_check_valid_compatible_version",
+      "description": "check returns PASS CheckResult when schema version is compatible",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "Mock _find_baton_config to return a path, yaml.safe_load returns valid config with compatible schema_version",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns list with CheckResults, tool='baton' for all",
+      "expected_error": "",
+      "assertions": [
+        "len(result) >= 1",
+        "all(r.tool == 'baton' for r in result)"
+      ]
+    },
+    {
+      "id": "test_check_incompatible_version",
+      "description": "check returns FAIL CheckResult when schema version is incompatible",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "Mock _find_baton_config to return a path, yaml.safe_load returns config with incompatible schema_version",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns list with FAIL CheckResult, tool='baton'",
+      "expected_error": "",
+      "assertions": [
+        "len(result) >= 1",
+        "all(r.tool == 'baton' for r in result)",
+        "any(r.level == 'FAIL' or r.severity == 'FAIL' for r in result)"
+      ]
+    },
+    {
+      "id": "test_check_all_results_have_baton_tool_field",
+      "description": "check ensures all CheckResult objects have tool field set to 'baton' (invariant)",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "Mock various scenarios and verify invariant",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "all(r.tool == 'baton' for r in result)"
+      ]
+    },
+    {
+      "id": "test_find_baton_config_with_configured_path_exists",
+      "description": "_find_baton_config returns configured path when it exists",
+      "function": "_find_baton_config",
+      "category": "happy_path",
+      "setup_description": "config.stack.baton_config is set and file exists",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns the configured Path",
+      "expected_error": "",
+      "assertions": [
+        "result is not None",
+        "result.name.startswith('baton')"
+      ]
+    },
+    {
+      "id": "test_find_baton_config_searches_baton_yaml",
+      "description": "_find_baton_config searches for baton.yaml when no configured path",
+      "function": "_find_baton_config",
+      "category": "happy_path",
+      "setup_description": "config.stack.baton_config is None/empty, baton.yaml exists in base_dir",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns base_dir / 'baton.yaml'",
+      "expected_error": "",
+      "assertions": [
+        "result is not None",
+        "result.name == 'baton.yaml'"
+      ]
+    },
+    {
+      "id": "test_find_baton_config_searches_baton_yml",
+      "description": "_find_baton_config searches for baton.yml as fallback",
+      "function": "_find_baton_config",
+      "category": "edge_case",
+      "setup_description": "config.stack.baton_config is None/empty, baton.yaml doesn't exist, baton.yml exists in base_dir",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns base_dir / 'baton.yml'",
+      "expected_error": "",
+      "assertions": [
+        "result is not None",
+        "result.name == 'baton.yml'"
+      ]
+    },
+    {
+      "id": "test_find_baton_config_returns_none_when_not_found",
+      "description": "_find_baton_config returns None when no config file found",
+      "function": "_find_baton_config",
+      "category": "edge_case",
+      "setup_description": "No configured path and no baton.yaml/baton.yml in base_dir",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns None",
+      "expected_error": "",
+      "assertions": [
+        "result is None"
+      ]
+    },
+    {
+      "id": "test_find_baton_config_configured_path_not_exists_absolute",
+      "description": "_find_baton_config returns base_dir / path when configured path doesn't exist as absolute",
+      "function": "_find_baton_config",
+      "category": "edge_case",
+      "setup_description": "config.stack.baton_config is set but doesn't exist as absolute path",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns base_dir / configured_path",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_version_lt_simple_less_than",
+      "description": "_version_lt returns True when a < b numerically",
+      "function": "_version_lt",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "1.0.0",
+        "b": "2.0.0"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns True",
+      "expected_error": "",
+      "assertions": [
+        "result is True"
+      ]
+    },
+    {
+      "id": "test_version_lt_simple_greater_than",
+      "description": "_version_lt returns False when a > b numerically",
+      "function": "_version_lt",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "2.0.0",
+        "b": "1.0.0"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns False",
+      "expected_error": "",
+      "assertions": [
+        "result is False"
+      ]
+    },
+    {
+      "id": "test_version_lt_equal_versions",
+      "description": "_version_lt returns False when a == b",
+      "function": "_version_lt",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "1.0.0",
+        "b": "1.0.0"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns False",
+      "expected_error": "",
+      "assertions": [
+        "result is False"
+      ]
+    },
+    {
+      "id": "test_version_lt_different_segment_counts",
+      "description": "_version_lt handles versions with varying segment counts",
+      "function": "_version_lt",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "1.0",
+        "b": "1.0.1"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns True when a has fewer segments and is less",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_version_lt_lexicographic_fallback",
+      "description": "_version_lt falls back to lexicographic comparison on parse failure",
+      "function": "_version_lt",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "1.x.0",
+        "b": "2.0.0"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns True based on lexicographic comparison",
+      "expected_error": "version_parse_failure",
+      "assertions": [
+        "result is True"
+      ]
+    },
+    {
+      "id": "test_version_lt_leading_zeros",
+      "description": "_version_lt handles versions with leading zeros",
+      "function": "_version_lt",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "01.02.03",
+        "b": "1.2.4"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns True when parsed numerically",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_version_lt_pre_release_versions",
+      "description": "_version_lt handles pre-release version strings",
+      "function": "_version_lt",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "1.0.0-alpha",
+        "b": "1.0.0-beta"
+      },
+      "input_description": "",
+      "expected_output_description": "Falls back to lexicographic comparison",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_check_default_baton_version",
+      "description": "check uses default version '1.0' if not specified in config (invariant)",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "Mock config with no baton version specified",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Uses '1.0' as default version",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_check_config_file_search_order",
+      "description": "check follows search order: config.stack.baton_config, baton.yaml, baton.yml (invariant)",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "Verify search order through multiple scenarios",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_check_malformed_yaml_with_tabs",
+      "description": "check handles YAML with tab characters causing parse errors",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "Mock yaml.safe_load to raise yaml.YAMLError for tabs",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "yaml_parse_error",
+      "assertions": [
+        "len(result) == 1",
+        "result[0].tool == 'baton'"
+      ]
+    },
+    {
+      "id": "test_check_yaml_type_mismatch",
+      "description": "check handles YAML type mismatches gracefully",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "Mock yaml.safe_load to return non-dict data",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns appropriate CheckResult",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_check_empty_yaml_file",
+      "description": "check handles empty YAML file",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "Mock yaml.safe_load to return None",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult handling empty config",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_find_baton_config_with_symlink",
+      "description": "_find_baton_config resolves symlinked config files",
+      "function": "_find_baton_config",
+      "category": "edge_case",
+      "setup_description": "Create symlink to baton.yaml in tmp_path",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_find_baton_config_with_unicode_path",
+      "description": "_find_baton_config handles unicode characters in paths",
+      "function": "_find_baton_config",
+      "category": "edge_case",
+      "setup_description": "Create baton.yaml with unicode characters in path",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_version_lt_empty_strings",
+      "description": "_version_lt handles empty version strings",
+      "function": "_version_lt",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "",
+        "b": "1.0.0"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns True via lexicographic comparison",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_version_lt_single_number",
+      "description": "_version_lt handles single number versions",
+      "function": "_version_lt",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "a": "1",
+        "b": "2"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns True",
+      "expected_error": "",
+      "assertions": []
+    },
+    {
+      "id": "test_check_integration_real_files",
+      "description": "Integration test: check with real baton.yaml file structure",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "Create real baton.yaml in tmp_path with valid content",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "Returns valid CheckResults with proper validation",
+      "expected_error": "",
+      "assertions": []
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract-based pytest test suite for BatonChecker component.\nTests verify behavior against contract specifications with focus on boundaries,\nerror handling, and invariants.\n\"\"\"\n\nimport pytest\nfrom pathlib import Path\nfrom unittest.mock import Mock, MagicMock, patch, mock_open\nfrom typing import Any, Optional\nimport tempfile\nimport random\nimport yaml\n\n\n# Import the component under test\nfrom src.cartographer.compatibility.baton_checker import (\n    BatonChecker,\n    _find_baton_config,\n    _version_lt\n)\n\n\n# ============================================================================\n# Test Fixtures\n# ============================================================================\n\n@pytest.fixture\ndef baton_checker():\n    \"\"\"Factory fixture for BatonChecker instance.\"\"\"\n    return BatonChecker()\n\n\n@pytest.fixture\ndef mock_config_factory():\n    \"\"\"Factory fixture for creating CartographerConfig mocks with various configurations.\"\"\"\n    def _create_config(\n        baton_config_path: Optional[str] = None,\n        min_baton_schema_version: str = \"1.0\"\n    ):\n        config = Mock()\n        config.compatibility = Mock()\n        config.compatibility.min_baton_schema_version = min_baton_schema_version\n        config.stack = Mock()\n        config.stack.baton_config = baton_config_path\n        return config\n    return _create_config\n\n\n@pytest.fixture\ndef temp_dir():\n    \"\"\"Create a temporary directory for file-based tests.\"\"\"\n    with tempfile.TemporaryDirectory() as tmpdir:\n        yield Path(tmpdir)\n\n\n# ============================================================================\n# TestToolName\n# ============================================================================\n\nclass TestToolName:\n    \"\"\"Test suite for tool_name method.\"\"\"\n    \n    def test_tool_name_happy_path(self, baton_checker):\n        \"\"\"tool_name returns the literal string 'baton'.\"\"\"\n        result = baton_checker.tool_name()\n        assert result == 'baton'\n        assert isinstance(result, str)\n\n\n# ============================================================================\n# TestCheck\n# ============================================================================\n\nclass TestCheck:\n    \"\"\"Test suite for check method.\"\"\"\n    \n    def test_check_baton_config_not_found(self, baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check returns INFO CheckResult when baton config not found.\"\"\"\n        config = mock_config_factory(baton_config_path=None)\n        \n        # Ensure no baton files exist\n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert result[0].tool == 'baton'\n        # Check for INFO level (flexible attribute name)\n        assert hasattr(result[0], 'level') or hasattr(result[0], 'severity')\n        if hasattr(result[0], 'level'):\n            assert result[0].level in ['INFO', 'info']\n        elif hasattr(result[0], 'severity'):\n            assert result[0].severity in ['INFO', 'info']\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open, read_data='invalid: yaml: content: [')\n    @patch('yaml.safe_load')\n    def test_check_yaml_parse_error(self, mock_yaml_load, mock_file, mock_find, \n                                     baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check returns FAIL CheckResult when YAML is invalid.\"\"\"\n        config = mock_config_factory()\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        mock_yaml_load.side_effect = yaml.YAMLError(\"Invalid YAML\")\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert result[0].tool == 'baton'\n        if hasattr(result[0], 'level'):\n            assert result[0].level in ['FAIL', 'fail', 'ERROR', 'error']\n        elif hasattr(result[0], 'severity'):\n            assert result[0].severity in ['FAIL', 'fail', 'ERROR', 'error']\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    def test_check_valid_compatible_version(self, mock_yaml_load, mock_file, mock_find,\n                                            baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check returns PASS CheckResult when schema version is compatible.\"\"\"\n        config = mock_config_factory(min_baton_schema_version=\"1.0\")\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        mock_yaml_load.return_value = {\n            'schema_version': '2.0',\n            'nodes': {},\n            'global': {}\n        }\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert all(r.tool == 'baton' for r in result)\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    @patch('src_cartographer_compatibility_baton_checker._version_lt')\n    def test_check_incompatible_version(self, mock_version_lt, mock_yaml_load, \n                                        mock_file, mock_find, baton_checker, \n                                        mock_config_factory, temp_dir):\n        \"\"\"check returns FAIL CheckResult when schema version is incompatible.\"\"\"\n        config = mock_config_factory(min_baton_schema_version=\"2.0\")\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        mock_yaml_load.return_value = {\n            'schema_version': '1.0',\n            'nodes': {},\n            'global': {}\n        }\n        # Mock version comparison to indicate 1.0 < 2.0\n        mock_version_lt.return_value = True\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert all(r.tool == 'baton' for r in result)\n        # Should have at least one FAIL result\n        has_fail = False\n        for r in result:\n            if hasattr(r, 'level') and r.level in ['FAIL', 'fail', 'ERROR', 'error']:\n                has_fail = True\n            elif hasattr(r, 'severity') and r.severity in ['FAIL', 'fail', 'ERROR', 'error']:\n                has_fail = True\n        assert has_fail\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    def test_check_all_results_have_baton_tool_field(self, mock_yaml_load, mock_file, \n                                                     mock_find, baton_checker, \n                                                     mock_config_factory, temp_dir):\n        \"\"\"check ensures all CheckResult objects have tool field set to 'baton' (invariant).\"\"\"\n        config = mock_config_factory()\n        \n        # Test multiple scenarios\n        scenarios = [\n            None,  # Config not found\n            temp_dir / \"baton.yaml\"  # Config found\n        ]\n        \n        for scenario_path in scenarios:\n            mock_find.return_value = scenario_path\n            if scenario_path:\n                mock_yaml_load.return_value = {\n                    'schema_version': '1.0',\n                    'nodes': {'node1': {}},\n                    'global': {}\n                }\n            \n            result = baton_checker.check(config, temp_dir)\n            assert all(r.tool == 'baton' for r in result), \\\n                f\"Failed invariant for scenario: {scenario_path}\"\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    def test_check_malformed_yaml_with_tabs(self, mock_yaml_load, mock_file, mock_find,\n                                           baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check handles YAML with tab characters causing parse errors.\"\"\"\n        config = mock_config_factory()\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        mock_yaml_load.side_effect = yaml.YAMLError(\"Tab character in YAML\")\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert result[0].tool == 'baton'\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    def test_check_yaml_type_mismatch(self, mock_yaml_load, mock_file, mock_find,\n                                     baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check handles YAML type mismatches gracefully.\"\"\"\n        config = mock_config_factory()\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        # Return a list instead of dict\n        mock_yaml_load.return_value = ['item1', 'item2']\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert all(r.tool == 'baton' for r in result)\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    def test_check_empty_yaml_file(self, mock_yaml_load, mock_file, mock_find,\n                                   baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check handles empty YAML file.\"\"\"\n        config = mock_config_factory()\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        mock_yaml_load.return_value = None\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert all(r.tool == 'baton' for r in result)\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    @patch('builtins.open', new_callable=mock_open)\n    @patch('yaml.safe_load')\n    def test_check_default_baton_version(self, mock_yaml_load, mock_file, mock_find,\n                                         baton_checker, mock_config_factory, temp_dir):\n        \"\"\"check uses default version '1.0' if not specified in config (invariant).\"\"\"\n        config = mock_config_factory(min_baton_schema_version=\"1.0\")\n        mock_find.return_value = temp_dir / \"baton.yaml\"\n        # YAML without schema_version field\n        mock_yaml_load.return_value = {\n            'nodes': {},\n            'global': {}\n        }\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert all(r.tool == 'baton' for r in result)\n    \n    @patch('src_cartographer_compatibility_baton_checker._find_baton_config')\n    def test_check_config_file_search_order(self, mock_find, baton_checker, \n                                           mock_config_factory, temp_dir):\n        \"\"\"check follows search order: config.stack.baton_config, baton.yaml, baton.yml (invariant).\"\"\"\n        config = mock_config_factory()\n        \n        # Verify _find_baton_config is called with correct parameters\n        baton_checker.check(config, temp_dir)\n        mock_find.assert_called_once_with(config, temp_dir)\n    \n    def test_check_integration_real_files(self, baton_checker, mock_config_factory, temp_dir):\n        \"\"\"Integration test: check with real baton.yaml file structure.\"\"\"\n        config = mock_config_factory(min_baton_schema_version=\"1.0\")\n        \n        # Create real baton.yaml file\n        baton_file = temp_dir / \"baton.yaml\"\n        baton_content = \"\"\"\nschema_version: \"2.0\"\nnodes:\n  node1:\n    type: worker\n    config:\n      workers: 4\n  node2:\n    type: manager\nglobal:\n  timeout: 30\n  retries: 3\n\"\"\"\n        baton_file.write_text(baton_content)\n        \n        result = baton_checker.check(config, temp_dir)\n        \n        assert len(result) >= 1\n        assert all(r.tool == 'baton' for r in result)\n        # Verify at least one result exists\n        assert isinstance(result, list)\n\n\n# ============================================================================\n# TestFindBatonConfig\n# ============================================================================\n\nclass TestFindBatonConfig:\n    \"\"\"Test suite for _find_baton_config function.\"\"\"\n    \n    def test_find_baton_config_with_configured_path_exists(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config returns configured path when it exists.\"\"\"\n        baton_file = temp_dir / \"custom_baton.yaml\"\n        baton_file.write_text(\"schema_version: 1.0\")\n        \n        config = mock_config_factory(baton_config_path=str(baton_file))\n        result = _find_baton_config(config, temp_dir)\n        \n        assert result is not None\n        assert result.exists()\n        assert 'baton' in result.name\n    \n    def test_find_baton_config_searches_baton_yaml(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config searches for baton.yaml when no configured path.\"\"\"\n        config = mock_config_factory(baton_config_path=None)\n        baton_file = temp_dir / \"baton.yaml\"\n        baton_file.write_text(\"schema_version: 1.0\")\n        \n        result = _find_baton_config(config, temp_dir)\n        \n        assert result is not None\n        assert result.name == 'baton.yaml'\n        assert result.exists()\n    \n    def test_find_baton_config_searches_baton_yml(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config searches for baton.yml as fallback.\"\"\"\n        config = mock_config_factory(baton_config_path=None)\n        # Don't create baton.yaml, only baton.yml\n        baton_file = temp_dir / \"baton.yml\"\n        baton_file.write_text(\"schema_version: 1.0\")\n        \n        result = _find_baton_config(config, temp_dir)\n        \n        assert result is not None\n        assert result.name == 'baton.yml'\n        assert result.exists()\n    \n    def test_find_baton_config_returns_none_when_not_found(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config returns None when no config file found.\"\"\"\n        config = mock_config_factory(baton_config_path=None)\n        \n        result = _find_baton_config(config, temp_dir)\n        \n        assert result is None\n    \n    def test_find_baton_config_configured_path_not_exists_absolute(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config returns base_dir / path when configured path doesn't exist as absolute.\"\"\"\n        config = mock_config_factory(baton_config_path=\"configs/baton.yaml\")\n        \n        result = _find_baton_config(config, temp_dir)\n        \n        # Should return base_dir / configured_path even if it doesn't exist\n        assert result is not None\n        assert result == temp_dir / \"configs/baton.yaml\" or result == Path(\"configs/baton.yaml\")\n    \n    def test_find_baton_config_with_symlink(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config resolves symlinked config files.\"\"\"\n        # Create actual file\n        actual_file = temp_dir / \"actual_baton.yaml\"\n        actual_file.write_text(\"schema_version: 1.0\")\n        \n        # Create symlink\n        symlink = temp_dir / \"baton.yaml\"\n        try:\n            symlink.symlink_to(actual_file)\n        except (OSError, NotImplementedError):\n            # Skip test if symlinks not supported (e.g., Windows without admin)\n            pytest.skip(\"Symlinks not supported on this system\")\n        \n        config = mock_config_factory(baton_config_path=None)\n        result = _find_baton_config(config, temp_dir)\n        \n        assert result is not None\n        assert result.name == 'baton.yaml'\n        # Verify it points to valid content\n        assert result.exists()\n    \n    def test_find_baton_config_with_unicode_path(self, mock_config_factory, temp_dir):\n        \"\"\"_find_baton_config handles unicode characters in paths.\"\"\"\n        # Create subdirectory with unicode characters\n        unicode_dir = temp_dir / \"配置\"\n        unicode_dir.mkdir(exist_ok=True)\n        \n        baton_file = unicode_dir / \"baton.yaml\"\n        baton_file.write_text(\"schema_version: 1.0\")\n        \n        config = mock_config_factory(baton_config_path=str(baton_file))\n        result = _find_baton_config(config, unicode_dir.parent)\n        \n        assert result is not None\n        assert result.exists()\n\n\n# ============================================================================\n# TestVersionLt\n# ============================================================================\n\nclass TestVersionLt:\n    \"\"\"Test suite for _version_lt function.\"\"\"\n    \n    def test_version_lt_simple_less_than(self):\n        \"\"\"_version_lt returns True when a < b numerically.\"\"\"\n        result = _version_lt(\"1.0.0\", \"2.0.0\")\n        assert result is True\n    \n    def test_version_lt_simple_greater_than(self):\n        \"\"\"_version_lt returns False when a > b numerically.\"\"\"\n        result = _version_lt(\"2.0.0\", \"1.0.0\")\n        assert result is False\n    \n    def test_version_lt_equal_versions(self):\n        \"\"\"_version_lt returns False when a == b.\"\"\"\n        result = _version_lt(\"1.0.0\", \"1.0.0\")\n        assert result is False\n    \n    def test_version_lt_different_segment_counts(self):\n        \"\"\"_version_lt handles versions with varying segment counts.\"\"\"\n        result = _version_lt(\"1.0\", \"1.0.1\")\n        assert result is True\n        \n        result2 = _version_lt(\"1.0.1\", \"1.0\")\n        assert result2 is False\n    \n    def test_version_lt_lexicographic_fallback(self):\n        \"\"\"_version_lt falls back to lexicographic comparison on parse failure.\"\"\"\n        result = _version_lt(\"1.x.0\", \"2.0.0\")\n        # Lexicographic: \"1.x.0\" < \"2.0.0\"\n        assert result is True\n        \n        result2 = _version_lt(\"abc\", \"def\")\n        assert result2 is True\n    \n    def test_version_lt_leading_zeros(self):\n        \"\"\"_version_lt handles versions with leading zeros.\"\"\"\n        result = _version_lt(\"01.02.03\", \"1.2.4\")\n        assert result is True\n        \n        result2 = _version_lt(\"01.02.03\", \"1.2.3\")\n        assert result2 is False\n    \n    def test_version_lt_pre_release_versions(self):\n        \"\"\"_version_lt handles pre-release version strings.\"\"\"\n        # These will fail numeric parsing and fall back to lexicographic\n        result = _version_lt(\"1.0.0-alpha\", \"1.0.0-beta\")\n        # Lexicographic: \"1.0.0-alpha\" < \"1.0.0-beta\"\n        assert result is True\n    \n    def test_version_lt_empty_strings(self):\n        \"\"\"_version_lt handles empty version strings.\"\"\"\n        result = _version_lt(\"\", \"1.0.0\")\n        # Empty string < \"1.0.0\" lexicographically\n        assert result is True\n        \n        result2 = _version_lt(\"1.0.0\", \"\")\n        assert result2 is False\n    \n    def test_version_lt_single_number(self):\n        \"\"\"_version_lt handles single number versions.\"\"\"\n        result = _version_lt(\"1\", \"2\")\n        assert result is True\n        \n        result2 = _version_lt(\"10\", \"2\")\n        assert result2 is False  # Numeric: 10 > 2\n    \n    @pytest.mark.parametrize(\"a,b,expected\", [\n        (\"1.0.0\", \"1.0.1\", True),\n        (\"1.0.1\", \"1.0.0\", False),\n        (\"1.2.0\", \"1.10.0\", True),\n        (\"2.0.0\", \"1.99.99\", False),\n        (\"0.0.1\", \"0.0.2\", True),\n        (\"1.0\", \"1.0.0\", True),  # Fewer segments\n        (\"1.0.0.0\", \"1.0.0.1\", True),\n        (\"3.2.1\", \"3.2.1\", False),  # Equal\n    ])\n    def test_version_lt_parametrized_comparisons(self, a, b, expected):\n        \"\"\"Parametrized test for various version comparisons.\"\"\"\n        result = _version_lt(a, b)\n        assert result == expected\n    \n    def test_version_lt_random_valid_versions(self):\n        \"\"\"Test with randomly generated valid version strings.\"\"\"\n        for _ in range(10):\n            major1, minor1, patch1 = random.randint(0, 10), random.randint(0, 10), random.randint(0, 10)\n            major2, minor2, patch2 = random.randint(0, 10), random.randint(0, 10), random.randint(0, 10)\n            \n            v1 = f\"{major1}.{minor1}.{patch1}\"\n            v2 = f\"{major2}.{minor2}.{patch2}\"\n            \n            result = _version_lt(v1, v2)\n            \n            # Verify against expected behavior\n            parts1 = [major1, minor1, patch1]\n            parts2 = [major2, minor2, patch2]\n            expected = parts1 < parts2\n            \n            assert result == expected, f\"Failed for {v1} vs {v2}\"\n    \n    def test_version_lt_transitivity(self):\n        \"\"\"Test transitivity property: if a < b and b < c, then a < c.\"\"\"\n        versions = [\"1.0.0\", \"1.5.0\", \"2.0.0\"]\n        \n        # 1.0.0 < 1.5.0\n        assert _version_lt(versions[0], versions[1]) is True\n        # 1.5.0 < 2.0.0\n        assert _version_lt(versions[1], versions[2]) is True\n        # Therefore: 1.0.0 < 2.0.0\n        assert _version_lt(versions[0], versions[2]) is True\n    \n    def test_version_lt_antisymmetry(self):\n        \"\"\"Test antisymmetry: if a < b is True, then b < a must be False.\"\"\"\n        a, b = \"1.0.0\", \"2.0.0\"\n        \n        assert _version_lt(a, b) is True\n        assert _version_lt(b, a) is False\n    \n    def test_version_lt_reflexivity(self):\n        \"\"\"Test that a version is never less than itself.\"\"\"\n        versions = [\"1.0.0\", \"2.5.3\", \"10.0.1\"]\n        \n        for v in versions:\n            assert _version_lt(v, v) is False\n\n\n# ============================================================================\n# Integration Tests\n# ============================================================================\n\nclass TestIntegration:\n    \"\"\"Integration tests combining multiple components.\"\"\"\n    \n    def test_full_workflow_with_real_files(self, baton_checker, mock_config_factory, temp_dir):\n        \"\"\"Test complete workflow from config discovery to validation.\"\"\"\n        config = mock_config_factory(\n            baton_config_path=None,\n            min_baton_schema_version=\"1.5\"\n        )\n        \n        # Create baton.yaml with various configurations\n        baton_file = temp_dir / \"baton.yaml\"\n        content = {\n            'schema_version': '2.0',\n            'nodes': {\n                'worker1': {'type': 'worker', 'count': 3},\n                'manager1': {'type': 'manager'}\n            },\n            'global': {\n                'timeout': 60,\n                'log_level': 'INFO'\n            }\n        }\n        \n        with open(baton_file, 'w') as f:\n            yaml.dump(content, f)\n        \n        # Run check\n        results = baton_checker.check(config, temp_dir)\n        \n        # Verify results\n        assert len(results) >= 1\n        assert all(r.tool == 'baton' for r in results)\n        assert isinstance(results, list)\n    \n    def test_multiple_config_file_precedence(self, baton_checker, mock_config_factory, temp_dir):\n        \"\"\"Test that configured path takes precedence over default search.\"\"\"\n        # Create multiple config files\n        default_yaml = temp_dir / \"baton.yaml\"\n        default_yaml.write_text(\"schema_version: '1.0'\\n\")\n        \n        custom_yaml = temp_dir / \"custom.yaml\"\n        custom_yaml.write_text(\"schema_version: '3.0'\\n\")\n        \n        # Configure to use custom file\n        config = mock_config_factory(\n            baton_config_path=str(custom_yaml),\n            min_baton_schema_version=\"1.0\"\n        )\n        \n        # Find config should return custom path\n        found = _find_baton_config(config, temp_dir)\n        assert found == custom_yaml\n"
+}

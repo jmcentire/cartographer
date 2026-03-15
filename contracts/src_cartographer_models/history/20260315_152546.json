@@ -1,0 +1,842 @@
+{
+  "component_id": "src_cartographer_models",
+  "name": "Cartographer Models",
+  "description": "Core data models for the Cartographer system. Defines Pydantic models for discovery results (models, routes, components, environment variables, sensitive fields), compatibility checking (check results and reports), and draft artifact generation. Includes enumerations for confidence levels, severity, component types, and backend types.",
+  "version": 1,
+  "types": [
+    {
+      "name": "Confidence",
+      "kind": "enum",
+      "fields": [],
+      "item_type": "",
+      "variants": [
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ],
+      "inner_types": [],
+      "description": "Enumeration of confidence levels for discovered entities"
+    },
+    {
+      "name": "Severity",
+      "kind": "enum",
+      "fields": [],
+      "item_type": "",
+      "variants": [
+        "FAIL",
+        "WARN",
+        "INFO"
+      ],
+      "inner_types": [],
+      "description": "Enumeration of severity levels for compatibility checks"
+    },
+    {
+      "name": "ComponentType",
+      "kind": "enum",
+      "fields": [],
+      "item_type": "",
+      "variants": [
+        "SERVICE",
+        "LIBRARY",
+        "WORKER",
+        "EGRESS",
+        "INGRESS"
+      ],
+      "inner_types": [],
+      "description": "Enumeration of component types in the system"
+    },
+    {
+      "name": "BackendType",
+      "kind": "enum",
+      "fields": [],
+      "item_type": "",
+      "variants": [
+        "POSTGRES",
+        "MYSQL",
+        "SQLITE",
+        "MONGODB",
+        "REDIS",
+        "S3",
+        "DYNAMODB",
+        "KAFKA",
+        "RABBITMQ",
+        "SQS"
+      ],
+      "inner_types": [],
+      "description": "Enumeration of supported backend/datastore types"
+    },
+    {
+      "name": "DiscoveredField",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "name",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "type",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "note",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "classification_hint",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents a field discovered in a data model"
+    },
+    {
+      "name": "DiscoveredModel",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "name",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "source_file",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "line",
+          "type_ref": "int",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "orm",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "fields",
+          "type_ref": "list[DiscoveredField]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": false,
+          "default": "Confidence.HIGH",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents a data model discovered in source code"
+    },
+    {
+      "name": "DiscoveredRoute",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "path",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "method",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "handler",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "source_file",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "line",
+          "type_ref": "int",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "framework",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": false,
+          "default": "Confidence.HIGH",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents an HTTP route/endpoint discovered in source code"
+    },
+    {
+      "name": "DiscoveredComponent",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "name",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "source_file",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "line",
+          "type_ref": "int",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "type",
+          "type_ref": "ComponentType",
+          "required": false,
+          "default": "ComponentType.SERVICE",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "public_methods",
+          "type_ref": "list[str]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "dependencies",
+          "type_ref": "list[str]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": false,
+          "default": "Confidence.HIGH",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "note",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents a component discovered in source code"
+    },
+    {
+      "name": "DiscoveredPactKey",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "key",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "source_file",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "line",
+          "type_ref": "int",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": false,
+          "default": "Confidence.HIGH",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents a Pact key discovered in source code"
+    },
+    {
+      "name": "DiscoveredEnvVar",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "name",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "source_file",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "line",
+          "type_ref": "int",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "backend_hint",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": false,
+          "default": "Confidence.MEDIUM",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents an environment variable reference discovered in source code"
+    },
+    {
+      "name": "DiscoveredSensitiveField",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "field_name",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "source_file",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "line",
+          "type_ref": "int",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "pattern_matched",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "classification_hint",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": false,
+          "default": "Confidence.LOW",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Represents a potentially sensitive field discovered via pattern matching"
+    },
+    {
+      "name": "DiscoveryResult",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "models",
+          "type_ref": "list[DiscoveredModel]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "routes",
+          "type_ref": "list[DiscoveredRoute]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "components",
+          "type_ref": "list[DiscoveredComponent]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "pact_keys",
+          "type_ref": "list[DiscoveredPactKey]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "env_vars",
+          "type_ref": "list[DiscoveredEnvVar]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "sensitive_fields",
+          "type_ref": "list[DiscoveredSensitiveField]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Aggregated results from all discovery scanners"
+    },
+    {
+      "name": "CheckResult",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "check_id",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "target",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "severity",
+          "type_ref": "Severity",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "status",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "PASS, WARN, or FAIL",
+          "validators": []
+        },
+        {
+          "name": "message",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "tool",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "pact, ledger, baton, arbiter, or sentinel",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Result of a single compatibility check"
+    },
+    {
+      "name": "CompatibilityReport",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "generated",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "checks",
+          "type_ref": "list[CheckResult]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "score_pass",
+          "type_ref": "int",
+          "required": false,
+          "default": "0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "score_warn",
+          "type_ref": "int",
+          "required": false,
+          "default": "0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "score_fail",
+          "type_ref": "int",
+          "required": false,
+          "default": "0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "total",
+          "type_ref": "int",
+          "required": false,
+          "default": "0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "recommendations",
+          "type_ref": "list[str]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Compatibility report aggregating multiple check results with scoring"
+    },
+    {
+      "name": "DraftField",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "value",
+          "type_ref": "Any",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "confidence",
+          "type_ref": "Confidence",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "note",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "A field in a draft artifact with confidence annotation"
+    },
+    {
+      "name": "DraftArtifact",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "_draft",
+          "type_ref": "bool",
+          "required": false,
+          "default": "True",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "_generated_by",
+          "type_ref": "str",
+          "required": false,
+          "default": "cartographer",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "tool",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "artifact_type",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "path",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "content",
+          "type_ref": "dict[str, Any]",
+          "required": false,
+          "default": "{}",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Base for all draft artifacts"
+    }
+  ],
+  "functions": [
+    {
+      "name": "score_pct",
+      "description": "Calculates the percentage of passing checks in a compatibility report. Returns 100.0 if no checks exist (total == 0), otherwise computes (score_pass / total * 100) rounded to 1 decimal place.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "CompatibilityReport",
+          "required": true,
+          "default": "",
+          "description": "The CompatibilityReport instance containing score_pass and total fields",
+          "validators": []
+        }
+      ],
+      "output_type": "float",
+      "error_cases": [],
+      "preconditions": [
+        "self.total >= 0",
+        "self.score_pass >= 0"
+      ],
+      "postconditions": [
+        "0.0 <= return_value <= 100.0",
+        "return_value rounded to 1 decimal place"
+      ],
+      "idempotent": true,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": {
+        "p95_latency_ms": 1,
+        "max_memory_mb": 1,
+        "complexity": "O(1)"
+      }
+    },
+    {
+      "name": "has_failures",
+      "description": "Checks whether the compatibility report contains any failures. Returns true if score_fail is greater than 0, false otherwise.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "CompatibilityReport",
+          "required": true,
+          "default": "",
+          "description": "The CompatibilityReport instance containing score_fail field",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [],
+      "preconditions": [
+        "self.score_fail >= 0"
+      ],
+      "postconditions": [
+        "return_value == true if self.score_fail > 0 else false"
+      ],
+      "idempotent": true,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": {
+        "p95_latency_ms": 1,
+        "max_memory_mb": 1,
+        "complexity": "O(1)"
+      }
+    }
+  ],
+  "dependencies": [
+    "pydantic",
+    "enum",
+    "typing"
+  ],
+  "dependency_contracts": {},
+  "invariants": [
+    "All Pydantic models inherit from BaseModel",
+    "All enum values are string-based",
+    "Confidence levels are ordered: HIGH > MEDIUM > LOW",
+    "CompatibilityReport.total == score_pass + score_warn + score_fail when properly maintained",
+    "score_pct property returns value in range [0.0, 100.0]"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [],
+    "writes": [],
+    "rationale": "",
+    "side_effects": []
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

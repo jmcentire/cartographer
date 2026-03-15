@@ -1,0 +1,365 @@
+{
+  "component_id": "src_cartographer_compatibility_ledger_checker",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_tool_name_happy_path",
+      "description": "Verify tool_name() returns 'ledger' string",
+      "function": "tool_name",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "result == 'ledger'",
+        "isinstance(result, str)",
+        "len(result) > 0"
+      ]
+    },
+    {
+      "id": "test_tool_name_stability",
+      "description": "Verify tool_name() returns same value on multiple calls",
+      "function": "tool_name",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "first_call == second_call",
+        "first_call == 'ledger'"
+      ]
+    },
+    {
+      "id": "test_check_valid_registry_with_schemas",
+      "description": "Happy path: check() with valid registry containing schema files",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Valid CartographerConfig with ledger registry containing valid YAML schemas",
+      "expected_output_description": "Returns non-empty list of CheckResult objects with tool='ledger'",
+      "expected_error": "",
+      "assertions": [
+        "len(results) >= 1",
+        "all(r.tool == 'ledger' for r in results)"
+      ]
+    },
+    {
+      "id": "test_check_no_registry_found",
+      "description": "Edge case: check() when no registry directory exists",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Valid config but no registry directory present",
+      "expected_output_description": "Returns single INFO CheckResult with check_id 'ledger_registry_exists'",
+      "expected_error": "",
+      "assertions": [
+        "len(results) == 1",
+        "results[0].check_id == 'ledger_registry_exists'",
+        "results[0].tool == 'ledger'"
+      ]
+    },
+    {
+      "id": "test_check_empty_registry",
+      "description": "Edge case: check() with registry directory containing no YAML files",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Valid config with empty registry directory",
+      "expected_output_description": "Returns at least one CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "len(results) >= 1",
+        "all(r.tool == 'ledger' for r in results)"
+      ]
+    },
+    {
+      "id": "test_check_yaml_parse_error_malformed",
+      "description": "Error case: YAML file with malformed syntax",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Registry with YAML file containing invalid syntax",
+      "expected_output_description": "",
+      "expected_error": "yaml_parse_error",
+      "assertions": [
+        "exception raised or error result returned"
+      ]
+    },
+    {
+      "id": "test_check_yaml_parse_error_invalid_structure",
+      "description": "Error case: YAML file with invalid structure",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Registry with YAML file containing unexpected structure",
+      "expected_output_description": "",
+      "expected_error": "yaml_parse_error",
+      "assertions": [
+        "exception raised or error result returned"
+      ]
+    },
+    {
+      "id": "test_check_file_read_error_permission",
+      "description": "Error case: File cannot be read due to permissions",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Registry with unreadable YAML file",
+      "expected_output_description": "",
+      "expected_error": "file_read_error",
+      "assertions": [
+        "exception raised or error result returned"
+      ]
+    },
+    {
+      "id": "test_check_file_read_error_missing",
+      "description": "Error case: File referenced but does not exist",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Registry reference to non-existent file",
+      "expected_output_description": "",
+      "expected_error": "file_read_error",
+      "assertions": [
+        "exception raised or error result returned"
+      ]
+    },
+    {
+      "id": "test_check_classification_one_per_schema",
+      "description": "Invariant: Classification check creates one result per schema file",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Multiple schema files in registry",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "classification_results_count matches schema_file_count"
+      ]
+    },
+    {
+      "id": "test_check_annotation_conflict_gdpr_immutable",
+      "description": "Edge case: Field annotated as both gdpr_erasable and immutable",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Schema with conflicting annotations",
+      "expected_output_description": "Returns FAIL CheckResult for conflicting field",
+      "expected_error": "",
+      "assertions": [
+        "any(r.severity == 'FAIL' for r in results)",
+        "conflict mentioned in result"
+      ]
+    },
+    {
+      "id": "test_check_gdpr_erasable_no_method",
+      "description": "Edge case: GDPR erasable field without erasure_method",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Schema with gdpr_erasable field missing erasure_method",
+      "expected_output_description": "Returns WARN CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "any(r.severity == 'WARN' for r in results)"
+      ]
+    },
+    {
+      "id": "test_check_audit_field_no_retention",
+      "description": "Edge case: Audit field without retention_policy",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Schema with audit field missing retention_policy",
+      "expected_output_description": "Returns WARN CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "any(r.severity == 'WARN' for r in results)"
+      ]
+    },
+    {
+      "id": "test_check_classification_fail_majority_missing",
+      "description": "Edge case: Classification FAIL when more than half fields missing classification",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Schema where missing_classification > len(fields) // 2",
+      "expected_output_description": "Returns FAIL severity CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "any(r.severity == 'FAIL' for r in results)"
+      ]
+    },
+    {
+      "id": "test_check_classification_warn_minority_missing",
+      "description": "Edge case: Classification WARN when less than half fields missing classification",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Schema where missing_classification <= len(fields) // 2",
+      "expected_output_description": "Returns WARN severity CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "any(r.severity == 'WARN' for r in results)"
+      ]
+    },
+    {
+      "id": "test_find_registry_config_path",
+      "description": "Happy path: _find_registry() finds registry from config.stack.ledger_registry",
+      "function": "_find_registry",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Config with stack.ledger_registry set to existing directory",
+      "expected_output_description": "Returns Path object to registry",
+      "expected_error": "",
+      "assertions": [
+        "result is not None",
+        "result.exists()",
+        "isinstance(result, Path)"
+      ]
+    },
+    {
+      "id": "test_find_registry_ledger_registry_fallback",
+      "description": "Edge case: _find_registry() falls back to .ledger/registry",
+      "function": "_find_registry",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Config without ledger_registry, .ledger/registry exists",
+      "expected_output_description": "Returns Path to .ledger/registry",
+      "expected_error": "",
+      "assertions": [
+        "result is not None",
+        "result.name == 'registry'"
+      ]
+    },
+    {
+      "id": "test_find_registry_ledger_fallback",
+      "description": "Edge case: _find_registry() falls back to .ledger",
+      "function": "_find_registry",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Config without ledger_registry, .ledger exists but not .ledger/registry",
+      "expected_output_description": "Returns Path to .ledger",
+      "expected_error": "",
+      "assertions": [
+        "result is not None",
+        "result.name == '.ledger'"
+      ]
+    },
+    {
+      "id": "test_find_registry_none_found",
+      "description": "Edge case: _find_registry() returns None when no registry found",
+      "function": "_find_registry",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Config and base_dir with no registry directories",
+      "expected_output_description": "Returns None",
+      "expected_error": "",
+      "assertions": [
+        "result is None"
+      ]
+    },
+    {
+      "id": "test_find_registry_search_order",
+      "description": "Invariant: _find_registry() checks in correct order",
+      "function": "_find_registry",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "All possible registry locations exist",
+      "expected_output_description": "Returns config.stack.ledger_registry first",
+      "expected_error": "",
+      "assertions": [
+        "result matches config path, not fallback paths"
+      ]
+    },
+    {
+      "id": "test_check_multiple_yaml_files",
+      "description": "Happy path: check() processes multiple YAML schema files",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Registry with multiple valid YAML files",
+      "expected_output_description": "Returns CheckResults for all files",
+      "expected_error": "",
+      "assertions": [
+        "len(results) >= number_of_yaml_files"
+      ]
+    },
+    {
+      "id": "test_check_results_always_non_empty",
+      "description": "Invariant: check() always returns at least one CheckResult",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Any valid config and base_dir",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "len(results) >= 1"
+      ]
+    },
+    {
+      "id": "test_check_idempotency",
+      "description": "Invariant: check() returns same results when called multiple times",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Same config and base_dir called twice",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "first_call == second_call"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract tests for LedgerChecker compatibility checker.\nTests verify behavior at boundaries, not internals.\n\"\"\"\n\nimport pytest\nfrom pathlib import Path\nfrom unittest.mock import Mock, MagicMock, patch, mock_open\nimport tempfile\nimport os\nimport yaml\n\n# Import the component under test\nfrom src.cartographer.compatibility.ledger_checker import LedgerChecker, _find_registry\n\n\n# Mock classes for dependencies\nclass MockSeverity:\n    INFO = \"INFO\"\n    WARN = \"WARN\"\n    FAIL = \"FAIL\"\n\n\nclass MockCheckResult:\n    def __init__(self, tool, check_id, severity, message=\"\", **kwargs):\n        self.tool = tool\n        self.check_id = check_id\n        self.severity = severity\n        self.message = message\n        for key, value in kwargs.items():\n            setattr(self, key, value)\n    \n    def __eq__(self, other):\n        if not isinstance(other, MockCheckResult):\n            return False\n        return (self.tool == other.tool and \n                self.check_id == other.check_id and \n                self.severity == other.severity)\n\n\nclass MockCartographerConfig:\n    def __init__(self, ledger_registry_path=None):\n        self.stack = Mock()\n        if ledger_registry_path:\n            self.stack.ledger_registry = ledger_registry_path\n        else:\n            self.stack.ledger_registry = None\n\n\n# Fixtures\n@pytest.fixture\ndef temp_dir():\n    \"\"\"Create a temporary directory for testing.\"\"\"\n    with tempfile.TemporaryDirectory() as tmpdir:\n        yield Path(tmpdir)\n\n\n@pytest.fixture\ndef mock_config():\n    \"\"\"Create a mock CartographerConfig.\"\"\"\n    return MockCartographerConfig()\n\n\n@pytest.fixture\ndef ledger_checker():\n    \"\"\"Create a LedgerChecker instance.\"\"\"\n    return LedgerChecker()\n\n\n@pytest.fixture\ndef valid_schema_yaml():\n    \"\"\"Return a valid ledger schema YAML content.\"\"\"\n    return \"\"\"\nname: user_ledger\nfields:\n  - name: user_id\n    type: string\n    classification: pii\n  - name: email\n    type: string\n    classification: pii\n    gdpr_erasable: true\n    erasure_method: anonymize\n  - name: created_at\n    type: timestamp\n    classification: metadata\n    audit: true\n    retention_policy: 7_years\n\"\"\"\n\n\n@pytest.fixture\ndef invalid_classification_schema():\n    \"\"\"Schema with majority of fields missing classification.\"\"\"\n    return \"\"\"\nname: bad_schema\nfields:\n  - name: field1\n    type: string\n  - name: field2\n    type: string\n  - name: field3\n    type: string\n    classification: pii\n\"\"\"\n\n\n@pytest.fixture\ndef conflicting_annotation_schema():\n    \"\"\"Schema with gdpr_erasable and immutable conflict.\"\"\"\n    return \"\"\"\nname: conflict_schema\nfields:\n  - name: conflicting_field\n    type: string\n    classification: pii\n    gdpr_erasable: true\n    immutable: true\n\"\"\"\n\n\n@pytest.fixture\ndef gdpr_no_method_schema():\n    \"\"\"Schema with gdpr_erasable but no erasure_method.\"\"\"\n    return \"\"\"\nname: gdpr_schema\nfields:\n  - name: user_email\n    type: string\n    classification: pii\n    gdpr_erasable: true\n\"\"\"\n\n\n@pytest.fixture\ndef audit_no_retention_schema():\n    \"\"\"Schema with audit but no retention_policy.\"\"\"\n    return \"\"\"\nname: audit_schema\nfields:\n  - name: audit_log\n    type: string\n    classification: metadata\n    audit: true\n\"\"\"\n\n\n# Layer 1: tool_name() tests\nclass TestToolName:\n    \"\"\"Tests for tool_name() property method.\"\"\"\n    \n    def test_tool_name_happy_path(self, ledger_checker):\n        \"\"\"Verify tool_name() returns 'ledger' string.\"\"\"\n        result = ledger_checker.tool_name()\n        \n        assert result == 'ledger', \"tool_name should return 'ledger'\"\n        assert isinstance(result, str), \"tool_name should return a string\"\n        assert len(result) > 0, \"tool_name should return non-empty string\"\n    \n    def test_tool_name_stability(self, ledger_checker):\n        \"\"\"Verify tool_name() returns same value on multiple calls.\"\"\"\n        first_call = ledger_checker.tool_name()\n        second_call = ledger_checker.tool_name()\n        \n        assert first_call == second_call, \"tool_name should be stable across calls\"\n        assert first_call == 'ledger', \"tool_name should always return 'ledger'\"\n\n\n# Layer 2: check() tests\nclass TestCheck:\n    \"\"\"Tests for check() method.\"\"\"\n    \n    def test_check_valid_registry_with_schemas(self, temp_dir, valid_schema_yaml):\n        \"\"\"Happy path: check() with valid registry containing schema files.\"\"\"\n        # Setup registry structure\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"user.yaml\"\n        schema_file.write_text(valid_schema_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert len(results) >= 1, \"Should return at least one CheckResult\"\n        assert all(r.tool == 'ledger' for r in results), \"All results should have tool='ledger'\"\n    \n    def test_check_no_registry_found(self, temp_dir):\n        \"\"\"Edge case: check() when no registry directory exists.\"\"\"\n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert len(results) == 1, \"Should return single CheckResult when no registry\"\n        assert results[0].check_id == 'ledger_registry_exists', \"Should have correct check_id\"\n        assert results[0].tool == 'ledger', \"Result should have tool='ledger'\"\n        assert results[0].severity == MockSeverity.INFO, \"Should be INFO severity\"\n    \n    def test_check_empty_registry(self, temp_dir):\n        \"\"\"Edge case: check() with registry directory containing no YAML files.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert len(results) >= 1, \"Should return at least one CheckResult\"\n        assert all(r.tool == 'ledger' for r in results), \"All results should have tool='ledger'\"\n    \n    def test_check_yaml_parse_error_malformed(self, temp_dir):\n        \"\"\"Error case: YAML file with malformed syntax.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        malformed_yaml = \"invalid: yaml: content:\\n\\t- broken\"\n        schema_file = registry_dir / \"bad.yaml\"\n        schema_file.write_text(malformed_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        # Should either raise exception or return error result\n        try:\n            results = checker.check(config, temp_dir)\n            # If no exception, should have error result\n            assert any('yaml' in r.message.lower() or 'parse' in r.message.lower() \n                      for r in results if hasattr(r, 'message')), \"Should indicate YAML parse error\"\n        except Exception as e:\n            assert 'yaml' in str(e).lower() or 'parse' in str(e).lower(), \"Exception should mention YAML parse error\"\n    \n    def test_check_yaml_parse_error_invalid_structure(self, temp_dir):\n        \"\"\"Error case: YAML file with invalid structure.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        # Valid YAML but unexpected structure\n        invalid_structure = \"just_a_string\"\n        schema_file = registry_dir / \"invalid_structure.yaml\"\n        schema_file.write_text(invalid_structure)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        # Should handle gracefully\n        try:\n            results = checker.check(config, temp_dir)\n            assert len(results) >= 1, \"Should return results even with invalid structure\"\n        except Exception:\n            # Exception is acceptable for invalid structure\n            pass\n    \n    @patch('builtins.open', side_effect=PermissionError(\"Permission denied\"))\n    def test_check_file_read_error_permission(self, mock_file, temp_dir):\n        \"\"\"Error case: File cannot be read due to permissions.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        # Create a file (but mock will prevent reading)\n        schema_file = registry_dir / \"restricted.yaml\"\n        schema_file.touch()\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        try:\n            results = checker.check(config, temp_dir)\n            # If returns results, should indicate file read error\n            assert any('permission' in r.message.lower() or 'read' in r.message.lower()\n                      for r in results if hasattr(r, 'message')), \"Should indicate file read error\"\n        except (PermissionError, IOError):\n            # Exception is acceptable\n            pass\n    \n    def test_check_file_read_error_missing(self, temp_dir):\n        \"\"\"Error case: File referenced but does not exist.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        # Simulate scenario where file is discovered but deleted before read\n        with patch.object(Path, 'glob', return_value=[Path(\"nonexistent.yaml\")]):\n            try:\n                results = checker.check(config, temp_dir)\n                # Should handle gracefully\n                assert len(results) >= 1, \"Should return results\"\n            except (FileNotFoundError, IOError):\n                # Exception is acceptable\n                pass\n    \n    def test_check_classification_one_per_schema(self, temp_dir, valid_schema_yaml):\n        \"\"\"Invariant: Classification check creates one result per schema file.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        # Create multiple schema files\n        for i in range(3):\n            schema_file = registry_dir / f\"schema{i}.yaml\"\n            schema_file.write_text(valid_schema_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        # Count classification-related results\n        classification_results = [r for r in results if 'classification' in r.check_id.lower()]\n        schema_file_count = len(list(registry_dir.glob(\"*.yaml\")))\n        \n        assert len(classification_results) == schema_file_count, \\\n            \"Should have one classification result per schema file\"\n    \n    def test_check_annotation_conflict_gdpr_immutable(self, temp_dir, conflicting_annotation_schema):\n        \"\"\"Edge case: Field annotated as both gdpr_erasable and immutable.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"conflict.yaml\"\n        schema_file.write_text(conflicting_annotation_schema)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert any(r.severity == MockSeverity.FAIL for r in results), \\\n            \"Should have FAIL result for annotation conflict\"\n        fail_results = [r for r in results if r.severity == MockSeverity.FAIL]\n        assert any('conflict' in r.message.lower() or 'annotation' in r.message.lower()\n                  for r in fail_results if hasattr(r, 'message')), \\\n            \"FAIL result should mention conflict\"\n    \n    def test_check_gdpr_erasable_no_method(self, temp_dir, gdpr_no_method_schema):\n        \"\"\"Edge case: GDPR erasable field without erasure_method.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"gdpr.yaml\"\n        schema_file.write_text(gdpr_no_method_schema)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert any(r.severity == MockSeverity.WARN for r in results), \\\n            \"Should have WARN result for missing erasure_method\"\n    \n    def test_check_audit_field_no_retention(self, temp_dir, audit_no_retention_schema):\n        \"\"\"Edge case: Audit field without retention_policy.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"audit.yaml\"\n        schema_file.write_text(audit_no_retention_schema)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert any(r.severity == MockSeverity.WARN for r in results), \\\n            \"Should have WARN result for missing retention_policy\"\n    \n    def test_check_classification_fail_majority_missing(self, temp_dir, invalid_classification_schema):\n        \"\"\"Edge case: Classification FAIL when more than half fields missing classification.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"bad_classification.yaml\"\n        schema_file.write_text(invalid_classification_schema)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        # Should have FAIL for majority missing classification\n        classification_results = [r for r in results if 'classification' in r.check_id.lower()]\n        assert any(r.severity == MockSeverity.FAIL for r in classification_results), \\\n            \"Should have FAIL when majority of fields missing classification\"\n    \n    def test_check_classification_warn_minority_missing(self, temp_dir):\n        \"\"\"Edge case: Classification WARN when less than half fields missing classification.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        # Schema with minority missing classification\n        schema_yaml = \"\"\"\nname: mostly_classified\nfields:\n  - name: field1\n    type: string\n    classification: pii\n  - name: field2\n    type: string\n    classification: pii\n  - name: field3\n    type: string\n\"\"\"\n        schema_file = registry_dir / \"mostly_good.yaml\"\n        schema_file.write_text(schema_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        classification_results = [r for r in results if 'classification' in r.check_id.lower()]\n        # Should be WARN, not FAIL, when minority missing\n        if classification_results:\n            assert any(r.severity == MockSeverity.WARN for r in classification_results), \\\n                \"Should have WARN when minority of fields missing classification\"\n    \n    def test_check_multiple_yaml_files(self, temp_dir, valid_schema_yaml):\n        \"\"\"Happy path: check() processes multiple YAML schema files.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        # Create 5 schema files\n        num_files = 5\n        for i in range(num_files):\n            schema_file = registry_dir / f\"schema{i}.yaml\"\n            schema_file.write_text(valid_schema_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert len(results) >= num_files, \"Should return results for all YAML files\"\n    \n    def test_check_results_always_non_empty(self, temp_dir, mock_config):\n        \"\"\"Invariant: check() always returns at least one CheckResult.\"\"\"\n        checker = LedgerChecker()\n        \n        results = checker.check(mock_config, temp_dir)\n        \n        assert len(results) >= 1, \"check() must always return at least one CheckResult\"\n    \n    def test_check_idempotency(self, temp_dir, valid_schema_yaml):\n        \"\"\"Invariant: check() returns same results when called multiple times.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"schema.yaml\"\n        schema_file.write_text(valid_schema_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        first_call = checker.check(config, temp_dir)\n        second_call = checker.check(config, temp_dir)\n        \n        assert len(first_call) == len(second_call), \"Should return same number of results\"\n        # Compare check_ids and severities\n        first_ids = sorted([(r.check_id, r.severity) for r in first_call])\n        second_ids = sorted([(r.check_id, r.severity) for r in second_call])\n        assert first_ids == second_ids, \"Results should be identical across calls\"\n\n\n# Layer 3: _find_registry() tests\nclass TestFindRegistry:\n    \"\"\"Tests for _find_registry() function.\"\"\"\n    \n    def test_find_registry_config_path(self, temp_dir):\n        \"\"\"Happy path: _find_registry() finds registry from config.stack.ledger_registry.\"\"\"\n        # Create custom registry location\n        custom_registry = temp_dir / \"custom\" / \"ledger_registry\"\n        custom_registry.mkdir(parents=True)\n        \n        config = MockCartographerConfig(ledger_registry_path=str(custom_registry))\n        \n        result = _find_registry(config, temp_dir)\n        \n        assert result is not None, \"Should find registry from config\"\n        assert result.exists(), \"Returned path should exist\"\n        assert isinstance(result, Path), \"Should return Path object\"\n        assert str(custom_registry) in str(result), \"Should match config path\"\n    \n    def test_find_registry_ledger_registry_fallback(self, temp_dir):\n        \"\"\"Edge case: _find_registry() falls back to .ledger/registry.\"\"\"\n        # Create .ledger/registry\n        fallback_registry = temp_dir / \".ledger\" / \"registry\"\n        fallback_registry.mkdir(parents=True)\n        \n        config = MockCartographerConfig()\n        \n        result = _find_registry(config, temp_dir)\n        \n        assert result is not None, \"Should find .ledger/registry\"\n        assert result.name == 'registry', \"Should be the registry directory\"\n    \n    def test_find_registry_ledger_fallback(self, temp_dir):\n        \"\"\"Edge case: _find_registry() falls back to .ledger.\"\"\"\n        # Create only .ledger, not .ledger/registry\n        ledger_dir = temp_dir / \".ledger\"\n        ledger_dir.mkdir()\n        \n        config = MockCartographerConfig()\n        \n        result = _find_registry(config, temp_dir)\n        \n        assert result is not None, \"Should find .ledger\"\n        assert result.name == '.ledger', \"Should be the .ledger directory\"\n    \n    def test_find_registry_none_found(self, temp_dir):\n        \"\"\"Edge case: _find_registry() returns None when no registry found.\"\"\"\n        config = MockCartographerConfig()\n        \n        result = _find_registry(config, temp_dir)\n        \n        assert result is None, \"Should return None when no registry exists\"\n    \n    def test_find_registry_search_order(self, temp_dir):\n        \"\"\"Invariant: _find_registry() checks in correct order.\"\"\"\n        # Create all possible locations\n        custom_registry = temp_dir / \"custom_registry\"\n        custom_registry.mkdir()\n        \n        ledger_registry = temp_dir / \".ledger\" / \"registry\"\n        ledger_registry.mkdir(parents=True)\n        \n        ledger_dir = temp_dir / \".ledger\"\n        # Already created above\n        \n        config = MockCartographerConfig(ledger_registry_path=str(custom_registry))\n        \n        result = _find_registry(config, temp_dir)\n        \n        # Should return config path first, not fallback paths\n        assert result is not None, \"Should find a registry\"\n        assert str(custom_registry) in str(result), \"Should prioritize config.stack.ledger_registry\"\n        assert result != ledger_registry, \"Should not return fallback when config path exists\"\n    \n    def test_find_registry_nonexistent_config_path(self, temp_dir):\n        \"\"\"Edge case: config.stack.ledger_registry set but path doesn't exist.\"\"\"\n        # Config points to non-existent path\n        config = MockCartographerConfig(ledger_registry_path=str(temp_dir / \"nonexistent\"))\n        \n        # Create fallback\n        fallback = temp_dir / \".ledger\" / \"registry\"\n        fallback.mkdir(parents=True)\n        \n        result = _find_registry(config, temp_dir)\n        \n        # Should fall back to .ledger/registry\n        assert result is not None, \"Should fall back when config path doesn't exist\"\n        assert result == fallback, \"Should use fallback path\"\n\n\n# Additional edge case tests\nclass TestEdgeCases:\n    \"\"\"Additional edge case tests.\"\"\"\n    \n    def test_check_with_nested_registry(self, temp_dir):\n        \"\"\"Edge case: Registry in nested subdirectory.\"\"\"\n        # Create deeply nested structure\n        nested_registry = temp_dir / \"a\" / \"b\" / \"c\" / \"registry\"\n        nested_registry.mkdir(parents=True)\n        \n        schema_yaml = \"\"\"\nname: nested_schema\nfields:\n  - name: id\n    type: string\n    classification: pii\n\"\"\"\n        schema_file = nested_registry / \"schema.yaml\"\n        schema_file.write_text(schema_yaml)\n        \n        config = MockCartographerConfig(ledger_registry_path=str(nested_registry))\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert len(results) >= 1, \"Should handle nested registry\"\n        assert all(r.tool == 'ledger' for r in results), \"All results should have tool='ledger'\"\n    \n    def test_check_yaml_with_unicode(self, temp_dir):\n        \"\"\"Edge case: YAML file with unicode characters.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        unicode_yaml = \"\"\"\nname: unicode_schema_测试\nfields:\n  - name: user_名前\n    type: string\n    classification: pii\n\"\"\"\n        schema_file = registry_dir / \"unicode.yaml\"\n        schema_file.write_text(unicode_yaml, encoding='utf-8')\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        \n        assert len(results) >= 1, \"Should handle unicode in YAML\"\n    \n    def test_check_empty_yaml_file(self, temp_dir):\n        \"\"\"Edge case: Empty YAML file.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        schema_file = registry_dir / \"empty.yaml\"\n        schema_file.write_text(\"\")\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        # Should handle gracefully\n        results = checker.check(config, temp_dir)\n        assert len(results) >= 1, \"Should handle empty YAML file\"\n    \n    def test_check_yaml_comments_only(self, temp_dir):\n        \"\"\"Edge case: YAML file with only comments.\"\"\"\n        registry_dir = temp_dir / \".ledger\" / \"registry\"\n        registry_dir.mkdir(parents=True)\n        \n        comments_yaml = \"\"\"\n# This is a comment\n# Another comment\n\"\"\"\n        schema_file = registry_dir / \"comments.yaml\"\n        schema_file.write_text(comments_yaml)\n        \n        config = MockCartographerConfig()\n        checker = LedgerChecker()\n        \n        results = checker.check(config, temp_dir)\n        assert len(results) >= 1, \"Should handle YAML with only comments\"\n"
+}

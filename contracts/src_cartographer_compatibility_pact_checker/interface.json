@@ -1,0 +1,270 @@
+{
+  "component_id": "src_cartographer_compatibility_pact_checker",
+  "name": "Pact Compatibility Checker",
+  "description": "Validates PACT contract compliance by checking contract YAML files for required fields (data_access, authority) and scanning source code for PACT keys and event handlers. Extends CompatibilityChecker to provide contract-based compatibility verification.",
+  "version": 1,
+  "types": [
+    {
+      "name": "PactChecker",
+      "kind": "struct",
+      "fields": [],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Compatibility checker for PACT contracts that validates contract files and source code compliance"
+    }
+  ],
+  "functions": [
+    {
+      "name": "tool_name",
+      "description": "Returns the identifier for this checker tool",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "PactChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "str",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns the string 'pact'"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "check",
+      "description": "Main entry point that performs full PACT compatibility checking by validating contract files and source code. Auto-discovers contract directory if not configured, then delegates to _check_contracts and _check_source.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "PactChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration containing stack settings, pact_key_format, and source targets",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory to search for contracts and source files",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "regex_compile_error",
+          "condition": "config.compatibility.pact_key_format is invalid regex",
+          "error_type": "re.error",
+          "error_data": {}
+        }
+      ],
+      "preconditions": [
+        "config.compatibility.pact_key_format must be a valid regex pattern",
+        "config.targets.source.dirs must be a list of directory paths"
+      ],
+      "postconditions": [
+        "Returns list of CheckResult instances for all checks performed",
+        "Auto-discovers pact directory from ['.pact', 'contracts', 'pact'] if config.stack.pact_project_dir is None"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads files from filesystem",
+        "Compiles regex pattern from config.compatibility.pact_key_format"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "contract YAML files",
+          "description": "via _check_contracts"
+        },
+        {
+          "kind": "reads_file",
+          "target": "Python source files",
+          "description": "via _check_source"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_check_contracts",
+      "description": "Validates PACT contract YAML files for required fields (data_access, authority) and checks data_access rationale quality. Returns CheckResult for each validation performed.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "PactChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "contract_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Directory containing contract YAML files to validate",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "yaml_parse_error",
+          "condition": "YAML file is invalid or cannot be parsed",
+          "error_type": "Exception",
+          "error_data": {
+            "handling": "Caught and converted to FAIL CheckResult with check_id=contract_valid_yaml"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns empty list if contract_dir does not exist",
+        "Returns CheckResult for each YAML file found with check_id: contract_valid_yaml, contract_has_data_access, contract_data_access_rationale_not_vague, or contract_has_authority",
+        "Processes all *.yaml files recursively in sorted order"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads YAML files from filesystem",
+        "Opens files using yaml.safe_load"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "*.yaml files in contract_dir",
+          "description": "Recursively reads all YAML files"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_check_source",
+      "description": "Scans Python source files for PACT keys matching the configured pattern and validates presence of event_handler and log_handler parameters in classes. Returns CheckResult for each validation issue found.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "PactChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration with source directories and exclusion patterns",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory for resolving source paths",
+          "validators": []
+        },
+        {
+          "name": "pact_key_re",
+          "type_ref": "re.Pattern",
+          "required": true,
+          "default": "",
+          "description": "Compiled regex pattern for matching PACT keys",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "file_read_error",
+          "condition": "OSError occurs when reading file",
+          "error_type": "OSError",
+          "error_data": {
+            "handling": "Caught and file is skipped, processing continues"
+          }
+        }
+      ],
+      "preconditions": [
+        "config.targets.source.dirs contains valid directory paths",
+        "config.targets.source.exclude contains exclusion patterns",
+        "pact_key_re is a compiled regex Pattern"
+      ],
+      "postconditions": [
+        "Returns CheckResult for each source file with check_id: source_has_pact_key, pact_key_format_valid, source_has_event_handler, or source_has_log_handler",
+        "Only flags substantive modules (containing 'class ' or 'def ') for missing PACT keys",
+        "Skips files that match exclusion patterns or don't exist",
+        "Handles file read errors gracefully by continuing"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads Python source files from filesystem",
+        "Performs regex matching on file contents"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "*.py files in source directories",
+          "description": "Reads with utf-8 encoding, replaces errors"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "re",
+    "pathlib",
+    "yaml",
+    "cartographer.compatibility.base",
+    "cartographer.config.loader",
+    "cartographer.models"
+  ],
+  "dependency_contracts": {},
+  "invariants": [
+    "tool_name property always returns 'pact'",
+    "All CheckResult instances have tool='pact'",
+    "Contract auto-discovery checks directories in order: ['.pact', 'contracts', 'pact']",
+    "Rationale is considered vague if less than 10 characters after stripping whitespace",
+    "Source files are processed in sorted order for contracts",
+    "Files matching exclusion patterns are always skipped"
+  ],
+  "requires": [
+    "CompatibilityChecker base class from cartographer.compatibility.base"
+  ],
+  "processing_register": "",
+  "data_access": {
+    "reads": [],
+    "writes": [],
+    "rationale": "",
+    "side_effects": []
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

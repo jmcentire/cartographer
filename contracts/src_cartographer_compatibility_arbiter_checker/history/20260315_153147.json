@@ -1,0 +1,206 @@
+{
+  "component_id": "src_cartographer_compatibility_arbiter_checker",
+  "name": "Arbiter Compatibility Checker",
+  "description": "Validates the presence and integrity of Arbiter registry files (access_graph.json and trust_ledger.json) for compatibility checking in the Cartographer system. Checks for registry existence, file accessibility, and JSON validity.",
+  "version": 1,
+  "types": [
+    {
+      "name": "ArbiterChecker",
+      "kind": "struct",
+      "fields": [],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Compatibility checker for Arbiter tool that validates registry files and configuration"
+    }
+  ],
+  "functions": [
+    {
+      "name": "_find_registry",
+      "description": "Locates the Arbiter registry directory by checking configured path or default locations (.arbiter/registry, .arbiter)",
+      "inputs": [
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object containing stack.arbiter_registry path if specified",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory to search for registry if not absolute",
+          "validators": []
+        }
+      ],
+      "output_type": "Path | None",
+      "error_cases": [],
+      "preconditions": [
+        "config.stack is accessible",
+        "base_dir is a valid Path object"
+      ],
+      "postconditions": [
+        "Returns Path to existing registry directory if found",
+        "Returns None if no registry found in configured or default locations"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "filesystem directory checks",
+          "description": "Checks existence of configured path and default locations (.arbiter/registry, .arbiter)"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "tool_name",
+      "description": "Property that returns the tool identifier for this checker",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "ArbiterChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "str",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Always returns the string 'arbiter'"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "check",
+      "description": "Validates Arbiter registry files including access_graph.json and trust_ledger.json for existence and JSON validity. Returns list of CheckResult objects indicating status of each validation.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "ArbiterChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object for finding registry location",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory for resolving relative paths",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "json_parse_error",
+          "condition": "When access_graph.json or trust_ledger.json contains invalid JSON",
+          "error_type": "Exception",
+          "error_data": {
+            "handling": "Caught and converted to FAIL CheckResult with message 'Invalid JSON'"
+          }
+        },
+        {
+          "name": "file_read_error",
+          "condition": "When file exists but cannot be opened or read",
+          "error_type": "Exception",
+          "error_data": {
+            "handling": "Caught and converted to FAIL CheckResult"
+          }
+        }
+      ],
+      "preconditions": [
+        "config is a valid CartographerConfig instance",
+        "base_dir is a valid Path object"
+      ],
+      "postconditions": [
+        "Returns non-empty list of CheckResult objects",
+        "If registry not found, returns single INFO result with check_id='arbiter_registry_exists'",
+        "If registry found, validates access_graph.json and optionally trust_ledger.json",
+        "Each CheckResult has tool='arbiter'"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads and parses JSON files from filesystem",
+        "Checks file existence at multiple potential paths"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "access_graph.json, trust_ledger.json",
+          "description": "Opens and parses JSON files to validate format"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "json",
+    "pathlib.Path",
+    "cartographer.compatibility.base.CompatibilityChecker",
+    "cartographer.config.loader.CartographerConfig",
+    "cartographer.models.CheckResult",
+    "cartographer.models.Severity"
+  ],
+  "dependency_contracts": {},
+  "invariants": [
+    "tool_name property always returns 'arbiter'",
+    "check() always returns a non-empty list of CheckResult objects",
+    "All CheckResult objects have tool='arbiter'",
+    "Registry search order: configured path, .arbiter/registry, .arbiter",
+    "File search order for access_graph.json: registry_path/access_graph.json, base_dir/access_graph.json",
+    "File search order for trust_ledger.json: registry_path/trust_ledger.json, base_dir/trust_ledger.json"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "filesystem"
+    ],
+    "writes": [],
+    "rationale": "Module performs filesystem reads to validate Arbiter registry files",
+    "side_effects": [
+      {
+        "type": "file_read",
+        "classification": "configuration_validation",
+        "fields": [
+          "access_graph.json",
+          "trust_ledger.json"
+        ],
+        "rationale": "Reads JSON files to validate their existence and parse-ability for compatibility checking"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [
+      "arbiter_compatibility_validation"
+    ],
+    "rationale": "This component is the authoritative checker for Arbiter tool compatibility within the Cartographer system"
+  }
+}

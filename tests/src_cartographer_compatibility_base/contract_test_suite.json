@@ -1,0 +1,155 @@
+{
+  "component_id": "src_cartographer_compatibility_base",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_abstract_class_cannot_be_instantiated",
+      "description": "Verify that CompatibilityChecker is an abstract base class and cannot be instantiated directly",
+      "function": "__init__",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "TypeError",
+      "assertions": [
+        "Attempting to instantiate CompatibilityChecker directly raises TypeError"
+      ]
+    },
+    {
+      "id": "test_concrete_implementation_can_be_instantiated",
+      "description": "Verify that a concrete subclass implementing all abstract methods can be instantiated",
+      "function": "__init__",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Concrete implementation with tool_name and check implemented can be instantiated successfully"
+      ]
+    },
+    {
+      "id": "test_tool_name_returns_non_empty_string",
+      "description": "Verify that tool_name property returns a non-empty string for concrete implementation",
+      "function": "tool_name",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "tool_name returns a string",
+        "Returned string is non-empty"
+      ]
+    },
+    {
+      "id": "test_check_returns_list_of_check_results",
+      "description": "Verify that check method returns a list of CheckResult objects",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {
+        "CartographerConfig": "Mocked config object",
+        "Path": "Mocked path object"
+      },
+      "input_values": {},
+      "input_description": "Valid CartographerConfig and Path objects",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "check returns a list",
+        "List contains CheckResult objects or is empty"
+      ]
+    },
+    {
+      "id": "test_check_with_empty_results",
+      "description": "Verify that check method can return an empty list when no issues found",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "CartographerConfig": "Mocked config object",
+        "Path": "Mocked path object"
+      },
+      "input_values": {},
+      "input_description": "Valid config and path that result in no compatibility issues",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "check returns an empty list"
+      ]
+    },
+    {
+      "id": "test_incomplete_subclass_raises_not_implemented_for_tool_name",
+      "description": "Verify that subclass without tool_name implementation raises error when accessing property",
+      "function": "tool_name",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "NotImplementedError or TypeError",
+      "assertions": [
+        "Attempting to access tool_name on incomplete implementation raises NotImplementedError or TypeError"
+      ]
+    },
+    {
+      "id": "test_incomplete_subclass_raises_not_implemented_for_check",
+      "description": "Verify that subclass without check implementation raises error when calling method",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "CartographerConfig": "Mocked config object",
+        "Path": "Mocked path object"
+      },
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "NotImplementedError or TypeError",
+      "assertions": [
+        "Attempting to call check on incomplete implementation raises NotImplementedError or TypeError"
+      ]
+    },
+    {
+      "id": "test_abstract_methods_have_decorators",
+      "description": "Verify that tool_name and check are marked as abstract methods using inspect",
+      "function": "tool_name",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "tool_name has abstractmethod decorator",
+        "check has abstractmethod decorator"
+      ]
+    },
+    {
+      "id": "test_check_method_signature",
+      "description": "Verify that check method accepts correct parameters (self, config, base_dir)",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "check method signature includes config and base_dir parameters"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract tests for CompatibilityChecker abstract base class.\n\nThis test suite verifies the contract for the CompatibilityChecker ABC,\nfocusing on abstract method enforcement and basic behavioral guarantees.\n\nCoverage Notes:\n- Abstract base class instantiation prevention\n- Concrete implementation contract compliance\n- Abstract method decorator verification\n- Method signature validation\n\nCoverage Gaps (Intentional):\n- Detailed CheckResult validation: Belongs in concrete subclass tests\n- Property-based testing: Not used per requirements\n- Filesystem interaction scenarios: Deferred to concrete implementations\n- Tool-specific validation logic: Tested in concrete subclasses\n\"\"\"\n\nimport pytest\nfrom unittest.mock import Mock, MagicMock, patch\nfrom pathlib import Path\nimport inspect\nfrom abc import ABC, abstractmethod\n\n\n# Import the component under test\ntry:\n    from src.cartographer.compatibility.base import CompatibilityChecker\nexcept ImportError:\n    try:\n        from cartographer.compatibility.base import CompatibilityChecker\n    except ImportError:\n        # Fallback for different module structures\n        from src.cartographer.compatibility.base import CompatibilityChecker\n\n\n# Mock dependencies\nclass MockCartographerConfig:\n    \"\"\"Mock CartographerConfig for testing.\"\"\"\n    def __init__(self, **kwargs):\n        self.data = kwargs\n\n\nclass MockCheckResult:\n    \"\"\"Mock CheckResult for testing.\"\"\"\n    def __init__(self, message, severity=\"info\", tool=None):\n        self.message = message\n        self.severity = severity\n        self.tool = tool\n\n\n# Fixtures\n\n@pytest.fixture\ndef mock_config():\n    \"\"\"Provide a mock CartographerConfig instance.\"\"\"\n    return MockCartographerConfig(tool=\"test\", version=\"1.0\")\n\n\n@pytest.fixture\ndef mock_path(tmp_path):\n    \"\"\"Provide a mock Path object.\"\"\"\n    return tmp_path\n\n\n@pytest.fixture\ndef concrete_checker():\n    \"\"\"\n    Provide a concrete implementation of CompatibilityChecker for testing.\n    This implementation satisfies the contract by implementing all abstract methods.\n    \"\"\"\n    class ConcreteTestChecker(CompatibilityChecker):\n        @property\n        def tool_name(self) -> str:\n            return \"test_tool\"\n        \n        def check(self, config, base_dir):\n            return [MockCheckResult(\"Test check passed\", \"info\", \"test_tool\")]\n    \n    return ConcreteTestChecker()\n\n\n@pytest.fixture\ndef empty_results_checker():\n    \"\"\"\n    Provide a concrete checker that returns empty results.\n    \"\"\"\n    class EmptyResultsChecker(CompatibilityChecker):\n        @property\n        def tool_name(self) -> str:\n            return \"empty_tool\"\n        \n        def check(self, config, base_dir):\n            return []\n    \n    return EmptyResultsChecker()\n\n\n@pytest.fixture\ndef incomplete_checker_no_tool_name():\n    \"\"\"\n    Provide an incomplete checker missing tool_name implementation.\n    \"\"\"\n    class IncompleteChecker(CompatibilityChecker):\n        def check(self, config, base_dir):\n            return []\n    \n    return IncompleteChecker\n\n\n@pytest.fixture\ndef incomplete_checker_no_check():\n    \"\"\"\n    Provide an incomplete checker missing check implementation.\n    \"\"\"\n    class IncompleteChecker(CompatibilityChecker):\n        @property\n        def tool_name(self) -> str:\n            return \"incomplete_tool\"\n    \n    return IncompleteChecker\n\n\n# Test Cases\n\nclass TestAbstractClassEnforcement:\n    \"\"\"Tests for abstract base class enforcement.\"\"\"\n    \n    def test_abstract_class_cannot_be_instantiated(self):\n        \"\"\"\n        Verify that CompatibilityChecker is an abstract base class \n        and cannot be instantiated directly.\n        \n        Contract: CompatibilityChecker is an abstract base class and cannot be instantiated directly\n        \"\"\"\n        with pytest.raises(TypeError) as exc_info:\n            CompatibilityChecker()\n        \n        # Verify the error message indicates abstract method issue\n        assert \"abstract\" in str(exc_info.value).lower() or \"instantiate\" in str(exc_info.value).lower()\n    \n    def test_concrete_implementation_can_be_instantiated(self, concrete_checker):\n        \"\"\"\n        Verify that a concrete subclass implementing all abstract methods \n        can be instantiated.\n        \n        Contract: All concrete subclasses must implement both tool_name property and check method\n        \"\"\"\n        # The fixture already instantiated it successfully\n        assert concrete_checker is not None\n        assert isinstance(concrete_checker, CompatibilityChecker)\n    \n    def test_incomplete_subclass_raises_not_implemented_for_tool_name(self, incomplete_checker_no_tool_name):\n        \"\"\"\n        Verify that subclass without tool_name implementation raises error \n        when attempting instantiation.\n        \n        Contract Error: not_implemented when Called on abstract base class or subclass without implementation\n        \"\"\"\n        with pytest.raises(TypeError) as exc_info:\n            incomplete_checker_no_tool_name()\n        \n        # Verify it's due to abstract method\n        assert \"abstract\" in str(exc_info.value).lower()\n    \n    def test_incomplete_subclass_raises_not_implemented_for_check(self, incomplete_checker_no_check):\n        \"\"\"\n        Verify that subclass without check implementation raises error \n        when attempting instantiation.\n        \n        Contract Error: not_implemented when Called on abstract base class or subclass without implementation\n        \"\"\"\n        with pytest.raises(TypeError) as exc_info:\n            incomplete_checker_no_check()\n        \n        # Verify it's due to abstract method\n        assert \"abstract\" in str(exc_info.value).lower()\n\n\nclass TestToolNameProperty:\n    \"\"\"Tests for tool_name property.\"\"\"\n    \n    def test_tool_name_returns_non_empty_string(self, concrete_checker):\n        \"\"\"\n        Verify that tool_name property returns a non-empty string \n        for concrete implementation.\n        \n        Contract Postcondition: Returns a non-empty string identifying the tool name\n        \"\"\"\n        tool_name = concrete_checker.tool_name\n        \n        assert isinstance(tool_name, str), \"tool_name must return a string\"\n        assert len(tool_name) > 0, \"tool_name must return a non-empty string\"\n        assert tool_name == \"test_tool\"\n\n\nclass TestCheckMethod:\n    \"\"\"Tests for check method.\"\"\"\n    \n    def test_check_returns_list_of_check_results(self, concrete_checker, mock_config, mock_path):\n        \"\"\"\n        Verify that check method returns a list of CheckResult objects.\n        \n        Contract Postcondition: Returns a list of CheckResult objects (may be empty)\n        Contract Postcondition: Each CheckResult represents a validation finding\n        \"\"\"\n        results = concrete_checker.check(mock_config, mock_path)\n        \n        assert isinstance(results, list), \"check must return a list\"\n        assert len(results) > 0, \"concrete_checker should return at least one result\"\n        \n        # Verify each item is a CheckResult-like object\n        for result in results:\n            assert hasattr(result, 'message'), \"Each result should have a message attribute\"\n            assert hasattr(result, 'severity'), \"Each result should have a severity attribute\"\n    \n    def test_check_with_empty_results(self, empty_results_checker, mock_config, mock_path):\n        \"\"\"\n        Verify that check method can return an empty list when no issues found.\n        \n        Contract Postcondition: Returns a list of CheckResult objects (may be empty)\n        \"\"\"\n        results = empty_results_checker.check(mock_config, mock_path)\n        \n        assert isinstance(results, list), \"check must return a list\"\n        assert len(results) == 0, \"empty_results_checker should return an empty list\"\n    \n    def test_check_method_signature(self, concrete_checker):\n        \"\"\"\n        Verify that check method accepts correct parameters (self, config, base_dir).\n        \n        Contract: check method must accept config and base_dir parameters\n        \"\"\"\n        # Get the method signature\n        sig = inspect.signature(concrete_checker.check)\n        params = list(sig.parameters.keys())\n        \n        # Should have config and base_dir parameters\n        assert 'config' in params, \"check method must have 'config' parameter\"\n        assert 'base_dir' in params, \"check method must have 'base_dir' parameter\"\n    \n    def test_check_accepts_valid_config_and_path(self, concrete_checker, mock_config, mock_path):\n        \"\"\"\n        Verify that check method accepts valid CartographerConfig and Path objects.\n        \n        Contract Precondition: config must be a valid CartographerConfig instance\n        Contract Precondition: base_dir must be a valid Path object\n        \"\"\"\n        # Should not raise any exceptions\n        results = concrete_checker.check(mock_config, mock_path)\n        \n        assert results is not None\n        assert isinstance(results, list)\n\n\nclass TestInvariants:\n    \"\"\"Tests for contract invariants.\"\"\"\n    \n    def test_abstract_methods_have_decorators(self):\n        \"\"\"\n        Verify that tool_name and check are marked as abstract methods.\n        \n        Contract Invariant: All concrete subclasses must implement both tool_name property and check method\n        \"\"\"\n        # Check that CompatibilityChecker has abstract methods\n        abstract_methods = getattr(CompatibilityChecker, '__abstractmethods__', set())\n        \n        # The abstract methods should include 'tool_name' and 'check'\n        assert len(abstract_methods) > 0, \"CompatibilityChecker should have abstract methods\"\n        \n        # Note: The exact names might vary based on implementation\n        # We verify that there ARE abstract methods that need implementation\n        assert hasattr(CompatibilityChecker, 'tool_name'), \"CompatibilityChecker should define tool_name\"\n        assert hasattr(CompatibilityChecker, 'check'), \"CompatibilityChecker should define check\"\n    \n    def test_is_abstract_base_class(self):\n        \"\"\"\n        Verify that CompatibilityChecker is properly defined as an ABC.\n        \n        Contract Invariant: CompatibilityChecker is an abstract base class\n        \"\"\"\n        # Check if it's a subclass of ABC or has ABCMeta as metaclass\n        assert hasattr(CompatibilityChecker, '__abstractmethods__'), \\\n            \"CompatibilityChecker should have __abstractmethods__ attribute\"\n        \n        # Verify we cannot instantiate it\n        with pytest.raises(TypeError):\n            CompatibilityChecker()\n    \n    def test_concrete_implementation_is_instance_of_base(self, concrete_checker):\n        \"\"\"\n        Verify that concrete implementations are instances of CompatibilityChecker.\n        \n        Contract Invariant: All concrete subclasses must implement both tool_name property and check method\n        \"\"\"\n        assert isinstance(concrete_checker, CompatibilityChecker), \\\n            \"Concrete implementation must be an instance of CompatibilityChecker\"\n\n\nclass TestEdgeCases:\n    \"\"\"Tests for edge cases and boundary conditions.\"\"\"\n    \n    def test_check_with_various_path_types(self, concrete_checker, mock_config, tmp_path):\n        \"\"\"\n        Verify check handles various valid Path types.\n        \n        Contract Precondition: base_dir must be a valid Path object\n        \"\"\"\n        # Test with tmp_path (Path object)\n        results1 = concrete_checker.check(mock_config, tmp_path)\n        assert isinstance(results1, list)\n        \n        # Test with subdirectory\n        subdir = tmp_path / \"subdir\"\n        subdir.mkdir()\n        results2 = concrete_checker.check(mock_config, subdir)\n        assert isinstance(results2, list)\n    \n    def test_multiple_checkers_independent(self):\n        \"\"\"\n        Verify that multiple concrete checker instances are independent.\n        \n        Contract Invariant: Each checker should maintain its own state\n        \"\"\"\n        class Checker1(CompatibilityChecker):\n            @property\n            def tool_name(self) -> str:\n                return \"checker1\"\n            \n            def check(self, config, base_dir):\n                return []\n        \n        class Checker2(CompatibilityChecker):\n            @property\n            def tool_name(self) -> str:\n                return \"checker2\"\n            \n            def check(self, config, base_dir):\n                return []\n        \n        c1 = Checker1()\n        c2 = Checker2()\n        \n        assert c1.tool_name == \"checker1\"\n        assert c2.tool_name == \"checker2\"\n        assert c1.tool_name != c2.tool_name\n\n\nclass TestSideEffects:\n    \"\"\"Tests verifying no side effects as per contract.\"\"\"\n    \n    def test_tool_name_has_no_side_effects(self, concrete_checker):\n        \"\"\"\n        Verify that calling tool_name multiple times has no side effects.\n        \n        Contract Side Effect: none\n        \"\"\"\n        name1 = concrete_checker.tool_name\n        name2 = concrete_checker.tool_name\n        name3 = concrete_checker.tool_name\n        \n        assert name1 == name2 == name3, \"tool_name should return consistent results\"\n    \n    def test_check_has_no_side_effects_on_inputs(self, concrete_checker, mock_config, mock_path):\n        \"\"\"\n        Verify that check method doesn't modify input parameters.\n        \n        Contract Side Effect: none\n        \"\"\"\n        # Store original state\n        original_config_data = getattr(mock_config, 'data', {}).copy() if hasattr(mock_config, 'data') else {}\n        original_path_str = str(mock_path)\n        \n        # Call check\n        concrete_checker.check(mock_config, mock_path)\n        \n        # Verify inputs unchanged\n        if hasattr(mock_config, 'data'):\n            assert mock_config.data == original_config_data, \"check should not modify config\"\n        assert str(mock_path) == original_path_str, \"check should not modify path\"\n"
+}

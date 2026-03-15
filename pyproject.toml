@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cartographer"
+version = "0.1.0"
+description = "Stack adoption and compatibility tool for Constrain/Pact/Ledger/Arbiter/Baton/Sentinel"
+readme = "prompt.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg2-binary>=2.9"]
+redis = ["redis>=5.0"]
+kafka = ["confluent-kafka>=2.0"]
+mongo = ["pymongo>=4.0"]
+api = ["uvicorn>=0.27", "starlette>=0.36"]
+mcp = ["mcp[cli]>=1.0"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+cartographer = "cartographer.cli.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cartographer"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-x -q"

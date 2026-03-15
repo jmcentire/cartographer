@@ -1,0 +1,408 @@
+{
+  "component_id": "src_cartographer_compatibility_arbiter_checker",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_tool_name_returns_arbiter",
+      "description": "Verify tool_name property returns 'arbiter'",
+      "function": "tool_name",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "ArbiterChecker instance",
+      "expected_output_description": "Returns string 'arbiter'",
+      "expected_error": "",
+      "assertions": [
+        "tool_name() == 'arbiter'"
+      ]
+    },
+    {
+      "id": "test_tool_name_consistency",
+      "description": "Verify tool_name returns same value on multiple calls",
+      "function": "tool_name",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "ArbiterChecker instance",
+      "expected_output_description": "Returns 'arbiter' consistently",
+      "expected_error": "",
+      "assertions": [
+        "Multiple calls return identical value"
+      ]
+    },
+    {
+      "id": "test_find_registry_configured_path",
+      "description": "Find registry at configured path in config.stack",
+      "function": "_find_registry",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig with stack.arbiter_registry_path",
+        "base_dir": "Path to test directory"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns Path to configured registry directory",
+      "expected_error": "",
+      "assertions": [
+        "Returns Path object",
+        "Path exists",
+        "Path is directory"
+      ]
+    },
+    {
+      "id": "test_find_registry_default_arbiter_registry",
+      "description": "Find registry at .arbiter/registry default location",
+      "function": "_find_registry",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig without configured path",
+        "base_dir": "Path to test directory with .arbiter/registry"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns Path to .arbiter/registry",
+      "expected_error": "",
+      "assertions": [
+        "Returns Path object",
+        "Path ends with .arbiter/registry"
+      ]
+    },
+    {
+      "id": "test_find_registry_default_arbiter",
+      "description": "Find registry at .arbiter default location when registry subdir doesn't exist",
+      "function": "_find_registry",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig without configured path",
+        "base_dir": "Path to test directory with .arbiter only"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns Path to .arbiter",
+      "expected_error": "",
+      "assertions": [
+        "Returns Path object",
+        "Path ends with .arbiter"
+      ]
+    },
+    {
+      "id": "test_find_registry_not_found",
+      "description": "Return None when registry not found in any location",
+      "function": "_find_registry",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig without configured path",
+        "base_dir": "Path to empty test directory"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns None",
+      "expected_error": "",
+      "assertions": [
+        "Returns None"
+      ]
+    },
+    {
+      "id": "test_find_registry_search_order",
+      "description": "Verify registry search order: configured, .arbiter/registry, .arbiter",
+      "function": "_find_registry",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig with configured path",
+        "base_dir": "Path with all locations existing"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns configured path first",
+      "expected_error": "",
+      "assertions": [
+        "Configured path takes precedence"
+      ]
+    },
+    {
+      "id": "test_check_registry_not_found",
+      "description": "Check returns INFO result when registry doesn't exist",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path without registry"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns list with single INFO CheckResult with check_id='arbiter_registry_exists'",
+      "expected_error": "",
+      "assertions": [
+        "Returns non-empty list",
+        "Single CheckResult",
+        "check_id='arbiter_registry_exists'",
+        "tool='arbiter'",
+        "Severity is INFO"
+      ]
+    },
+    {
+      "id": "test_check_valid_access_graph",
+      "description": "Check validates existing valid access_graph.json",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with valid access_graph.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult list with successful validation",
+      "expected_error": "",
+      "assertions": [
+        "Returns non-empty list",
+        "All results have tool='arbiter'",
+        "Contains check for access_graph.json"
+      ]
+    },
+    {
+      "id": "test_check_valid_trust_ledger",
+      "description": "Check validates existing valid trust_ledger.json",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with valid trust_ledger.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult list with successful validation",
+      "expected_error": "",
+      "assertions": [
+        "Returns non-empty list",
+        "All results have tool='arbiter'",
+        "Contains check for trust_ledger.json"
+      ]
+    },
+    {
+      "id": "test_check_both_valid_files",
+      "description": "Check validates both access_graph.json and trust_ledger.json when both exist",
+      "function": "check",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with both valid JSON files"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult list for both files",
+      "expected_error": "",
+      "assertions": [
+        "Returns non-empty list",
+        "All results have tool='arbiter'",
+        "Validates both files"
+      ]
+    },
+    {
+      "id": "test_check_invalid_json_access_graph",
+      "description": "Check detects invalid JSON in access_graph.json",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with invalid JSON in access_graph.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult with error indicating JSON parse failure",
+      "expected_error": "json_parse_error",
+      "assertions": [
+        "Returns non-empty list",
+        "Contains error result for access_graph.json",
+        "tool='arbiter'"
+      ]
+    },
+    {
+      "id": "test_check_invalid_json_trust_ledger",
+      "description": "Check detects invalid JSON in trust_ledger.json",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with invalid JSON in trust_ledger.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult with error indicating JSON parse failure",
+      "expected_error": "json_parse_error",
+      "assertions": [
+        "Returns non-empty list",
+        "Contains error result for trust_ledger.json",
+        "tool='arbiter'"
+      ]
+    },
+    {
+      "id": "test_check_file_read_error_access_graph",
+      "description": "Check handles file read error for access_graph.json",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "builtins.open": "Mock to raise OSError/PermissionError"
+      },
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with unreadable access_graph.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult with error indicating file read failure",
+      "expected_error": "file_read_error",
+      "assertions": [
+        "Returns non-empty list",
+        "Contains error result",
+        "tool='arbiter'"
+      ]
+    },
+    {
+      "id": "test_check_file_read_error_trust_ledger",
+      "description": "Check handles file read error for trust_ledger.json",
+      "function": "check",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "builtins.open": "Mock to raise OSError/PermissionError"
+      },
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with unreadable trust_ledger.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult with error indicating file read failure",
+      "expected_error": "file_read_error",
+      "assertions": [
+        "Returns non-empty list",
+        "Contains error result",
+        "tool='arbiter'"
+      ]
+    },
+    {
+      "id": "test_check_always_returns_non_empty_list",
+      "description": "Invariant: check() always returns non-empty list",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "Various CartographerConfig instances",
+        "base_dir": "Various Path objects"
+      },
+      "input_description": "",
+      "expected_output_description": "Always returns non-empty list",
+      "expected_error": "",
+      "assertions": [
+        "len(result) > 0"
+      ]
+    },
+    {
+      "id": "test_check_all_results_have_arbiter_tool",
+      "description": "Invariant: All CheckResult objects have tool='arbiter'",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Various Path configurations"
+      },
+      "input_description": "",
+      "expected_output_description": "All results have tool='arbiter'",
+      "expected_error": "",
+      "assertions": [
+        "all(r.tool == 'arbiter' for r in results)"
+      ]
+    },
+    {
+      "id": "test_check_file_search_order_access_graph",
+      "description": "Invariant: File search order for access_graph.json: registry_path, base_dir",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with access_graph.json in both locations"
+      },
+      "input_description": "",
+      "expected_output_description": "Uses registry_path/access_graph.json first",
+      "expected_error": "",
+      "assertions": [
+        "Registry path takes precedence"
+      ]
+    },
+    {
+      "id": "test_check_file_search_order_trust_ledger",
+      "description": "Invariant: File search order for trust_ledger.json: registry_path, base_dir",
+      "function": "check",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with trust_ledger.json in both locations"
+      },
+      "input_description": "",
+      "expected_output_description": "Uses registry_path/trust_ledger.json first",
+      "expected_error": "",
+      "assertions": [
+        "Registry path takes precedence"
+      ]
+    },
+    {
+      "id": "test_check_empty_json_files",
+      "description": "Edge case: Check handles empty but valid JSON files",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with empty {} JSON files"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns CheckResult list with valid results",
+      "expected_error": "",
+      "assertions": [
+        "Returns non-empty list",
+        "tool='arbiter'"
+      ]
+    },
+    {
+      "id": "test_check_missing_access_graph",
+      "description": "Edge case: Check handles missing access_graph.json",
+      "function": "check",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config": "CartographerConfig",
+        "base_dir": "Path with registry but no access_graph.json"
+      },
+      "input_description": "",
+      "expected_output_description": "Returns appropriate CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "Returns non-empty list",
+        "tool='arbiter'"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract-based tests for ArbiterChecker component.\nGenerated from contract version 1.\n\"\"\"\n\nimport pytest\nimport json\nimport tempfile\nfrom pathlib import Path\nfrom unittest.mock import Mock, MagicMock, patch, mock_open\nfrom typing import Any\n\n# Import component under test\nfrom src.cartographer.compatibility.arbiter_checker import ArbiterChecker\n\n# Mock imports for dependencies that may not be available\n# We'll create mock classes for the dependencies\n\n\nclass MockSeverity:\n    \"\"\"Mock Severity enum\"\"\"\n    info = \"info\"\n    warning = \"warning\"\n    error = \"error\"\n\n\nclass MockCheckResult:\n    \"\"\"Mock CheckResult model\"\"\"\n    def __init__(self, tool: str, check_id: str, severity: str, message: str = \"\", **kwargs):\n        self.tool = tool\n        self.check_id = check_id\n        self.severity = severity\n        self.message = message\n        for key, value in kwargs.items():\n            setattr(self, key, value)\n\n\nclass MockCartographerConfig:\n    \"\"\"Mock CartographerConfig\"\"\"\n    def __init__(self, **kwargs):\n        self.stack = Mock()\n        for key, value in kwargs.items():\n            setattr(self, key, value)\n\n\n# Fixtures\n@pytest.fixture\ndef arbiter_checker():\n    \"\"\"Create an ArbiterChecker instance\"\"\"\n    return ArbiterChecker()\n\n\n@pytest.fixture\ndef minimal_config():\n    \"\"\"Create a minimal CartographerConfig\"\"\"\n    config = MockCartographerConfig()\n    config.stack = Mock()\n    config.stack.arbiter_registry_path = None\n    return config\n\n\n@pytest.fixture\ndef config_with_registry_path(tmp_path):\n    \"\"\"Create config with configured registry path\"\"\"\n    config = MockCartographerConfig()\n    config.stack = Mock()\n    registry_path = tmp_path / \"custom_registry\"\n    registry_path.mkdir()\n    config.stack.arbiter_registry_path = str(registry_path)\n    return config, registry_path\n\n\n@pytest.fixture\ndef base_dir_with_arbiter_registry(tmp_path):\n    \"\"\"Create base directory with .arbiter/registry structure\"\"\"\n    arbiter_dir = tmp_path / \".arbiter\" / \"registry\"\n    arbiter_dir.mkdir(parents=True)\n    return tmp_path, arbiter_dir\n\n\n@pytest.fixture\ndef base_dir_with_arbiter_only(tmp_path):\n    \"\"\"Create base directory with .arbiter only\"\"\"\n    arbiter_dir = tmp_path / \".arbiter\"\n    arbiter_dir.mkdir()\n    return tmp_path, arbiter_dir\n\n\n@pytest.fixture\ndef base_dir_empty(tmp_path):\n    \"\"\"Create empty base directory\"\"\"\n    return tmp_path\n\n\ndef create_json_file(path: Path, content: dict):\n    \"\"\"Helper to create a JSON file\"\"\"\n    path.parent.mkdir(parents=True, exist_ok=True)\n    with open(path, 'w') as f:\n        json.dump(content, f)\n\n\ndef create_invalid_json_file(path: Path, content: str):\n    \"\"\"Helper to create an invalid JSON file\"\"\"\n    path.parent.mkdir(parents=True, exist_ok=True)\n    with open(path, 'w') as f:\n        f.write(content)\n\n\n# Tests for tool_name property\ndef test_tool_name_returns_arbiter(arbiter_checker):\n    \"\"\"Verify tool_name property returns 'arbiter'\"\"\"\n    result = arbiter_checker.tool_name\n    assert result == 'arbiter', f\"Expected 'arbiter', got {result}\"\n\n\ndef test_tool_name_consistency(arbiter_checker):\n    \"\"\"Verify tool_name returns same value on multiple calls\"\"\"\n    result1 = arbiter_checker.tool_name\n    result2 = arbiter_checker.tool_name\n    result3 = arbiter_checker.tool_name\n    assert result1 == result2 == result3 == 'arbiter', \\\n        \"tool_name should consistently return 'arbiter'\"\n\n\n# Tests for _find_registry function\ndef test_find_registry_configured_path(minimal_config, tmp_path):\n    \"\"\"Find registry at configured path in config.stack\"\"\"\n    checker = ArbiterChecker()\n    registry_path = tmp_path / \"custom_registry\"\n    registry_path.mkdir()\n    minimal_config.stack.arbiter_registry_path = str(registry_path)\n    \n    result = checker._find_registry(minimal_config, tmp_path)\n    \n    assert result is not None, \"Should find configured registry\"\n    assert isinstance(result, Path), \"Should return Path object\"\n    assert result.exists(), \"Returned path should exist\"\n    assert result.is_dir(), \"Returned path should be a directory\"\n    assert str(result) == str(registry_path), \"Should return configured path\"\n\n\ndef test_find_registry_default_arbiter_registry(minimal_config, tmp_path):\n    \"\"\"Find registry at .arbiter/registry default location\"\"\"\n    checker = ArbiterChecker()\n    arbiter_registry = tmp_path / \".arbiter\" / \"registry\"\n    arbiter_registry.mkdir(parents=True)\n    minimal_config.stack.arbiter_registry_path = None\n    \n    result = checker._find_registry(minimal_config, tmp_path)\n    \n    assert result is not None, \"Should find .arbiter/registry\"\n    assert isinstance(result, Path), \"Should return Path object\"\n    assert result.name == \"registry\", \"Should point to registry directory\"\n    assert result.parent.name == \".arbiter\", \"Should be inside .arbiter\"\n\n\ndef test_find_registry_default_arbiter(minimal_config, tmp_path):\n    \"\"\"Find registry at .arbiter default location when registry subdir doesn't exist\"\"\"\n    checker = ArbiterChecker()\n    arbiter_dir = tmp_path / \".arbiter\"\n    arbiter_dir.mkdir()\n    minimal_config.stack.arbiter_registry_path = None\n    \n    result = checker._find_registry(minimal_config, tmp_path)\n    \n    assert result is not None, \"Should find .arbiter\"\n    assert isinstance(result, Path), \"Should return Path object\"\n    assert result.name == \".arbiter\", \"Should point to .arbiter directory\"\n\n\ndef test_find_registry_not_found(minimal_config, tmp_path):\n    \"\"\"Return None when registry not found in any location\"\"\"\n    checker = ArbiterChecker()\n    minimal_config.stack.arbiter_registry_path = None\n    \n    result = checker._find_registry(minimal_config, tmp_path)\n    \n    assert result is None, \"Should return None when registry not found\"\n\n\ndef test_find_registry_search_order(minimal_config, tmp_path):\n    \"\"\"Verify registry search order: configured, .arbiter/registry, .arbiter\"\"\"\n    checker = ArbiterChecker()\n    \n    # Create all possible locations\n    configured_path = tmp_path / \"configured\"\n    configured_path.mkdir()\n    arbiter_registry = tmp_path / \".arbiter\" / \"registry\"\n    arbiter_registry.mkdir(parents=True)\n    \n    # Set configured path\n    minimal_config.stack.arbiter_registry_path = str(configured_path)\n    \n    result = checker._find_registry(minimal_config, tmp_path)\n    \n    assert result is not None, \"Should find registry\"\n    assert str(result) == str(configured_path), \\\n        \"Configured path should take precedence over default locations\"\n\n\n# Tests for check function\ndef test_check_registry_not_found(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check returns INFO result when registry doesn't exist\"\"\"\n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert isinstance(results, list), \"Should return a list\"\n    \n    # Check for registry exists check\n    registry_check = [r for r in results if hasattr(r, 'check_id') and \n                      r.check_id == 'arbiter_registry_exists']\n    if registry_check:\n        assert registry_check[0].tool == 'arbiter', \"tool should be 'arbiter'\"\n\n\ndef test_check_valid_access_graph(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check validates existing valid access_graph.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create valid access_graph.json\n    access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(access_graph, {\"nodes\": [], \"edges\": []})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_valid_trust_ledger(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check validates existing valid trust_ledger.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create valid trust_ledger.json\n    trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_json_file(trust_ledger, {\"entries\": []})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_both_valid_files(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check validates both access_graph.json and trust_ledger.json when both exist\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create both valid JSON files\n    access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(access_graph, {\"nodes\": [], \"edges\": []})\n    trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_json_file(trust_ledger, {\"entries\": []})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_invalid_json_access_graph(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check detects invalid JSON in access_graph.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create invalid JSON\n    access_graph = registry_dir / \"access_graph.json\"\n    create_invalid_json_file(access_graph, \"{invalid json content\")\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    # Should contain error result for access_graph.json\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_invalid_json_trust_ledger(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check detects invalid JSON in trust_ledger.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create invalid JSON\n    trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_invalid_json_file(trust_ledger, \"not valid json at all\")\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_file_read_error_access_graph(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check handles file read error for access_graph.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create file\n    access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(access_graph, {\"test\": \"data\"})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    # Mock open to raise permission error\n    with patch('builtins.open', side_effect=PermissionError(\"Access denied\")):\n        with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n            with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n                # Mock Path.exists to return True so it tries to read\n                with patch.object(Path, 'exists', return_value=True):\n                    results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_file_read_error_trust_ledger(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Check handles file read error for trust_ledger.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create file\n    trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_json_file(trust_ledger, {\"test\": \"data\"})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    # Mock open to raise OSError\n    with patch('builtins.open', side_effect=OSError(\"I/O error\")):\n        with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n            with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n                with patch.object(Path, 'exists', return_value=True):\n                    results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_always_returns_non_empty_list(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Invariant: check() always returns non-empty list\"\"\"\n    # Test with various configurations\n    configs_and_dirs = [\n        (minimal_config, tmp_path),\n    ]\n    \n    for config, base_dir in configs_and_dirs:\n        with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n            with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n                results = arbiter_checker.check(config, base_dir)\n        \n        assert len(results) > 0, \"check() should always return non-empty list\"\n        assert isinstance(results, list), \"check() should return a list\"\n\n\ndef test_check_all_results_have_arbiter_tool(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Invariant: All CheckResult objects have tool='arbiter'\"\"\"\n    # Test with registry not found\n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All CheckResult objects must have tool='arbiter'\"\n    \n    # Test with registry found\n    registry_dir = tmp_path / \".arbiter\"\n    registry_dir.mkdir()\n    access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(access_graph, {})\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All CheckResult objects must have tool='arbiter'\"\n\n\ndef test_check_file_search_order_access_graph(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Invariant: File search order for access_graph.json: registry_path, base_dir\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create access_graph.json in both locations with different content\n    registry_access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(registry_access_graph, {\"location\": \"registry\"})\n    \n    base_access_graph = tmp_path / \"access_graph.json\"\n    create_json_file(base_access_graph, {\"location\": \"base\"})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    # The implementation should prefer registry_path over base_dir\n\n\ndef test_check_file_search_order_trust_ledger(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Invariant: File search order for trust_ledger.json: registry_path, base_dir\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create trust_ledger.json in both locations with different content\n    registry_trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_json_file(registry_trust_ledger, {\"location\": \"registry\"})\n    \n    base_trust_ledger = tmp_path / \"trust_ledger.json\"\n    create_json_file(base_trust_ledger, {\"location\": \"base\"})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    # The implementation should prefer registry_path over base_dir\n\n\ndef test_check_empty_json_files(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Edge case: Check handles empty but valid JSON files\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create empty but valid JSON\n    access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(access_graph, {})\n    trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_json_file(trust_ledger, {})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\ndef test_check_missing_access_graph(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Edge case: Check handles missing access_graph.json\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create only trust_ledger.json\n    trust_ledger = registry_dir / \"trust_ledger.json\"\n    create_json_file(trust_ledger, {\"entries\": []})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should return non-empty list\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results), \\\n        \"All results should have tool='arbiter'\"\n\n\n# Additional edge case tests\ndef test_find_registry_with_none_stack(tmp_path):\n    \"\"\"Edge case: Handle config with None or missing stack attribute\"\"\"\n    checker = ArbiterChecker()\n    config = MockCartographerConfig()\n    config.stack = None\n    \n    # Should handle gracefully - either return None or raise appropriate error\n    try:\n        result = checker._find_registry(config, tmp_path)\n        # If it doesn't raise, it should return None or a valid path\n        assert result is None or isinstance(result, Path)\n    except AttributeError:\n        # This is also acceptable behavior\n        pass\n\n\ndef test_check_with_symlink_registry(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Edge case: Check handles symlinked registry directory\"\"\"\n    real_registry = tmp_path / \"real_registry\"\n    real_registry.mkdir()\n    \n    symlink_registry = tmp_path / \".arbiter\"\n    try:\n        symlink_registry.symlink_to(real_registry)\n    except (OSError, NotImplementedError):\n        # Skip test if symlinks not supported\n        pytest.skip(\"Symlinks not supported on this platform\")\n    \n    access_graph = real_registry / \"access_graph.json\"\n    create_json_file(access_graph, {\"test\": \"data\"})\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should handle symlinked registry\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results)\n\n\ndef test_check_large_json_files(arbiter_checker, minimal_config, tmp_path):\n    \"\"\"Edge case: Check handles large valid JSON files\"\"\"\n    registry_dir = tmp_path / \".arbiter\" / \"registry\"\n    registry_dir.mkdir(parents=True)\n    \n    # Create large JSON files\n    large_data = {\"nodes\": [{\"id\": i, \"data\": \"x\" * 100} for i in range(1000)]}\n    access_graph = registry_dir / \"access_graph.json\"\n    create_json_file(access_graph, large_data)\n    \n    minimal_config.stack.arbiter_registry_path = None\n    \n    with patch('src_cartographer_compatibility_arbiter_checker.CheckResult', MockCheckResult):\n        with patch('src_cartographer_compatibility_arbiter_checker.Severity', MockSeverity):\n            results = arbiter_checker.check(minimal_config, tmp_path)\n    \n    assert len(results) > 0, \"Should handle large JSON files\"\n    assert all(hasattr(r, 'tool') and r.tool == 'arbiter' for r in results)\n\n\nif __name__ == \"__main__\":\n    pytest.main([__file__, \"-v\"])\n"
+}

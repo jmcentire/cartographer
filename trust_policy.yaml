@@ -1,0 +1,81 @@
+version: "1.0"
+generated_by: constrain
+session_id: cartographer_discovery_001
+system: Cartographer
+
+trust:
+  floor: 0.15
+  authority_override_floor: 0.45
+  decay_lambda: 0.04
+  taint_lock_tiers: [PII, FINANCIAL, AUTH, COMPLIANCE]
+  conflict_trust_delta_threshold: 0.25
+
+classifications:
+  - field_pattern: "password|secret|key|token|credential"
+    tier: AUTH
+    authoritative_component: null
+    canary_eligible: false
+    canary_pattern: null
+    rationale: "Authentication data discovered during service/backend introspection"
+  
+  - field_pattern: "ssn|social_security|tax_id|passport|driver_license|email|phone|name|address"
+    tier: PII
+    authoritative_component: "backend_introspector"
+    canary_eligible: true
+    canary_pattern: "test_*|demo_*|staging_*"
+    rationale: "Personal data discovered in backend schemas during introspection"
+  
+  - field_pattern: "account|balance|payment|transaction|card|bank|routing"
+    tier: FINANCIAL
+    authoritative_component: "backend_introspector"
+    canary_eligible: true
+    canary_pattern: "test_*|sandbox_*"
+    rationale: "Financial data discovered in database schemas"
+  
+  - field_pattern: "audit_log|compliance_report|regulatory_data"
+    tier: COMPLIANCE
+    authoritative_component: "backend_introspector"
+    canary_eligible: false
+    canary_pattern: null
+    rationale: "Compliance-related data requiring regulatory protection"
+  
+  - field_pattern: "api_endpoint|service_version|config|metadata"
+    tier: PUBLIC
+    authoritative_component: "service_prober"
+    canary_eligible: true
+    canary_pattern: "dev_*|test_*"
+    rationale: "Public service configuration and metadata"
+
+soak:
+  base_durations:
+    PUBLIC: 30m
+    PII: 4h
+    FINANCIAL: 12h
+    AUTH: 48h
+    COMPLIANCE: 72h
+  target_requests: 500
+
+authority_map:
+  - component: "ast_scanner"
+    domains: ["code_analysis.*", "orm_mapping.*", "source_structure.*"]
+    rationale: "Owns source code discovery and AST analysis results"
+  
+  - component: "backend_introspector"
+    domains: ["schema_discovery.*", "database_structure.*", "storage_analysis.*"]
+    rationale: "Owns database and storage system discovery results"
+  
+  - component: "service_prober"
+    domains: ["api_discovery.*", "service_compatibility.*", "endpoint_analysis.*"]
+    rationale: "Owns service and API discovery results"
+  
+  - component: "compatibility_checker"
+    domains: ["compatibility_results.*", "gap_analysis.*", "conflict_resolution.*"]
+    rationale: "Owns compatibility assessment and conflict detection"
+
+human_gates:
+  always:
+    - tier: FINANCIAL
+    - tier: AUTH
+    - tier: COMPLIANCE
+  on_low_trust_authoritative: true
+  on_unresolvable_conflict: true

@@ -1,0 +1,225 @@
+version: "1.0"
+generated_by: constrain
+session_id: cartographer_discovery_001
+
+components:
+  - name: "cli_orchestrator"
+    description: "Main CLI interface that coordinates discovery operations and manages configuration"
+    type: service
+    port: null
+    protocol: http
+    data_access:
+      reads: [PUBLIC]
+      writes: [PUBLIC]
+      rationale: "Reads configuration and target specs, writes discovery coordination metadata"
+    authority:
+      domains: ["orchestration.*", "discovery_coordination.*"]
+      rationale: "Coordinates all discovery operations and manages overall system state"
+    dependencies: ["config_loader", "ast_scanner", "backend_introspector", "service_prober", "compatibility_checker", "report_generator"]
+    constraints: ["C003", "C008"]
+
+  - name: "ast_scanner"
+    description: "Source code analyzer with pluggable ORM support for discovering code structure and data models"
+    type: worker
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC, PII, FINANCIAL]
+      writes: [PUBLIC]
+      rationale: "Reads source code which may contain data model definitions, writes analysis results"
+    authority:
+      domains: ["code_analysis.*", "orm_mapping.*", "source_structure.*"]
+      rationale: "Authoritative source for code structure and ORM mapping discoveries"
+    dependencies: ["config_loader"]
+    constraints: ["C008"]
+
+  - name: "backend_introspector"
+    description: "Database and storage system analyzer that discovers schemas and data structures"
+    type: worker
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC, PII, FINANCIAL, COMPLIANCE]
+      writes: [PUBLIC]
+      rationale: "Introspects backend systems that may contain sensitive data, writes discovery metadata"
+    authority:
+      domains: ["schema_discovery.*", "database_structure.*", "storage_analysis.*"]
+      rationale: "Authoritative source for backend schema and data structure discoveries"
+    dependencies: ["config_loader"]
+    constraints: ["C001", "C005", "C006", "C008"]
+
+  - name: "service_prober"
+    description: "Service discovery component that probes running services for API compatibility"
+    type: worker
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC, AUTH]
+      writes: [PUBLIC]
+      rationale: "Probes services which may require authentication, writes discovery results"
+    authority:
+      domains: ["api_discovery.*", "service_compatibility.*", "endpoint_analysis.*"]
+      rationale: "Authoritative source for service API and compatibility discoveries"
+    dependencies: ["config_loader"]
+    constraints: ["C002", "C006", "C008"]
+
+  - name: "artifact_drafter"
+    description: "Converts discovery results into draft Constrain stack artifacts"
+    type: worker
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC, PII, FINANCIAL, COMPLIANCE]
+      writes: [PUBLIC]
+      rationale: "Reads discovery data to generate artifacts, writes draft artifacts"
+    authority:
+      domains: []
+      rationale: null
+    dependencies: ["ast_scanner", "backend_introspector", "service_prober"]
+    constraints: ["C003", "C006"]
+
+  - name: "compatibility_checker"
+    description: "Analyzes discovered artifacts against existing stack configuration for gaps and conflicts"
+    type: worker
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC, PII, FINANCIAL, COMPLIANCE]
+      writes: [PUBLIC]
+      rationale: "Reads discovery results and existing artifacts, writes compatibility analysis"
+    authority:
+      domains: ["compatibility_results.*", "gap_analysis.*", "conflict_resolution.*"]
+      rationale: "Authoritative source for compatibility assessments and conflict detection"
+    dependencies: ["artifact_drafter"]
+    constraints: ["C004"]
+
+  - name: "report_generator"
+    description: "Produces human-readable compatibility and discovery reports"
+    type: worker
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC, PII, FINANCIAL, COMPLIANCE]
+      writes: [PUBLIC]
+      rationale: "Reads all discovery data to generate comprehensive reports"
+    authority:
+      domains: []
+      rationale: null
+    dependencies: ["compatibility_checker", "artifact_drafter"]
+    constraints: ["C004", "C005", "C007"]
+
+  - name: "http_api"
+    description: "HTTP API for accessing discovery results and reports"
+    type: service
+    port: 8080
+    protocol: http
+    data_access:
+      reads: [PUBLIC, PII, FINANCIAL, COMPLIANCE]
+      writes: []
+      rationale: "Serves discovery results and reports, read-only API"
+    authority:
+      domains: []
+      rationale: null
+    dependencies: ["report_generator", "compatibility_checker"]
+    constraints: []
+
+  - name: "config_loader"
+    description: "Manages discovery target configuration and system parameters"
+    type: library
+    port: null
+    protocol: grpc
+    data_access:
+      reads: [PUBLIC]
+      writes: [PUBLIC]
+      rationale: "Reads configuration files, writes validated config data"
+    authority:
+      domains: ["configuration.*"]
+      rationale: "Owns system configuration and target specifications"
+    dependencies: []
+    constraints: []
+
+edges:
+  - from: "cli_orchestrator"
+    to: "config_loader"
+    protocol: grpc
+    description: "Configuration and target specifications"
+
+  - from: "cli_orchestrator"
+    to: "ast_scanner"
+    protocol: grpc
+    description: "Source code discovery coordination"
+
+  - from: "cli_orchestrator"
+    to: "backend_introspector"
+    protocol: grpc
+    description: "Backend introspection coordination"
+
+  - from: "cli_orchestrator"
+    to: "service_prober"
+    protocol: grpc
+    description: "Service probing coordination"
+
+  - from: "cli_orchestrator"
+    to: "compatibility_checker"
+    protocol: grpc
+    description: "Compatibility check coordination"
+
+  - from: "cli_orchestrator"
+    to: "report_generator"
+    protocol: grpc
+    description: "Report generation coordination"
+
+  - from: "ast_scanner"
+    to: "config_loader"
+    protocol: grpc
+    description: "Source target directories and language filters"
+
+  - from: "backend_introspector"
+    to: "config_loader"
+    protocol: grpc
+    description: "Backend connection hints and introspection config"
+
+  - from: "service_prober"
+    to: "config_loader"
+    protocol: grpc
+    description: "Service URLs and OpenAPI paths"
+
+  - from: "artifact_drafter"
+    to: "ast_scanner"
+    protocol: grpc
+    description: "Source code discovery results for draft generation"
+
+  - from: "artifact_drafter"
+    to: "backend_introspector"
+    protocol: grpc
+    description: "Backend schema discoveries for draft generation"
+
+  - from: "artifact_drafter"
+    to: "service_prober"
+    protocol: grpc
+    description: "Service API discoveries for draft generation"
+
+  - from: "compatibility_checker"
+    to: "artifact_drafter"
+    protocol: grpc
+    description: "Draft artifacts for gap analysis against existing stack"
+
+  - from: "report_generator"
+    to: "compatibility_checker"
+    protocol: grpc
+    description: "Compatibility results for report formatting"
+
+  - from: "report_generator"
+    to: "artifact_drafter"
+    protocol: grpc
+    description: "Draft artifact metadata for report inclusion"
+
+  - from: "http_api"
+    to: "report_generator"
+    protocol: http
+    description: "Report data for API responses"
+
+  - from: "http_api"
+    to: "compatibility_checker"
+    protocol: http
+    description: "Compatibility check results for API responses"

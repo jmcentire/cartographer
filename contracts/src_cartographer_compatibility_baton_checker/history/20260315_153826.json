@@ -1,0 +1,265 @@
+{
+  "component_id": "src_cartographer_compatibility_baton_checker",
+  "name": "Baton Compatibility Checker",
+  "description": "Validates baton.yaml configuration files for schema version compliance, node configuration completeness (data_access, authority, openapi_spec), and global endpoint configuration (arbiter, ledger, audit_channel). Produces CheckResult reports with varying severity levels.",
+  "version": 1,
+  "types": [
+    {
+      "name": "BatonChecker",
+      "kind": "struct",
+      "fields": [],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Compatibility checker for baton configuration files. Inherits from CompatibilityChecker."
+    }
+  ],
+  "functions": [
+    {
+      "name": "tool_name",
+      "description": "Returns the string identifier for this compatibility checker tool",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "BatonChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "str",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns the literal string 'baton'"
+      ],
+      "idempotent": true,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "check",
+      "description": "Performs compatibility checks on a baton.yaml file, validating schema version, node configurations, and global settings. Returns a list of CheckResult objects detailing findings.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "BatonChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object containing minimum schema version and baton config path",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory to search for baton.yaml files",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "yaml_parse_error",
+          "condition": "When yaml.safe_load raises any Exception",
+          "error_type": "CheckResult with FAIL severity",
+          "error_data": {
+            "check_id": "baton_yaml_valid",
+            "status": "FAIL",
+            "message": "Invalid YAML"
+          }
+        }
+      ],
+      "preconditions": [
+        "base_dir must be a valid Path object",
+        "config.compatibility.min_baton_schema_version must be accessible"
+      ],
+      "postconditions": [
+        "Returns a non-empty list containing at least one CheckResult",
+        "If baton config not found, returns list with single INFO CheckResult",
+        "If YAML is invalid, returns list with single FAIL CheckResult",
+        "Each CheckResult has tool field set to 'baton'"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Reads baton.yaml file from filesystem"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "baton.yaml or baton.yml",
+          "description": "Reads and parses baton configuration file"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_find_baton_config",
+      "description": "Locates the baton configuration file by checking the configured path or searching for baton.yaml/baton.yml in base_dir. Returns None if not found.",
+      "inputs": [
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object that may contain baton_config path",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Base directory to search for default baton config files",
+          "validators": []
+        }
+      ],
+      "output_type": "Path | None",
+      "error_cases": [],
+      "preconditions": [
+        "config.stack.baton_config is accessible (may be None or empty)",
+        "base_dir must be a valid Path object"
+      ],
+      "postconditions": [
+        "If config.stack.baton_config is truthy and exists, returns that Path",
+        "If config.stack.baton_config is truthy but doesn't exist as absolute, returns base_dir / path",
+        "Otherwise searches for baton.yaml then baton.yml in base_dir",
+        "Returns None if no config file found"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Checks filesystem for file existence"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "baton config path or base_dir",
+          "description": "Checks existence of config files"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_version_lt",
+      "description": "Compares two version strings (e.g., '1.2.3'). Returns True if version a is less than version b. Falls back to lexicographic comparison if parsing fails.",
+      "inputs": [
+        {
+          "name": "a",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "First version string",
+          "validators": []
+        },
+        {
+          "name": "b",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Second version string",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [
+        {
+          "name": "version_parse_failure",
+          "condition": "When version strings cannot be parsed as integers separated by dots",
+          "error_type": "ValueError (caught internally)",
+          "error_data": {
+            "fallback": "lexicographic comparison"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns True if a < b numerically (when parseable as dot-separated integers)",
+        "Returns True if a < b lexicographically (when ValueError occurs during parsing)",
+        "Returns False otherwise"
+      ],
+      "idempotent": true,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "pathlib",
+    "yaml",
+    "cartographer.compatibility.base",
+    "cartographer.config.loader",
+    "cartographer.models"
+  ],
+  "dependency_contracts": {
+    "pathlib": [
+      "Path"
+    ],
+    "yaml": [
+      "safe_load"
+    ],
+    "cartographer.compatibility.base": [
+      "CompatibilityChecker"
+    ],
+    "cartographer.config.loader": [
+      "CartographerConfig"
+    ],
+    "cartographer.models": [
+      "CheckResult",
+      "Severity"
+    ]
+  },
+  "invariants": [
+    "All CheckResult objects have tool field set to 'baton'",
+    "Default baton version is '1.0' if not specified in config",
+    "Config file search order: config.stack.baton_config, baton.yaml, baton.yml",
+    "Unknown node names default to 'unknown'",
+    "Empty global config defaults to empty dict if not dict type"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "filesystem"
+    ],
+    "writes": [],
+    "rationale": "Reads baton.yaml/baton.yml configuration files from disk to validate their structure and content",
+    "side_effects": [
+      {
+        "type": "file_read",
+        "classification": "configuration",
+        "fields": [
+          "baton.yaml",
+          "baton.yml"
+        ],
+        "rationale": "Needs to read and parse baton configuration files for validation"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

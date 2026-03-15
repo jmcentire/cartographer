@@ -1,0 +1,594 @@
+{
+  "component_id": "src_cartographer_models",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_score_pct_happy_path",
+      "description": "Test score_pct returns correct percentage for typical compatibility report",
+      "function": "score_pct",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_pass": "7",
+        "score_warn": "2",
+        "score_fail": "1",
+        "total": "10"
+      },
+      "input_description": "CompatibilityReport with 7 pass, 2 warn, 1 fail out of 10 total",
+      "expected_output_description": "Returns 70.0 (7/10 * 100)",
+      "expected_error": "",
+      "assertions": [
+        "result == 70.0"
+      ]
+    },
+    {
+      "id": "test_score_pct_all_pass",
+      "description": "Test score_pct returns 100.0 when all checks pass",
+      "function": "score_pct",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_pass": "10",
+        "score_warn": "0",
+        "score_fail": "0",
+        "total": "10"
+      },
+      "input_description": "CompatibilityReport with all passing checks",
+      "expected_output_description": "Returns 100.0",
+      "expected_error": "",
+      "assertions": [
+        "result == 100.0"
+      ]
+    },
+    {
+      "id": "test_score_pct_empty_report",
+      "description": "Test score_pct returns 100.0 when total is 0 (no checks)",
+      "function": "score_pct",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_pass": "0",
+        "score_warn": "0",
+        "score_fail": "0",
+        "total": "0"
+      },
+      "input_description": "CompatibilityReport with 0 total checks",
+      "expected_output_description": "Returns 100.0 as per contract",
+      "expected_error": "",
+      "assertions": [
+        "result == 100.0"
+      ]
+    },
+    {
+      "id": "test_score_pct_all_fail",
+      "description": "Test score_pct returns 0.0 when all checks fail",
+      "function": "score_pct",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_pass": "0",
+        "score_warn": "0",
+        "score_fail": "10",
+        "total": "10"
+      },
+      "input_description": "CompatibilityReport with all failing checks",
+      "expected_output_description": "Returns 0.0",
+      "expected_error": "",
+      "assertions": [
+        "result == 0.0"
+      ]
+    },
+    {
+      "id": "test_score_pct_rounded",
+      "description": "Test score_pct rounds to 1 decimal place",
+      "function": "score_pct",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_pass": "2",
+        "score_warn": "1",
+        "score_fail": "0",
+        "total": "3"
+      },
+      "input_description": "CompatibilityReport with 2 pass out of 3 total (66.666...%)",
+      "expected_output_description": "Returns 66.7 (rounded to 1 decimal)",
+      "expected_error": "",
+      "assertions": [
+        "result == 66.7"
+      ]
+    },
+    {
+      "id": "test_score_pct_range_postcondition",
+      "description": "Test score_pct always returns value in [0.0, 100.0] range",
+      "function": "score_pct",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Various CompatibilityReports",
+      "expected_output_description": "All results are between 0.0 and 100.0",
+      "expected_error": "",
+      "assertions": [
+        "0.0 <= result <= 100.0"
+      ]
+    },
+    {
+      "id": "test_has_failures_with_failures",
+      "description": "Test has_failures returns True when score_fail > 0",
+      "function": "has_failures",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_fail": "3"
+      },
+      "input_description": "CompatibilityReport with score_fail = 3",
+      "expected_output_description": "Returns True",
+      "expected_error": "",
+      "assertions": [
+        "result is True"
+      ]
+    },
+    {
+      "id": "test_has_failures_no_failures",
+      "description": "Test has_failures returns False when score_fail = 0",
+      "function": "has_failures",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_fail": "0"
+      },
+      "input_description": "CompatibilityReport with score_fail = 0",
+      "expected_output_description": "Returns False",
+      "expected_error": "",
+      "assertions": [
+        "result is False"
+      ]
+    },
+    {
+      "id": "test_has_failures_edge_one",
+      "description": "Test has_failures returns True when score_fail = 1 (edge of boundary)",
+      "function": "has_failures",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_fail": "1"
+      },
+      "input_description": "CompatibilityReport with score_fail = 1",
+      "expected_output_description": "Returns True",
+      "expected_error": "",
+      "assertions": [
+        "result is True"
+      ]
+    },
+    {
+      "id": "test_confidence_enum_members",
+      "description": "Test Confidence enum has all required members",
+      "function": "Confidence",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Confidence enum definition",
+      "expected_output_description": "Contains HIGH, MEDIUM, LOW",
+      "expected_error": "",
+      "assertions": [
+        "has_members(['HIGH', 'MEDIUM', 'LOW'])"
+      ]
+    },
+    {
+      "id": "test_severity_enum_members",
+      "description": "Test Severity enum has all required members",
+      "function": "Severity",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Severity enum definition",
+      "expected_output_description": "Contains FAIL, WARN, INFO",
+      "expected_error": "",
+      "assertions": [
+        "has_members(['FAIL', 'WARN', 'INFO'])"
+      ]
+    },
+    {
+      "id": "test_component_type_enum_members",
+      "description": "Test ComponentType enum has all required members",
+      "function": "ComponentType",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "ComponentType enum definition",
+      "expected_output_description": "Contains SERVICE, LIBRARY, WORKER, EGRESS, INGRESS",
+      "expected_error": "",
+      "assertions": [
+        "has_members(['SERVICE', 'LIBRARY', 'WORKER', 'EGRESS', 'INGRESS'])"
+      ]
+    },
+    {
+      "id": "test_backend_type_enum_members",
+      "description": "Test BackendType enum has all required members",
+      "function": "BackendType",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "BackendType enum definition",
+      "expected_output_description": "Contains all backend types",
+      "expected_error": "",
+      "assertions": [
+        "has_members(['POSTGRES', 'MYSQL', 'SQLITE', 'MONGODB', 'REDIS', 'S3', 'DYNAMODB', 'KAFKA', 'RABBITMQ', 'SQS'])"
+      ]
+    },
+    {
+      "id": "test_discovered_field_creation",
+      "description": "Test DiscoveredField can be created with all fields",
+      "function": "DiscoveredField",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "name": "user_id",
+        "type": "int",
+        "confidence": "HIGH",
+        "note": "Primary key",
+        "classification_hint": "identifier"
+      },
+      "input_description": "Valid DiscoveredField data",
+      "expected_output_description": "Successfully creates DiscoveredField instance",
+      "expected_error": "",
+      "assertions": [
+        "field.name == 'user_id'",
+        "field.confidence == Confidence.HIGH"
+      ]
+    },
+    {
+      "id": "test_discovered_field_optional_fields",
+      "description": "Test DiscoveredField with optional fields as None",
+      "function": "DiscoveredField",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "name": "field1",
+        "type": "None",
+        "confidence": "MEDIUM",
+        "note": "None",
+        "classification_hint": "None"
+      },
+      "input_description": "DiscoveredField with minimal required fields",
+      "expected_output_description": "Creates instance with None values for optional fields",
+      "expected_error": "",
+      "assertions": [
+        "field.type is None",
+        "field.note is None"
+      ]
+    },
+    {
+      "id": "test_discovered_model_creation",
+      "description": "Test DiscoveredModel creation with fields",
+      "function": "DiscoveredModel",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "name": "User",
+        "source_file": "models.py",
+        "line": "10",
+        "orm": "SQLAlchemy",
+        "fields": "[]",
+        "confidence": "HIGH"
+      },
+      "input_description": "Valid DiscoveredModel with multiple fields",
+      "expected_output_description": "Successfully creates DiscoveredModel",
+      "expected_error": "",
+      "assertions": [
+        "model.name == 'User'",
+        "model.line == 10"
+      ]
+    },
+    {
+      "id": "test_discovered_route_creation",
+      "description": "Test DiscoveredRoute creation",
+      "function": "DiscoveredRoute",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "path": "/api/users",
+        "method": "GET",
+        "handler": "get_users",
+        "source_file": "routes.py",
+        "line": "25",
+        "framework": "FastAPI",
+        "confidence": "HIGH"
+      },
+      "input_description": "Valid HTTP route discovery",
+      "expected_output_description": "Successfully creates DiscoveredRoute",
+      "expected_error": "",
+      "assertions": [
+        "route.path == '/api/users'",
+        "route.method == 'GET'"
+      ]
+    },
+    {
+      "id": "test_discovered_component_creation",
+      "description": "Test DiscoveredComponent creation with dependencies",
+      "function": "DiscoveredComponent",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "name": "UserService",
+        "source_file": "service.py",
+        "line": "15",
+        "type": "SERVICE",
+        "public_methods": "[]",
+        "dependencies": "[]",
+        "confidence": "HIGH",
+        "note": "None"
+      },
+      "input_description": "Valid component with dependencies",
+      "expected_output_description": "Successfully creates DiscoveredComponent",
+      "expected_error": "",
+      "assertions": [
+        "component.name == 'UserService'",
+        "component.type == ComponentType.SERVICE"
+      ]
+    },
+    {
+      "id": "test_discovered_pact_key_creation",
+      "description": "Test DiscoveredPactKey creation",
+      "function": "DiscoveredPactKey",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "key": "user.created",
+        "source_file": "events.py",
+        "line": "42",
+        "confidence": "MEDIUM"
+      },
+      "input_description": "Valid Pact key discovery",
+      "expected_output_description": "Successfully creates DiscoveredPactKey",
+      "expected_error": "",
+      "assertions": [
+        "pact.key == 'user.created'",
+        "pact.line == 42"
+      ]
+    },
+    {
+      "id": "test_discovered_env_var_creation",
+      "description": "Test DiscoveredEnvVar creation with backend hint",
+      "function": "DiscoveredEnvVar",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "name": "DATABASE_URL",
+        "source_file": "config.py",
+        "line": "8",
+        "backend_hint": "POSTGRES",
+        "confidence": "HIGH"
+      },
+      "input_description": "Environment variable with backend hint",
+      "expected_output_description": "Successfully creates DiscoveredEnvVar",
+      "expected_error": "",
+      "assertions": [
+        "env_var.name == 'DATABASE_URL'",
+        "env_var.backend_hint == 'POSTGRES'"
+      ]
+    },
+    {
+      "id": "test_discovered_sensitive_field_creation",
+      "description": "Test DiscoveredSensitiveField creation",
+      "function": "DiscoveredSensitiveField",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "field_name": "ssn",
+        "source_file": "models.py",
+        "line": "20",
+        "pattern_matched": "ssn|social_security",
+        "classification_hint": "PII",
+        "confidence": "HIGH"
+      },
+      "input_description": "Sensitive field discovery via pattern",
+      "expected_output_description": "Successfully creates DiscoveredSensitiveField",
+      "expected_error": "",
+      "assertions": [
+        "field.field_name == 'ssn'",
+        "field.classification_hint == 'PII'"
+      ]
+    },
+    {
+      "id": "test_discovery_result_creation",
+      "description": "Test DiscoveryResult aggregates all discovery types",
+      "function": "DiscoveryResult",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "models": "[]",
+        "routes": "[]",
+        "components": "[]",
+        "pact_keys": "[]",
+        "env_vars": "[]",
+        "sensitive_fields": "[]"
+      },
+      "input_description": "Complete discovery result with all types",
+      "expected_output_description": "Successfully creates DiscoveryResult with all empty lists",
+      "expected_error": "",
+      "assertions": [
+        "isinstance(result.models, list)",
+        "isinstance(result.routes, list)"
+      ]
+    },
+    {
+      "id": "test_check_result_creation",
+      "description": "Test CheckResult creation for compatibility check",
+      "function": "CheckResult",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "check_id": "CHK001",
+        "target": "UserService",
+        "severity": "WARN",
+        "status": "warning",
+        "message": "Deprecated method used",
+        "tool": "linter"
+      },
+      "input_description": "Valid check result",
+      "expected_output_description": "Successfully creates CheckResult",
+      "expected_error": "",
+      "assertions": [
+        "check.check_id == 'CHK001'",
+        "check.severity == Severity.WARN"
+      ]
+    },
+    {
+      "id": "test_compatibility_report_creation",
+      "description": "Test CompatibilityReport creation",
+      "function": "CompatibilityReport",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "generated": "2024-01-01T00:00:00Z",
+        "checks": "[]",
+        "score_pass": "5",
+        "score_warn": "2",
+        "score_fail": "1",
+        "total": "8",
+        "recommendations": "[]"
+      },
+      "input_description": "Valid compatibility report",
+      "expected_output_description": "Successfully creates CompatibilityReport",
+      "expected_error": "",
+      "assertions": [
+        "report.total == 8",
+        "report.score_pass == 5"
+      ]
+    },
+    {
+      "id": "test_draft_field_creation",
+      "description": "Test DraftField creation with confidence",
+      "function": "DraftField",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "value": "test_value",
+        "confidence": "MEDIUM",
+        "note": "Auto-generated"
+      },
+      "input_description": "Draft field with value and confidence",
+      "expected_output_description": "Successfully creates DraftField",
+      "expected_error": "",
+      "assertions": [
+        "draft.value == 'test_value'",
+        "draft.confidence == Confidence.MEDIUM"
+      ]
+    },
+    {
+      "id": "test_draft_artifact_creation",
+      "description": "Test DraftArtifact base creation",
+      "function": "DraftArtifact",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "_draft": "True",
+        "_generated_by": "scanner",
+        "tool": "cartographer",
+        "artifact_type": "model",
+        "path": "models/user.py",
+        "content": "{}"
+      },
+      "input_description": "Draft artifact with metadata",
+      "expected_output_description": "Successfully creates DraftArtifact",
+      "expected_error": "",
+      "assertions": [
+        "artifact._draft is True",
+        "artifact.tool == 'cartographer'"
+      ]
+    },
+    {
+      "id": "test_compatibility_report_total_invariant",
+      "description": "Test invariant: total == score_pass + score_warn + score_fail",
+      "function": "CompatibilityReport",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "score_pass": "3",
+        "score_warn": "4",
+        "score_fail": "2",
+        "total": "9"
+      },
+      "input_description": "CompatibilityReport with scores",
+      "expected_output_description": "Total equals sum of scores",
+      "expected_error": "",
+      "assertions": [
+        "report.total == report.score_pass + report.score_warn + report.score_fail"
+      ]
+    },
+    {
+      "id": "test_confidence_ordering",
+      "description": "Test invariant: Confidence levels are ordered HIGH > MEDIUM > LOW",
+      "function": "Confidence",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Confidence enum values",
+      "expected_output_description": "Confidence ordering is maintained",
+      "expected_error": "",
+      "assertions": [
+        "ordering is correct"
+      ]
+    },
+    {
+      "id": "test_enum_string_based",
+      "description": "Test invariant: All enum values are string-based",
+      "function": "Confidence",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "All enums",
+      "expected_output_description": "All enum values are strings",
+      "expected_error": "",
+      "assertions": [
+        "all enum values are strings"
+      ]
+    },
+    {
+      "id": "test_pydantic_basemodel_inheritance",
+      "description": "Test invariant: All Pydantic models inherit from BaseModel",
+      "function": "DiscoveredField",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "All struct types",
+      "expected_output_description": "All models inherit from BaseModel",
+      "expected_error": "",
+      "assertions": [
+        "inherits from BaseModel"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract Test Suite for Cartographer Models\nGenerated for contract version 1\n\nThis test suite validates the behavior of cartographer models including:\n- Enums: Confidence, Severity, ComponentType, BackendType\n- Structs: DiscoveredField, DiscoveredModel, DiscoveredRoute, DiscoveredComponent,\n  DiscoveredPactKey, DiscoveredEnvVar, DiscoveredSensitiveField, DiscoveryResult,\n  CheckResult, CompatibilityReport, DraftField, DraftArtifact\n- Functions: score_pct, has_failures\n- Invariants: Enum ordering, total calculation, BaseModel inheritance\n\nCoverage target: >95%\n\"\"\"\n\nimport pytest\nfrom unittest.mock import Mock, MagicMock, patch\nfrom typing import Any\nimport random\nfrom datetime import datetime\n\n# Import the component under test\nfrom src.cartographer.models import *\n\n\n# ============================================================================\n# FIXTURES AND FACTORY FUNCTIONS\n# ============================================================================\n\n@pytest.fixture\ndef sample_discovered_field():\n    \"\"\"Factory for DiscoveredField instances\"\"\"\n    return DiscoveredField(\n        name=\"user_id\",\n        type=\"int\",\n        confidence=Confidence.HIGH,\n        note=\"Primary key\",\n        classification_hint=\"identifier\"\n    )\n\n\n@pytest.fixture\ndef sample_discovered_model():\n    \"\"\"Factory for DiscoveredModel instances\"\"\"\n    return DiscoveredModel(\n        name=\"User\",\n        source_file=\"models.py\",\n        line=10,\n        orm=\"SQLAlchemy\",\n        fields=[],\n        confidence=Confidence.HIGH\n    )\n\n\n@pytest.fixture\ndef sample_discovered_route():\n    \"\"\"Factory for DiscoveredRoute instances\"\"\"\n    return DiscoveredRoute(\n        path=\"/api/users\",\n        method=\"GET\",\n        handler=\"get_users\",\n        source_file=\"routes.py\",\n        line=25,\n        framework=\"FastAPI\",\n        confidence=Confidence.HIGH\n    )\n\n\n@pytest.fixture\ndef sample_discovered_component():\n    \"\"\"Factory for DiscoveredComponent instances\"\"\"\n    return DiscoveredComponent(\n        name=\"UserService\",\n        source_file=\"service.py\",\n        line=15,\n        type=ComponentType.SERVICE,\n        public_methods=[\"create_user\", \"get_user\"],\n        dependencies=[\"database\", \"cache\"],\n        confidence=Confidence.HIGH,\n        note=None\n    )\n\n\n@pytest.fixture\ndef sample_discovered_pact_key():\n    \"\"\"Factory for DiscoveredPactKey instances\"\"\"\n    return DiscoveredPactKey(\n        key=\"user.created\",\n        source_file=\"events.py\",\n        line=42,\n        confidence=Confidence.MEDIUM\n    )\n\n\n@pytest.fixture\ndef sample_discovered_env_var():\n    \"\"\"Factory for DiscoveredEnvVar instances\"\"\"\n    return DiscoveredEnvVar(\n        name=\"DATABASE_URL\",\n        source_file=\"config.py\",\n        line=8,\n        backend_hint=\"POSTGRES\",\n        confidence=Confidence.HIGH\n    )\n\n\n@pytest.fixture\ndef sample_discovered_sensitive_field():\n    \"\"\"Factory for DiscoveredSensitiveField instances\"\"\"\n    return DiscoveredSensitiveField(\n        field_name=\"ssn\",\n        source_file=\"models.py\",\n        line=20,\n        pattern_matched=\"ssn|social_security\",\n        classification_hint=\"PII\",\n        confidence=Confidence.HIGH\n    )\n\n\n@pytest.fixture\ndef sample_check_result():\n    \"\"\"Factory for CheckResult instances\"\"\"\n    return CheckResult(\n        check_id=\"CHK001\",\n        target=\"UserService\",\n        severity=Severity.WARN,\n        status=\"warning\",\n        message=\"Deprecated method used\",\n        tool=\"linter\"\n    )\n\n\n@pytest.fixture\ndef sample_compatibility_report():\n    \"\"\"Factory for CompatibilityReport instances\"\"\"\n    return CompatibilityReport(\n        generated=\"2024-01-01T00:00:00Z\",\n        checks=[],\n        score_pass=7,\n        score_warn=2,\n        score_fail=1,\n        total=10,\n        recommendations=[]\n    )\n\n\n@pytest.fixture\ndef sample_discovery_result():\n    \"\"\"Factory for DiscoveryResult instances\"\"\"\n    return DiscoveryResult(\n        models=[],\n        routes=[],\n        components=[],\n        pact_keys=[],\n        env_vars=[],\n        sensitive_fields=[]\n    )\n\n\n@pytest.fixture\ndef sample_draft_field():\n    \"\"\"Factory for DraftField instances\"\"\"\n    return DraftField(\n        value=\"test_value\",\n        confidence=Confidence.MEDIUM,\n        note=\"Auto-generated\"\n    )\n\n\n@pytest.fixture\ndef sample_draft_artifact():\n    \"\"\"Factory for DraftArtifact instances\"\"\"\n    return DraftArtifact(\n        _draft=True,\n        _generated_by=\"scanner\",\n        tool=\"cartographer\",\n        artifact_type=\"model\",\n        path=\"models/user.py\",\n        content={}\n    )\n\n\n# ============================================================================\n# ENUM TESTS\n# ============================================================================\n\nclass TestConfidenceEnum:\n    \"\"\"Test suite for Confidence enum\"\"\"\n    \n    def test_confidence_enum_members(self):\n        \"\"\"Test Confidence enum has all required members\"\"\"\n        assert hasattr(Confidence, 'HIGH')\n        assert hasattr(Confidence, 'MEDIUM')\n        assert hasattr(Confidence, 'LOW')\n        \n        # Verify all members are present\n        members = [e.name for e in Confidence]\n        assert 'HIGH' in members\n        assert 'MEDIUM' in members\n        assert 'LOW' in members\n    \n    def test_confidence_enum_string_values(self):\n        \"\"\"Test all Confidence enum values are strings\"\"\"\n        for member in Confidence:\n            assert isinstance(member.value, str)\n    \n    def test_confidence_enum_access(self):\n        \"\"\"Test Confidence enum members can be accessed\"\"\"\n        high = Confidence.HIGH\n        medium = Confidence.MEDIUM\n        low = Confidence.LOW\n        \n        assert high is not None\n        assert medium is not None\n        assert low is not None\n\n\nclass TestSeverityEnum:\n    \"\"\"Test suite for Severity enum\"\"\"\n    \n    def test_severity_enum_members(self):\n        \"\"\"Test Severity enum has all required members\"\"\"\n        assert hasattr(Severity, 'FAIL')\n        assert hasattr(Severity, 'WARN')\n        assert hasattr(Severity, 'INFO')\n        \n        members = [e.name for e in Severity]\n        assert 'FAIL' in members\n        assert 'WARN' in members\n        assert 'INFO' in members\n    \n    def test_severity_enum_string_values(self):\n        \"\"\"Test all Severity enum values are strings\"\"\"\n        for member in Severity:\n            assert isinstance(member.value, str)\n\n\nclass TestComponentTypeEnum:\n    \"\"\"Test suite for ComponentType enum\"\"\"\n    \n    def test_component_type_enum_members(self):\n        \"\"\"Test ComponentType enum has all required members\"\"\"\n        expected_members = ['SERVICE', 'LIBRARY', 'WORKER', 'EGRESS', 'INGRESS']\n        members = [e.name for e in ComponentType]\n        \n        for expected in expected_members:\n            assert expected in members\n    \n    def test_component_type_enum_string_values(self):\n        \"\"\"Test all ComponentType enum values are strings\"\"\"\n        for member in ComponentType:\n            assert isinstance(member.value, str)\n\n\nclass TestBackendTypeEnum:\n    \"\"\"Test suite for BackendType enum\"\"\"\n    \n    def test_backend_type_enum_members(self):\n        \"\"\"Test BackendType enum has all required members\"\"\"\n        expected_members = [\n            'POSTGRES', 'MYSQL', 'SQLITE', 'MONGODB', 'REDIS',\n            'S3', 'DYNAMODB', 'KAFKA', 'RABBITMQ', 'SQS'\n        ]\n        members = [e.name for e in BackendType]\n        \n        for expected in expected_members:\n            assert expected in members\n    \n    def test_backend_type_enum_string_values(self):\n        \"\"\"Test all BackendType enum values are strings\"\"\"\n        for member in BackendType:\n            assert isinstance(member.value, str)\n\n\n# ============================================================================\n# STRUCT/MODEL TESTS\n# ============================================================================\n\nclass TestDiscoveredField:\n    \"\"\"Test suite for DiscoveredField struct\"\"\"\n    \n    def test_discovered_field_creation(self):\n        \"\"\"Test DiscoveredField can be created with all fields\"\"\"\n        field = DiscoveredField(\n            name=\"user_id\",\n            type=\"int\",\n            confidence=Confidence.HIGH,\n            note=\"Primary key\",\n            classification_hint=\"identifier\"\n        )\n        \n        assert field.name == \"user_id\"\n        assert field.type == \"int\"\n        assert field.confidence == Confidence.HIGH\n        assert field.note == \"Primary key\"\n        assert field.classification_hint == \"identifier\"\n    \n    def test_discovered_field_optional_fields(self):\n        \"\"\"Test DiscoveredField with optional fields as None\"\"\"\n        field = DiscoveredField(\n            name=\"field1\",\n            type=None,\n            confidence=Confidence.MEDIUM,\n            note=None,\n            classification_hint=None\n        )\n        \n        assert field.name == \"field1\"\n        assert field.type is None\n        assert field.note is None\n        assert field.classification_hint is None\n        assert field.confidence == Confidence.MEDIUM\n    \n    def test_discovered_field_inherits_basemodel(self):\n        \"\"\"Test DiscoveredField inherits from BaseModel\"\"\"\n        from pydantic import BaseModel\n        field = DiscoveredField(\n            name=\"test\",\n            type=None,\n            confidence=Confidence.LOW,\n            note=None,\n            classification_hint=None\n        )\n        assert isinstance(field, BaseModel)\n\n\nclass TestDiscoveredModel:\n    \"\"\"Test suite for DiscoveredModel struct\"\"\"\n    \n    def test_discovered_model_creation(self):\n        \"\"\"Test DiscoveredModel creation with fields\"\"\"\n        field1 = DiscoveredField(\n            name=\"id\",\n            type=\"int\",\n            confidence=Confidence.HIGH,\n            note=None,\n            classification_hint=None\n        )\n        \n        model = DiscoveredModel(\n            name=\"User\",\n            source_file=\"models.py\",\n            line=10,\n            orm=\"SQLAlchemy\",\n            fields=[field1],\n            confidence=Confidence.HIGH\n        )\n        \n        assert model.name == \"User\"\n        assert model.source_file == \"models.py\"\n        assert model.line == 10\n        assert model.orm == \"SQLAlchemy\"\n        assert len(model.fields) == 1\n        assert model.confidence == Confidence.HIGH\n    \n    def test_discovered_model_empty_fields(self):\n        \"\"\"Test DiscoveredModel with empty fields list\"\"\"\n        model = DiscoveredModel(\n            name=\"EmptyModel\",\n            source_file=\"test.py\",\n            line=1,\n            orm=None,\n            fields=[],\n            confidence=Confidence.LOW\n        )\n        \n        assert len(model.fields) == 0\n        assert model.orm is None\n    \n    def test_discovered_model_positive_line_number(self):\n        \"\"\"Test DiscoveredModel with positive line number\"\"\"\n        model = DiscoveredModel(\n            name=\"Model\",\n            source_file=\"test.py\",\n            line=1,\n            orm=None,\n            fields=[],\n            confidence=Confidence.HIGH\n        )\n        assert model.line > 0\n\n\nclass TestDiscoveredRoute:\n    \"\"\"Test suite for DiscoveredRoute struct\"\"\"\n    \n    def test_discovered_route_creation(self):\n        \"\"\"Test DiscoveredRoute creation\"\"\"\n        route = DiscoveredRoute(\n            path=\"/api/users\",\n            method=\"GET\",\n            handler=\"get_users\",\n            source_file=\"routes.py\",\n            line=25,\n            framework=\"FastAPI\",\n            confidence=Confidence.HIGH\n        )\n        \n        assert route.path == \"/api/users\"\n        assert route.method == \"GET\"\n        assert route.handler == \"get_users\"\n        assert route.source_file == \"routes.py\"\n        assert route.line == 25\n        assert route.framework == \"FastAPI\"\n        assert route.confidence == Confidence.HIGH\n    \n    def test_discovered_route_various_methods(self):\n        \"\"\"Test DiscoveredRoute with various HTTP methods\"\"\"\n        methods = [\"GET\", \"POST\", \"PUT\", \"DELETE\", \"PATCH\"]\n        \n        for method in methods:\n            route = DiscoveredRoute(\n                path=f\"/api/{method.lower()}\",\n                method=method,\n                handler=f\"handle_{method.lower()}\",\n                source_file=\"routes.py\",\n                line=1,\n                framework=\"Flask\",\n                confidence=Confidence.MEDIUM\n            )\n            assert route.method == method\n\n\nclass TestDiscoveredComponent:\n    \"\"\"Test suite for DiscoveredComponent struct\"\"\"\n    \n    def test_discovered_component_creation(self):\n        \"\"\"Test DiscoveredComponent creation with dependencies\"\"\"\n        component = DiscoveredComponent(\n            name=\"UserService\",\n            source_file=\"service.py\",\n            line=15,\n            type=ComponentType.SERVICE,\n            public_methods=[\"create\", \"read\", \"update\", \"delete\"],\n            dependencies=[\"database\", \"cache\"],\n            confidence=Confidence.HIGH,\n            note=None\n        )\n        \n        assert component.name == \"UserService\"\n        assert component.type == ComponentType.SERVICE\n        assert len(component.public_methods) == 4\n        assert len(component.dependencies) == 2\n        assert component.confidence == Confidence.HIGH\n    \n    def test_discovered_component_all_types(self):\n        \"\"\"Test DiscoveredComponent with all ComponentType values\"\"\"\n        types = [\n            ComponentType.SERVICE,\n            ComponentType.LIBRARY,\n            ComponentType.WORKER,\n            ComponentType.EGRESS,\n            ComponentType.INGRESS\n        ]\n        \n        for comp_type in types:\n            component = DiscoveredComponent(\n                name=f\"Test{comp_type.name}\",\n                source_file=\"test.py\",\n                line=1,\n                type=comp_type,\n                public_methods=[],\n                dependencies=[],\n                confidence=Confidence.MEDIUM,\n                note=None\n            )\n            assert component.type == comp_type\n\n\nclass TestDiscoveredPactKey:\n    \"\"\"Test suite for DiscoveredPactKey struct\"\"\"\n    \n    def test_discovered_pact_key_creation(self):\n        \"\"\"Test DiscoveredPactKey creation\"\"\"\n        pact = DiscoveredPactKey(\n            key=\"user.created\",\n            source_file=\"events.py\",\n            line=42,\n            confidence=Confidence.MEDIUM\n        )\n        \n        assert pact.key == \"user.created\"\n        assert pact.source_file == \"events.py\"\n        assert pact.line == 42\n        assert pact.confidence == Confidence.MEDIUM\n    \n    def test_discovered_pact_key_various_keys(self):\n        \"\"\"Test DiscoveredPactKey with various key patterns\"\"\"\n        keys = [\n            \"user.created\",\n            \"order.updated\",\n            \"payment.processed\",\n            \"notification.sent\"\n        ]\n        \n        for key in keys:\n            pact = DiscoveredPactKey(\n                key=key,\n                source_file=\"events.py\",\n                line=1,\n                confidence=Confidence.HIGH\n            )\n            assert pact.key == key\n\n\nclass TestDiscoveredEnvVar:\n    \"\"\"Test suite for DiscoveredEnvVar struct\"\"\"\n    \n    def test_discovered_env_var_creation(self):\n        \"\"\"Test DiscoveredEnvVar creation with backend hint\"\"\"\n        env_var = DiscoveredEnvVar(\n            name=\"DATABASE_URL\",\n            source_file=\"config.py\",\n            line=8,\n            backend_hint=\"POSTGRES\",\n            confidence=Confidence.HIGH\n        )\n        \n        assert env_var.name == \"DATABASE_URL\"\n        assert env_var.source_file == \"config.py\"\n        assert env_var.line == 8\n        assert env_var.backend_hint == \"POSTGRES\"\n        assert env_var.confidence == Confidence.HIGH\n    \n    def test_discovered_env_var_no_backend_hint(self):\n        \"\"\"Test DiscoveredEnvVar without backend hint\"\"\"\n        env_var = DiscoveredEnvVar(\n            name=\"API_KEY\",\n            source_file=\"config.py\",\n            line=5,\n            backend_hint=None,\n            confidence=Confidence.MEDIUM\n        )\n        \n        assert env_var.backend_hint is None\n\n\nclass TestDiscoveredSensitiveField:\n    \"\"\"Test suite for DiscoveredSensitiveField struct\"\"\"\n    \n    def test_discovered_sensitive_field_creation(self):\n        \"\"\"Test DiscoveredSensitiveField creation\"\"\"\n        field = DiscoveredSensitiveField(\n            field_name=\"ssn\",\n            source_file=\"models.py\",\n            line=20,\n            pattern_matched=\"ssn|social_security\",\n            classification_hint=\"PII\",\n            confidence=Confidence.HIGH\n        )\n        \n        assert field.field_name == \"ssn\"\n        assert field.source_file == \"models.py\"\n        assert field.line == 20\n        assert field.pattern_matched == \"ssn|social_security\"\n        assert field.classification_hint == \"PII\"\n        assert field.confidence == Confidence.HIGH\n    \n    def test_discovered_sensitive_field_various_pii(self):\n        \"\"\"Test DiscoveredSensitiveField with various PII types\"\"\"\n        pii_fields = [\n            (\"ssn\", \"PII\"),\n            (\"credit_card\", \"FINANCIAL\"),\n            (\"email\", \"CONTACT\"),\n            (\"password\", \"CREDENTIAL\")\n        ]\n        \n        for field_name, classification in pii_fields:\n            field = DiscoveredSensitiveField(\n                field_name=field_name,\n                source_file=\"models.py\",\n                line=1,\n                pattern_matched=field_name,\n                classification_hint=classification,\n                confidence=Confidence.HIGH\n            )\n            assert field.field_name == field_name\n            assert field.classification_hint == classification\n\n\nclass TestDiscoveryResult:\n    \"\"\"Test suite for DiscoveryResult struct\"\"\"\n    \n    def test_discovery_result_creation(self):\n        \"\"\"Test DiscoveryResult aggregates all discovery types\"\"\"\n        result = DiscoveryResult(\n            models=[],\n            routes=[],\n            components=[],\n            pact_keys=[],\n            env_vars=[],\n            sensitive_fields=[]\n        )\n        \n        assert isinstance(result.models, list)\n        assert isinstance(result.routes, list)\n        assert isinstance(result.components, list)\n        assert isinstance(result.pact_keys, list)\n        assert isinstance(result.env_vars, list)\n        assert isinstance(result.sensitive_fields, list)\n    \n    def test_discovery_result_with_data(self):\n        \"\"\"Test DiscoveryResult with populated lists\"\"\"\n        model = DiscoveredModel(\n            name=\"User\",\n            source_file=\"models.py\",\n            line=1,\n            orm=None,\n            fields=[],\n            confidence=Confidence.HIGH\n        )\n        \n        route = DiscoveredRoute(\n            path=\"/api/test\",\n            method=\"GET\",\n            handler=\"test\",\n            source_file=\"routes.py\",\n            line=1,\n            framework=\"Flask\",\n            confidence=Confidence.HIGH\n        )\n        \n        result = DiscoveryResult(\n            models=[model],\n            routes=[route],\n            components=[],\n            pact_keys=[],\n            env_vars=[],\n            sensitive_fields=[]\n        )\n        \n        assert len(result.models) == 1\n        assert len(result.routes) == 1\n        assert result.models[0].name == \"User\"\n        assert result.routes[0].path == \"/api/test\"\n\n\nclass TestCheckResult:\n    \"\"\"Test suite for CheckResult struct\"\"\"\n    \n    def test_check_result_creation(self):\n        \"\"\"Test CheckResult creation for compatibility check\"\"\"\n        check = CheckResult(\n            check_id=\"CHK001\",\n            target=\"UserService\",\n            severity=Severity.WARN,\n            status=\"warning\",\n            message=\"Deprecated method used\",\n            tool=\"linter\"\n        )\n        \n        assert check.check_id == \"CHK001\"\n        assert check.target == \"UserService\"\n        assert check.severity == Severity.WARN\n        assert check.status == \"warning\"\n        assert check.message == \"Deprecated method used\"\n        assert check.tool == \"linter\"\n    \n    def test_check_result_all_severities(self):\n        \"\"\"Test CheckResult with all severity levels\"\"\"\n        severities = [Severity.FAIL, Severity.WARN, Severity.INFO]\n        \n        for severity in severities:\n            check = CheckResult(\n                check_id=\"CHK001\",\n                target=\"test\",\n                severity=severity,\n                status=\"test\",\n                message=\"test message\",\n                tool=\"test_tool\"\n            )\n            assert check.severity == severity\n\n\nclass TestCompatibilityReport:\n    \"\"\"Test suite for CompatibilityReport struct\"\"\"\n    \n    def test_compatibility_report_creation(self):\n        \"\"\"Test CompatibilityReport creation\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=5,\n            score_warn=2,\n            score_fail=1,\n            total=8,\n            recommendations=[]\n        )\n        \n        assert report.generated == \"2024-01-01T00:00:00Z\"\n        assert report.score_pass == 5\n        assert report.score_warn == 2\n        assert report.score_fail == 1\n        assert report.total == 8\n        assert isinstance(report.checks, list)\n        assert isinstance(report.recommendations, list)\n    \n    def test_compatibility_report_with_checks(self):\n        \"\"\"Test CompatibilityReport with CheckResult objects\"\"\"\n        check1 = CheckResult(\n            check_id=\"CHK001\",\n            target=\"Service1\",\n            severity=Severity.FAIL,\n            status=\"failed\",\n            message=\"Error\",\n            tool=\"tool1\"\n        )\n        \n        check2 = CheckResult(\n            check_id=\"CHK002\",\n            target=\"Service2\",\n            severity=Severity.WARN,\n            status=\"warning\",\n            message=\"Warning\",\n            tool=\"tool2\"\n        )\n        \n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[check1, check2],\n            score_pass=0,\n            score_warn=1,\n            score_fail=1,\n            total=2,\n            recommendations=[\"Fix Service1\"]\n        )\n        \n        assert len(report.checks) == 2\n        assert len(report.recommendations) == 1\n\n\nclass TestDraftField:\n    \"\"\"Test suite for DraftField struct\"\"\"\n    \n    def test_draft_field_creation(self):\n        \"\"\"Test DraftField creation with confidence\"\"\"\n        draft = DraftField(\n            value=\"test_value\",\n            confidence=Confidence.MEDIUM,\n            note=\"Auto-generated\"\n        )\n        \n        assert draft.value == \"test_value\"\n        assert draft.confidence == Confidence.MEDIUM\n        assert draft.note == \"Auto-generated\"\n    \n    def test_draft_field_various_values(self):\n        \"\"\"Test DraftField with various value types\"\"\"\n        values = [\n            \"string_value\",\n            123,\n            {\"key\": \"value\"},\n            [\"list\", \"item\"],\n            True\n        ]\n        \n        for val in values:\n            draft = DraftField(\n                value=val,\n                confidence=Confidence.HIGH,\n                note=None\n            )\n            assert draft.value == val\n\n\nclass TestDraftArtifact:\n    \"\"\"Test suite for DraftArtifact struct\"\"\"\n    \n    def test_draft_artifact_creation(self):\n        \"\"\"Test DraftArtifact base creation\"\"\"\n        artifact = DraftArtifact(\n            _draft=True,\n            _generated_by=\"scanner\",\n            tool=\"cartographer\",\n            artifact_type=\"model\",\n            path=\"models/user.py\",\n            content={\"name\": \"User\", \"fields\": []}\n        )\n        \n        assert artifact._draft is True\n        assert artifact._generated_by == \"scanner\"\n        assert artifact.tool == \"cartographer\"\n        assert artifact.artifact_type == \"model\"\n        assert artifact.path == \"models/user.py\"\n        assert isinstance(artifact.content, dict)\n\n\n# ============================================================================\n# FUNCTION TESTS - score_pct\n# ============================================================================\n\nclass TestScorePct:\n    \"\"\"Test suite for score_pct function\"\"\"\n    \n    def test_score_pct_happy_path(self):\n        \"\"\"Test score_pct returns correct percentage for typical compatibility report\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=7,\n            score_warn=2,\n            score_fail=1,\n            total=10,\n            recommendations=[]\n        )\n        \n        result = report.score_pct()\n        assert result == 70.0\n    \n    def test_score_pct_all_pass(self):\n        \"\"\"Test score_pct returns 100.0 when all checks pass\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=10,\n            score_warn=0,\n            score_fail=0,\n            total=10,\n            recommendations=[]\n        )\n        \n        result = report.score_pct()\n        assert result == 100.0\n    \n    def test_score_pct_empty_report(self):\n        \"\"\"Test score_pct returns 100.0 when total is 0 (no checks)\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=0,\n            score_warn=0,\n            score_fail=0,\n            total=0,\n            recommendations=[]\n        )\n        \n        result = report.score_pct()\n        assert result == 100.0\n    \n    def test_score_pct_all_fail(self):\n        \"\"\"Test score_pct returns 0.0 when all checks fail\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=0,\n            score_warn=0,\n            score_fail=10,\n            total=10,\n            recommendations=[]\n        )\n        \n        result = report.score_pct()\n        assert result == 0.0\n    \n    def test_score_pct_rounded(self):\n        \"\"\"Test score_pct rounds to 1 decimal place\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=2,\n            score_warn=1,\n            score_fail=0,\n            total=3,\n            recommendations=[]\n        )\n        \n        result = report.score_pct()\n        # 2/3 * 100 = 66.666... should round to 66.7\n        assert result == 66.7\n    \n    def test_score_pct_range_postcondition(self):\n        \"\"\"Test score_pct always returns value in [0.0, 100.0] range\"\"\"\n        test_cases = [\n            (0, 0, 0, 0),  # Empty\n            (10, 0, 0, 10),  # All pass\n            (0, 0, 10, 10),  # All fail\n            (5, 3, 2, 10),  # Mixed\n            (1, 0, 0, 1),  # Single pass\n            (0, 0, 1, 1),  # Single fail\n        ]\n        \n        for pass_score, warn_score, fail_score, total in test_cases:\n            report = CompatibilityReport(\n                generated=\"2024-01-01T00:00:00Z\",\n                checks=[],\n                score_pass=pass_score,\n                score_warn=warn_score,\n                score_fail=fail_score,\n                total=total,\n                recommendations=[]\n            )\n            \n            result = report.score_pct()\n            assert 0.0 <= result <= 100.0, f\"Result {result} out of range for {test_cases}\"\n    \n    def test_score_pct_one_pass_out_of_many(self):\n        \"\"\"Test score_pct with 1 pass out of 100\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=1,\n            score_warn=0,\n            score_fail=99,\n            total=100,\n            recommendations=[]\n        )\n        \n        result = report.score_pct()\n        assert result == 1.0\n\n\n# ============================================================================\n# FUNCTION TESTS - has_failures\n# ============================================================================\n\nclass TestHasFailures:\n    \"\"\"Test suite for has_failures function\"\"\"\n    \n    def test_has_failures_with_failures(self):\n        \"\"\"Test has_failures returns True when score_fail > 0\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=5,\n            score_warn=2,\n            score_fail=3,\n            total=10,\n            recommendations=[]\n        )\n        \n        result = report.has_failures()\n        assert result is True\n    \n    def test_has_failures_no_failures(self):\n        \"\"\"Test has_failures returns False when score_fail = 0\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=8,\n            score_warn=2,\n            score_fail=0,\n            total=10,\n            recommendations=[]\n        )\n        \n        result = report.has_failures()\n        assert result is False\n    \n    def test_has_failures_edge_one(self):\n        \"\"\"Test has_failures returns True when score_fail = 1 (edge of boundary)\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=9,\n            score_warn=0,\n            score_fail=1,\n            total=10,\n            recommendations=[]\n        )\n        \n        result = report.has_failures()\n        assert result is True\n    \n    def test_has_failures_all_fail(self):\n        \"\"\"Test has_failures when all checks fail\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=0,\n            score_warn=0,\n            score_fail=100,\n            total=100,\n            recommendations=[]\n        )\n        \n        result = report.has_failures()\n        assert result is True\n    \n    def test_has_failures_empty_report(self):\n        \"\"\"Test has_failures on empty report\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=0,\n            score_warn=0,\n            score_fail=0,\n            total=0,\n            recommendations=[]\n        )\n        \n        result = report.has_failures()\n        assert result is False\n\n\n# ============================================================================\n# INVARIANT TESTS\n# ============================================================================\n\nclass TestInvariants:\n    \"\"\"Test suite for contract invariants\"\"\"\n    \n    def test_compatibility_report_total_invariant(self):\n        \"\"\"Test invariant: total == score_pass + score_warn + score_fail\"\"\"\n        test_cases = [\n            (3, 4, 2, 9),\n            (10, 0, 0, 10),\n            (0, 0, 10, 10),\n            (5, 5, 5, 15),\n            (0, 0, 0, 0),\n        ]\n        \n        for pass_s, warn_s, fail_s, total in test_cases:\n            report = CompatibilityReport(\n                generated=\"2024-01-01T00:00:00Z\",\n                checks=[],\n                score_pass=pass_s,\n                score_warn=warn_s,\n                score_fail=fail_s,\n                total=total,\n                recommendations=[]\n            )\n            \n            assert report.total == report.score_pass + report.score_warn + report.score_fail\n    \n    def test_enum_string_based(self):\n        \"\"\"Test invariant: All enum values are string-based\"\"\"\n        # Test Confidence\n        for member in Confidence:\n            assert isinstance(member.value, str)\n        \n        # Test Severity\n        for member in Severity:\n            assert isinstance(member.value, str)\n        \n        # Test ComponentType\n        for member in ComponentType:\n            assert isinstance(member.value, str)\n        \n        # Test BackendType\n        for member in BackendType:\n            assert isinstance(member.value, str)\n    \n    def test_pydantic_basemodel_inheritance(self):\n        \"\"\"Test invariant: All Pydantic models inherit from BaseModel\"\"\"\n        from pydantic import BaseModel\n        \n        # Test all struct types\n        field = DiscoveredField(\n            name=\"test\",\n            type=None,\n            confidence=Confidence.HIGH,\n            note=None,\n            classification_hint=None\n        )\n        assert isinstance(field, BaseModel)\n        \n        model = DiscoveredModel(\n            name=\"Test\",\n            source_file=\"test.py\",\n            line=1,\n            orm=None,\n            fields=[],\n            confidence=Confidence.HIGH\n        )\n        assert isinstance(model, BaseModel)\n        \n        route = DiscoveredRoute(\n            path=\"/test\",\n            method=\"GET\",\n            handler=\"test\",\n            source_file=\"test.py\",\n            line=1,\n            framework=\"Flask\",\n            confidence=Confidence.HIGH\n        )\n        assert isinstance(route, BaseModel)\n        \n        component = DiscoveredComponent(\n            name=\"Test\",\n            source_file=\"test.py\",\n            line=1,\n            type=ComponentType.SERVICE,\n            public_methods=[],\n            dependencies=[],\n            confidence=Confidence.HIGH,\n            note=None\n        )\n        assert isinstance(component, BaseModel)\n        \n        check = CheckResult(\n            check_id=\"CHK001\",\n            target=\"test\",\n            severity=Severity.INFO,\n            status=\"ok\",\n            message=\"test\",\n            tool=\"test\"\n        )\n        assert isinstance(check, BaseModel)\n        \n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=0,\n            score_warn=0,\n            score_fail=0,\n            total=0,\n            recommendations=[]\n        )\n        assert isinstance(report, BaseModel)\n    \n    def test_score_pct_range_invariant(self):\n        \"\"\"Test invariant: score_pct property returns value in range [0.0, 100.0]\"\"\"\n        # Generate random test cases\n        for _ in range(20):\n            total = random.randint(0, 100)\n            if total == 0:\n                pass_s, warn_s, fail_s = 0, 0, 0\n            else:\n                pass_s = random.randint(0, total)\n                remaining = total - pass_s\n                warn_s = random.randint(0, remaining)\n                fail_s = total - pass_s - warn_s\n            \n            report = CompatibilityReport(\n                generated=\"2024-01-01T00:00:00Z\",\n                checks=[],\n                score_pass=pass_s,\n                score_warn=warn_s,\n                score_fail=fail_s,\n                total=total,\n                recommendations=[]\n            )\n            \n            result = report.score_pct()\n            assert 0.0 <= result <= 100.0\n\n\n# ============================================================================\n# SERIALIZATION TESTS\n# ============================================================================\n\nclass TestSerialization:\n    \"\"\"Test serialization/deserialization of models\"\"\"\n    \n    def test_discovered_field_serialization(self):\n        \"\"\"Test DiscoveredField can be serialized to dict\"\"\"\n        field = DiscoveredField(\n            name=\"test_field\",\n            type=\"str\",\n            confidence=Confidence.HIGH,\n            note=\"test note\",\n            classification_hint=\"test\"\n        )\n        \n        # Pydantic models should support model_dump or dict()\n        try:\n            data = field.model_dump()\n        except AttributeError:\n            data = field.dict()\n        \n        assert data[\"name\"] == \"test_field\"\n        assert data[\"type\"] == \"str\"\n    \n    def test_compatibility_report_serialization(self):\n        \"\"\"Test CompatibilityReport can be serialized to dict\"\"\"\n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=5,\n            score_warn=3,\n            score_fail=2,\n            total=10,\n            recommendations=[\"Fix issue 1\"]\n        )\n        \n        try:\n            data = report.model_dump()\n        except AttributeError:\n            data = report.dict()\n        \n        assert data[\"score_pass\"] == 5\n        assert data[\"total\"] == 10\n        assert \"Fix issue 1\" in data[\"recommendations\"]\n\n\n# ============================================================================\n# INTEGRATION TESTS\n# ============================================================================\n\nclass TestIntegration:\n    \"\"\"Integration tests with complex nested objects\"\"\"\n    \n    def test_discovery_result_complete_integration(self):\n        \"\"\"Test DiscoveryResult with all nested types populated\"\"\"\n        # Create nested objects\n        field = DiscoveredField(\n            name=\"id\",\n            type=\"int\",\n            confidence=Confidence.HIGH,\n            note=None,\n            classification_hint=\"identifier\"\n        )\n        \n        model = DiscoveredModel(\n            name=\"User\",\n            source_file=\"models.py\",\n            line=10,\n            orm=\"SQLAlchemy\",\n            fields=[field],\n            confidence=Confidence.HIGH\n        )\n        \n        route = DiscoveredRoute(\n            path=\"/api/users\",\n            method=\"GET\",\n            handler=\"get_users\",\n            source_file=\"routes.py\",\n            line=25,\n            framework=\"FastAPI\",\n            confidence=Confidence.HIGH\n        )\n        \n        component = DiscoveredComponent(\n            name=\"UserService\",\n            source_file=\"service.py\",\n            line=15,\n            type=ComponentType.SERVICE,\n            public_methods=[\"create_user\"],\n            dependencies=[\"database\"],\n            confidence=Confidence.HIGH,\n            note=None\n        )\n        \n        pact_key = DiscoveredPactKey(\n            key=\"user.created\",\n            source_file=\"events.py\",\n            line=42,\n            confidence=Confidence.MEDIUM\n        )\n        \n        env_var = DiscoveredEnvVar(\n            name=\"DATABASE_URL\",\n            source_file=\"config.py\",\n            line=8,\n            backend_hint=\"POSTGRES\",\n            confidence=Confidence.HIGH\n        )\n        \n        sensitive = DiscoveredSensitiveField(\n            field_name=\"ssn\",\n            source_file=\"models.py\",\n            line=20,\n            pattern_matched=\"ssn\",\n            classification_hint=\"PII\",\n            confidence=Confidence.HIGH\n        )\n        \n        # Create discovery result\n        result = DiscoveryResult(\n            models=[model],\n            routes=[route],\n            components=[component],\n            pact_keys=[pact_key],\n            env_vars=[env_var],\n            sensitive_fields=[sensitive]\n        )\n        \n        # Verify all components\n        assert len(result.models) == 1\n        assert len(result.routes) == 1\n        assert len(result.components) == 1\n        assert len(result.pact_keys) == 1\n        assert len(result.env_vars) == 1\n        assert len(result.sensitive_fields) == 1\n        \n        # Verify nested data\n        assert result.models[0].fields[0].name == \"id\"\n        assert result.routes[0].path == \"/api/users\"\n        assert result.components[0].type == ComponentType.SERVICE\n    \n    def test_compatibility_report_with_multiple_checks(self):\n        \"\"\"Test CompatibilityReport with multiple CheckResult objects\"\"\"\n        checks = [\n            CheckResult(\n                check_id=f\"CHK{i:03d}\",\n                target=f\"Target{i}\",\n                severity=random.choice([Severity.FAIL, Severity.WARN, Severity.INFO]),\n                status=\"checked\",\n                message=f\"Check {i} message\",\n                tool=\"test_tool\"\n            )\n            for i in range(10)\n        ]\n        \n        score_fail = sum(1 for c in checks if c.severity == Severity.FAIL)\n        score_warn = sum(1 for c in checks if c.severity == Severity.WARN)\n        score_pass = sum(1 for c in checks if c.severity == Severity.INFO)\n        \n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=checks,\n            score_pass=score_pass,\n            score_warn=score_warn,\n            score_fail=score_fail,\n            total=len(checks),\n            recommendations=[\"Recommendation 1\", \"Recommendation 2\"]\n        )\n        \n        assert len(report.checks) == 10\n        assert report.total == 10\n        assert report.score_pass + report.score_warn + report.score_fail == 10\n\n\n# ============================================================================\n# EDGE CASE TESTS\n# ============================================================================\n\nclass TestEdgeCases:\n    \"\"\"Edge case tests for boundary conditions\"\"\"\n    \n    def test_line_number_edge_cases(self):\n        \"\"\"Test structs with edge case line numbers\"\"\"\n        # Line 1 (minimum positive)\n        model = DiscoveredModel(\n            name=\"Test\",\n            source_file=\"test.py\",\n            line=1,\n            orm=None,\n            fields=[],\n            confidence=Confidence.HIGH\n        )\n        assert model.line == 1\n        \n        # Large line number\n        model = DiscoveredModel(\n            name=\"Test\",\n            source_file=\"test.py\",\n            line=999999,\n            orm=None,\n            fields=[],\n            confidence=Confidence.HIGH\n        )\n        assert model.line == 999999\n    \n    def test_empty_lists_and_dicts(self):\n        \"\"\"Test structs with empty collections\"\"\"\n        # Empty fields\n        model = DiscoveredModel(\n            name=\"Empty\",\n            source_file=\"test.py\",\n            line=1,\n            orm=None,\n            fields=[],\n            confidence=Confidence.LOW\n        )\n        assert len(model.fields) == 0\n        \n        # Empty dependencies\n        component = DiscoveredComponent(\n            name=\"Isolated\",\n            source_file=\"test.py\",\n            line=1,\n            type=ComponentType.LIBRARY,\n            public_methods=[],\n            dependencies=[],\n            confidence=Confidence.MEDIUM,\n            note=None\n        )\n        assert len(component.dependencies) == 0\n        assert len(component.public_methods) == 0\n        \n        # Empty content\n        artifact = DraftArtifact(\n            _draft=True,\n            _generated_by=\"test\",\n            tool=\"test\",\n            artifact_type=\"test\",\n            path=\"test.py\",\n            content={}\n        )\n        assert len(artifact.content) == 0\n    \n    def test_confidence_levels_all_variants(self):\n        \"\"\"Test all confidence level variants work correctly\"\"\"\n        confidences = [Confidence.HIGH, Confidence.MEDIUM, Confidence.LOW]\n        \n        for conf in confidences:\n            field = DiscoveredField(\n                name=\"test\",\n                type=None,\n                confidence=conf,\n                note=None,\n                classification_hint=None\n            )\n            assert field.confidence == conf\n    \n    def test_special_characters_in_strings(self):\n        \"\"\"Test handling of special characters in string fields\"\"\"\n        special_strings = [\n            \"test/path/with/slashes\",\n            \"test\\\\path\\\\with\\\\backslashes\",\n            \"test-path-with-dashes\",\n            \"test_path_with_underscores\",\n            \"test.path.with.dots\",\n            \"test path with spaces\",\n            \"test@path#with$special%chars\"\n        ]\n        \n        for special_str in special_strings:\n            model = DiscoveredModel(\n                name=special_str,\n                source_file=special_str,\n                line=1,\n                orm=None,\n                fields=[],\n                confidence=Confidence.HIGH\n            )\n            assert model.name == special_str\n            assert model.source_file == special_str\n\n\n# ============================================================================\n# PERFORMANCE TESTS\n# ============================================================================\n\nclass TestPerformance:\n    \"\"\"Performance tests to verify contract performance requirements\"\"\"\n    \n    def test_score_pct_performance(self):\n        \"\"\"Test score_pct meets p95<1ms requirement\"\"\"\n        import time\n        \n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=50,\n            score_warn=30,\n            score_fail=20,\n            total=100,\n            recommendations=[]\n        )\n        \n        # Run multiple times and measure\n        times = []\n        for _ in range(100):\n            start = time.perf_counter()\n            report.score_pct()\n            end = time.perf_counter()\n            times.append((end - start) * 1000)  # Convert to ms\n        \n        # Check p95\n        times.sort()\n        p95 = times[int(len(times) * 0.95)]\n        \n        # Should be well under 1ms (O(1) operation)\n        assert p95 < 1.0, f\"p95 latency {p95}ms exceeds 1ms requirement\"\n    \n    def test_has_failures_performance(self):\n        \"\"\"Test has_failures meets p95<1ms requirement\"\"\"\n        import time\n        \n        report = CompatibilityReport(\n            generated=\"2024-01-01T00:00:00Z\",\n            checks=[],\n            score_pass=50,\n            score_warn=30,\n            score_fail=20,\n            total=100,\n            recommendations=[]\n        )\n        \n        # Run multiple times and measure\n        times = []\n        for _ in range(100):\n            start = time.perf_counter()\n            report.has_failures()\n            end = time.perf_counter()\n            times.append((end - start) * 1000)  # Convert to ms\n        \n        # Check p95\n        times.sort()\n        p95 = times[int(len(times) * 0.95)]\n        \n        # Should be well under 1ms (O(1) operation)\n        assert p95 < 1.0, f\"p95 latency {p95}ms exceeds 1ms requirement\"\n\"\"\""
+}

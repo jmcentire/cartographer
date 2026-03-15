@@ -1,0 +1,148 @@
+{
+  "component_id": "src_cartographer_compatibility_base",
+  "name": "Cartographer Compatibility Base",
+  "description": "Base abstract interface for tool-specific compatibility checkers. Defines the contract that all compatibility checker implementations must follow, requiring a tool_name property and a check method that validates configuration against a specific stack tool.",
+  "version": 1,
+  "types": [
+    {
+      "name": "CompatibilityChecker",
+      "kind": "struct",
+      "fields": [],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Abstract base class for tool-specific compatibility checkers. Subclasses must implement tool_name property and check method."
+    }
+  ],
+  "functions": [
+    {
+      "name": "tool_name",
+      "description": "Property that returns the name of the stack tool this checker validates against. Must be implemented by subclasses.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "CompatibilityChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "str",
+      "error_cases": [
+        {
+          "name": "not_implemented",
+          "condition": "Called on abstract base class or subclass without implementation",
+          "error_type": "NotImplementedError",
+          "error_data": {}
+        }
+      ],
+      "preconditions": [
+        "Must be implemented by concrete subclass (abstract method)"
+      ],
+      "postconditions": [
+        "Returns a non-empty string identifying the tool name"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "check",
+      "description": "Runs compatibility checks for the tool against the provided configuration and project directory. Must be implemented by subclasses.",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "CompatibilityChecker",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "config",
+          "type_ref": "CartographerConfig",
+          "required": true,
+          "default": "",
+          "description": "Cartographer configuration to validate",
+          "validators": []
+        },
+        {
+          "name": "base_dir",
+          "type_ref": "Path",
+          "required": true,
+          "default": "",
+          "description": "Root directory of the project being checked",
+          "validators": []
+        }
+      ],
+      "output_type": "list[CheckResult]",
+      "error_cases": [
+        {
+          "name": "not_implemented",
+          "condition": "Called on abstract base class or subclass without implementation",
+          "error_type": "NotImplementedError",
+          "error_data": {}
+        }
+      ],
+      "preconditions": [
+        "Must be implemented by concrete subclass (abstract method)",
+        "config must be a valid CartographerConfig instance",
+        "base_dir must be a valid Path object"
+      ],
+      "postconditions": [
+        "Returns a list of CheckResult objects (may be empty)",
+        "Each CheckResult represents a validation finding"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": "Base interface defines no side effects, but implementations may have side effects"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "abc",
+    "pathlib",
+    "cartographer.config.loader",
+    "cartographer.models"
+  ],
+  "dependency_contracts": {
+    "cartographer.config.loader": [
+      "CartographerConfig"
+    ],
+    "cartographer.models": [
+      "CheckResult"
+    ]
+  },
+  "invariants": [
+    "CompatibilityChecker is an abstract base class and cannot be instantiated directly",
+    "All concrete subclasses must implement both tool_name property and check method",
+    "tool_name must return a string identifying the tool",
+    "check must return a list of CheckResult objects"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [],
+    "writes": [],
+    "rationale": "",
+    "side_effects": []
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

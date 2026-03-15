@@ -154,7 +154,7 @@ stack:
 output_dir: ".cartographer/drafts/"
 
 compatibility:
-  pact_key_format: "PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+"
+  pact_key_format: "PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+"  # See https://github.com/jmcentire/pact/blob/main/PACT_KEY_STANDARD.md
   min_baton_schema_version: "2.0"
 ```
 

@@ -1,71 +1,74 @@
-- id: C001
-  boundary: Backend introspection operations
-  condition: All database and storage access must be read-only
-  violation: Writing to discovered backends, modifying schemas, or creating tables/collections
-  severity: must
-  rationale: System must never disrupt or modify target systems during discovery
-  classification_tier: null
-  affected_components: [backend_introspector]
+version: "1"
+project: cartographer
+constraints:
+  - id: C001
+    boundary: Backend introspection operations
+    condition: All database and storage access must be read-only
+    violation: Writing to discovered backends, modifying schemas, or creating tables/collections
+    severity: must
+    rationale: System must never disrupt or modify target systems during discovery
+    classification_tier: null
+    affected_components: [backend_introspector]
 
-- id: C002
-  boundary: Service probing operations
-  condition: Service discovery must respect rate limits and not impact performance
-  violation: Excessive requests causing target service degradation or rate limiting
-  severity: must
-  rationale: Discovery operations should not affect production service availability
-  classification_tier: null
-  affected_components: [service_prober]
+  - id: C002
+    boundary: Service probing operations
+    condition: Service discovery must respect rate limits and not impact performance
+    violation: Excessive requests causing target service degradation or rate limiting
+    severity: must
+    rationale: Discovery operations should not affect production service availability
+    classification_tier: null
+    affected_components: [service_prober]
 
-- id: C003
-  boundary: Artifact registration
-  condition: Draft artifacts must require explicit human approval before registration
-  violation: Automatic registration of discovered artifacts without human review
-  severity: must
-  rationale: Prevents accidental modification of existing stack configuration
-  classification_tier: null
-  affected_components: [artifact_drafter, cli_orchestrator]
+  - id: C003
+    boundary: Artifact registration
+    condition: Draft artifacts must require explicit human approval before registration
+    violation: Automatic registration of discovered artifacts without human review
+    severity: must
+    rationale: Prevents accidental modification of existing stack configuration
+    classification_tier: null
+    affected_components: [artifact_drafter, cli_orchestrator]
 
-- id: C004
-  boundary: Discovery method consistency
-  condition: Conflicting discoveries from different methods must be flagged and reported
-  violation: Silent resolution of conflicts or missing conflict detection
-  severity: must
-  rationale: Ensures reliability of compatibility assessments and migration plans
-  classification_tier: null
-  affected_components: [compatibility_checker, report_generator]
+  - id: C004
+    boundary: Discovery method consistency
+    condition: Conflicting discoveries from different methods must be flagged and reported
+    violation: Silent resolution of conflicts or missing conflict detection
+    severity: must
+    rationale: Ensures reliability of compatibility assessments and migration plans
+    classification_tier: null
+    affected_components: [compatibility_checker, report_generator]
 
-- id: C005
-  boundary: Sensitive data handling
-  condition: PII and FINANCIAL data discovered during introspection must be classified and protected
-  violation: Exposing sensitive data in reports or artifacts without proper classification
-  severity: must
-  rationale: Compliance and privacy protection during discovery operations
-  classification_tier: PII
-  affected_components: [backend_introspector, report_generator]
+  - id: C005
+    boundary: Sensitive data handling
+    condition: PII and FINANCIAL data discovered during introspection must be classified and protected
+    violation: Exposing sensitive data in reports or artifacts without proper classification
+    severity: must
+    rationale: Compliance and privacy protection during discovery operations
+    classification_tier: PII
+    affected_components: [backend_introspector, report_generator]
 
-- id: C006
-  boundary: Credential management
-  condition: Authentication data must never be stored in artifacts or reports
-  violation: Including credentials, tokens, or API keys in discovery outputs
-  severity: must
-  rationale: Prevents credential exposure and security breaches
-  classification_tier: AUTH
-  affected_components: [backend_introspector, service_prober, artifact_drafter]
+  - id: C006
+    boundary: Credential management
+    condition: Authentication data must never be stored in artifacts or reports
+    violation: Including credentials, tokens, or API keys in discovery outputs
+    severity: must
+    rationale: Prevents credential exposure and security breaches
+    classification_tier: AUTH
+    affected_components: [backend_introspector, service_prober, artifact_drafter]
 
-- id: C007
-  boundary: Report versioning
-  condition: Compatibility reports must include timestamps and discovery method attribution
-  violation: Reports without version information or discovery source tracking
-  severity: should
-  rationale: Enables tracking of report freshness and discovery method reliability
-  classification_tier: null
-  affected_components: [report_generator]
+  - id: C007
+    boundary: Report versioning
+    condition: Compatibility reports must include timestamps and discovery method attribution
+    violation: Reports without version information or discovery source tracking
+    severity: should
+    rationale: Enables tracking of report freshness and discovery method reliability
+    classification_tier: null
+    affected_components: [report_generator]
 
-- id: C008
-  boundary: Discovery audit trail
-  condition: All discovery operations must be logged with target system and operation details
-  violation: Missing audit logs for discovery operations
-  severity: should
-  rationale: Enables troubleshooting and compliance with discovery operation tracking
-  classification_tier: null
-  affected_components: [cli_orchestrator, backend_introspector, service_prober, ast_scanner]
+  - id: C008
+    boundary: Discovery audit trail
+    condition: All discovery operations must be logged with target system and operation details
+    violation: Missing audit logs for discovery operations
+    severity: should
+    rationale: Enables troubleshooting and compliance with discovery operation tracking
+    classification_tier: null
+    affected_components: [cli_orchestrator, backend_introspector, service_prober, ast_scanner]

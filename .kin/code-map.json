@@ -1,0 +1,2852 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "cartographer",
+    "description": "Code map exported from Kindex for cartographer.",
+    "languages": [
+      "Python",
+      "python"
+    ],
+    "frameworks": [],
+    "analyzedAt": "2026-05-24T14:49:23",
+    "gitCommitHash": "171c1d3044c767ba524fdc7ef240cc486d6aea33"
+  },
+  "nodes": [
+    {
+      "id": "code-mod-cartographer-4cb1c582a12e",
+      "type": "file",
+      "name": "src/cartographer/discovery/live/redis_scanner.py",
+      "filePath": "src/cartographer/discovery/live/redis_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/live/redis_scanner.py | ~70 lines ## Functions - introspect_redis(connection_hint: str, backend_id: str, sample_size: int = 1000) -> list[DiscoveredModel]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-721b82127f69",
+      "type": "file",
+      "name": "src/cartographer/report/generator.py",
+      "filePath": "src/cartographer/report/generator.py",
+      "summary": "Language: Python | Path: src/cartographer/report/generator.py | ~151 lines ## Functions - build_report(checks: list[CheckResult]) -> CompatibilityReport",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 6,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-c936516d585e",
+      "type": "file",
+      "name": "src/cartographer/cli/main.py",
+      "filePath": "src/cartographer/cli/main.py",
+      "summary": "Language: Python | Path: src/cartographer/cli/main.py | ~339 lines ## Functions - adopt( ctx: click.Context, confidence: str, tool_name: str | None, dry_run: bool, confirm_classification: bool, ) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 12,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-5df7f79d9b09",
+      "type": "file",
+      "name": "src/cartographer/api/server.py",
+      "filePath": "src/cartographer/api/server.py",
+      "summary": "Language: Python | Path: src/cartographer/api/server.py | ~201 lines ## Functions - create_app(config: CartographerConfig | None = None, base_dir: Path | None = None)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-006461129e1d",
+      "type": "file",
+      "name": "src/cartographer/discovery/live/postgres.py",
+      "filePath": "src/cartographer/discovery/live/postgres.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/live/postgres.py | ~12 lines ## Functions - introspect_postgres(connection_hint: str, backend_id: str) -> list[DiscoveredModel]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-320ddb0dff8a",
+      "type": "class",
+      "name": "CheckResult",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class CheckResult (contracts/src_cartographer_models/interface.py:116)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-d624b61cef3e",
+      "type": "class",
+      "name": "CheckResult",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class CheckResult(BaseModel) (src/cartographer/models.py:123)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-72e48665e5e9",
+      "type": "class",
+      "name": "SourceConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class SourceConfig(BaseModel) (src/cartographer/config/loader.py:12)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-109a0d3b0bc0",
+      "type": "class",
+      "name": "Severity",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class Severity(Enum) (contracts/src_cartographer_models/interface.py:18) [Merged from: Severity] class Severity(Enum) (contracts/src_constrain_models/interface.py:27)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-9d29f50c4f7d",
+      "type": "class",
+      "name": "BackendType",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class BackendType(Enum) (contracts/src_cartographer_models/interface.py:32)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-b1c9ef3a39ec",
+      "type": "class",
+      "name": "BackendType",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class BackendType(str, Enum) (src/cartographer/models.py:31)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-5379ce6208dc",
+      "type": "file",
+      "name": "src/cartographer/compatibility/baton_checker.py",
+      "filePath": "src/cartographer/compatibility/baton_checker.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/baton_checker.py | ~160 lines ## Classes - BatonChecker(CompatibilityChecker)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 3,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-371d970937a4",
+      "type": "file",
+      "name": "src/cartographer/drafters/baton_drafter.py",
+      "filePath": "src/cartographer/drafters/baton_drafter.py",
+      "summary": "Language: Python | Path: src/cartographer/drafters/baton_drafter.py | ~107 lines ## Classes - BatonDrafter(Drafter)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-48e403e3e712",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/typescript_scanner.py",
+      "filePath": "src/cartographer/discovery/plugins/typescript_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/typescript_scanner.py | ~222 lines ## Classes - TypeScriptScanner(ScannerPlugin)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-f9cfa4e02e67",
+      "type": "file",
+      "name": "src/cartographer/compatibility/base.py",
+      "filePath": "src/cartographer/compatibility/base.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/base.py | ~21 lines ## Classes - CompatibilityChecker(ABC)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-a0c7a8ab9597",
+      "type": "file",
+      "name": "src/cartographer/drafters/constrain_drafter.py",
+      "filePath": "src/cartographer/drafters/constrain_drafter.py",
+      "summary": "Language: Python | Path: src/cartographer/drafters/constrain_drafter.py | ~149 lines ## Classes - ConstrainDrafter(Drafter)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 6,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-c4fa40278c6b",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/python_scanner.py",
+      "filePath": "src/cartographer/discovery/plugins/python_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/python_scanner.py | ~315 lines ## Classes - PythonScanner(ScannerPlugin)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 14,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-7e490a1af4b0",
+      "type": "file",
+      "name": "src/cartographer/drafters/base.py",
+      "filePath": "src/cartographer/drafters/base.py",
+      "summary": "Language: Python | Path: src/cartographer/drafters/base.py | ~15 lines ## Classes - Drafter(ABC)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-474794d147df",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/go_scanner.py",
+      "filePath": "src/cartographer/discovery/plugins/go_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/go_scanner.py | ~143 lines ## Classes - GoScanner(ScannerPlugin)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-e8f3784644a8",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/java_scanner.py",
+      "filePath": "src/cartographer/discovery/plugins/java_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/java_scanner.py | ~113 lines ## Classes - JavaScanner(ScannerPlugin)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-b73512c59f98",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/javascript_scanner.py",
+      "filePath": "src/cartographer/discovery/plugins/javascript_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/javascript_scanner.py | ~20 lines ## Classes - JavaScriptScanner(TypeScriptScanner)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-f9bab0014bfc",
+      "type": "class",
+      "name": "Confidence",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class Confidence(str, Enum) (src/cartographer/models.py:11)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-de7f70d275a6",
+      "type": "file",
+      "name": "contracts/src_cartographer_compatibility_baton_checker/interface.py",
+      "filePath": "contracts/src_cartographer_compatibility_baton_checker/interface.py",
+      "summary": "Language: Python | Path: contracts/src_cartographer_compatibility_baton_checker/interface.py | ~81 lines ## Classes - BatonChecker",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 5,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-ea40f220a695",
+      "type": "class",
+      "name": "BatonChecker",
+      "filePath": "contracts/src_cartographer_compatibility_baton_checker/interface.py",
+      "summary": "class BatonChecker (contracts/src_cartographer_compatibility_baton_checker/interface.py:12)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-5876300578ab",
+      "type": "class",
+      "name": "BatonChecker",
+      "filePath": "src/cartographer/compatibility/baton_checker.py",
+      "summary": "class BatonChecker(CompatibilityChecker) (src/cartographer/compatibility/baton_checker.py:14) ## Methods - check(self, config: CartographerConfig, base_dir: Path) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-75bd7e13bf2b",
+      "type": "class",
+      "name": "BatonDrafter",
+      "filePath": "src/cartographer/drafters/baton_drafter.py",
+      "summary": "class BatonDrafter(Drafter) (src/cartographer/drafters/baton_drafter.py:13) ## Methods - draft(self, result: DiscoveryResult, output_dir: Path) -> list[Path]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-106d67899073",
+      "type": "class",
+      "name": "TypeScriptScanner",
+      "filePath": "src/cartographer/discovery/plugins/typescript_scanner.py",
+      "summary": "class TypeScriptScanner(ScannerPlugin) (src/cartographer/discovery/plugins/typescript_scanner.py:49) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-9ca3c1658ce2",
+      "type": "file",
+      "name": "contracts/src_cartographer_compatibility_base/interface.py",
+      "filePath": "contracts/src_cartographer_compatibility_base/interface.py",
+      "summary": "Language: Python | Path: contracts/src_cartographer_compatibility_base/interface.py | ~35 lines ## Classes - CompatibilityChecker",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 3,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-cf421d8585a7",
+      "type": "class",
+      "name": "CompatibilityChecker",
+      "filePath": "contracts/src_cartographer_compatibility_base/interface.py",
+      "summary": "class CompatibilityChecker (contracts/src_cartographer_compatibility_base/interface.py:11)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-b0b145015cbb",
+      "type": "class",
+      "name": "CompatibilityChecker",
+      "filePath": "src/cartographer/compatibility/base.py",
+      "summary": "class CompatibilityChecker(ABC) (src/cartographer/compatibility/base.py:12) ## Methods - check(self, config: CartographerConfig, base_dir: Path) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-837c9199d4e7",
+      "type": "class",
+      "name": "ConstrainDrafter",
+      "filePath": "src/cartographer/drafters/constrain_drafter.py",
+      "summary": "class ConstrainDrafter(Drafter) (src/cartographer/drafters/constrain_drafter.py:13) ## Methods - draft(self, result: DiscoveryResult, output_dir: Path) -> list[Path]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-568cf9718ba6",
+      "type": "file",
+      "name": "src/cartographer/discovery/sensitive_fields.py",
+      "filePath": "src/cartographer/discovery/sensitive_fields.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/sensitive_fields.py | ~148 lines ## Classes - SensitiveFieldScanner",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 3,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-6e6bcbc9d7d9",
+      "type": "class",
+      "name": "SensitiveFieldScanner",
+      "filePath": "src/cartographer/discovery/sensitive_fields.py",
+      "summary": "class SensitiveFieldScanner (src/cartographer/discovery/sensitive_fields.py:110) ## Methods - scan(self, file_path: Path, content: str) -> list[DiscoveredSensitiveField]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-3d815a9f14db",
+      "type": "class",
+      "name": "PythonScanner",
+      "filePath": "src/cartographer/discovery/plugins/python_scanner.py",
+      "summary": "class PythonScanner(ScannerPlugin) (src/cartographer/discovery/plugins/python_scanner.py:49) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-037ccf51409a",
+      "type": "class",
+      "name": "Drafter",
+      "filePath": "src/cartographer/drafters/base.py",
+      "summary": "class Drafter(ABC) (src/cartographer/drafters/base.py:11) ## Methods - draft(self, result: DiscoveryResult, output_dir: Path) -> list[Path]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-9e9d6346bfd2",
+      "type": "class",
+      "name": "GoScanner",
+      "filePath": "src/cartographer/discovery/plugins/go_scanner.py",
+      "summary": "class GoScanner(ScannerPlugin) (src/cartographer/discovery/plugins/go_scanner.py:40) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-9979867e8e6f",
+      "type": "class",
+      "name": "JavaScanner",
+      "filePath": "src/cartographer/discovery/plugins/java_scanner.py",
+      "summary": "class JavaScanner(ScannerPlugin) (src/cartographer/discovery/plugins/java_scanner.py:37) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-ee860af6240c",
+      "type": "class",
+      "name": "JavaScriptScanner",
+      "filePath": "src/cartographer/discovery/plugins/javascript_scanner.py",
+      "summary": "class JavaScriptScanner(TypeScriptScanner) (src/cartographer/discovery/plugins/javascript_scanner.py:19) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-7095c7f4d19f",
+      "type": "file",
+      "name": "src/cartographer/discovery/scanner.py",
+      "filePath": "src/cartographer/discovery/scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/scanner.py | ~60 lines ## Functions - scan_source(config: CartographerConfig, base_dir: Path) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-f98acfb47604",
+      "type": "file",
+      "name": "contracts/src_cartographer_compatibility_ledger_checker/interface.py",
+      "filePath": "contracts/src_cartographer_compatibility_ledger_checker/interface.py",
+      "summary": "Language: Python | Path: contracts/src_cartographer_compatibility_ledger_checker/interface.py | ~64 lines ## Classes - LedgerChecker",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 4,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-38d1a99167f9",
+      "type": "class",
+      "name": "LedgerChecker",
+      "filePath": "contracts/src_cartographer_compatibility_ledger_checker/interface.py",
+      "summary": "class LedgerChecker (contracts/src_cartographer_compatibility_ledger_checker/interface.py:14)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-da4d24f29620",
+      "type": "file",
+      "name": "src/cartographer/compatibility/ledger_checker.py",
+      "filePath": "src/cartographer/compatibility/ledger_checker.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/ledger_checker.py | ~127 lines ## Classes - LedgerChecker(CompatibilityChecker)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-e1399e120fc2",
+      "type": "class",
+      "name": "LedgerChecker",
+      "filePath": "src/cartographer/compatibility/ledger_checker.py",
+      "summary": "class LedgerChecker(CompatibilityChecker) (src/cartographer/compatibility/ledger_checker.py:14) ## Methods - check(self, config: CartographerConfig, base_dir: Path) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-b3dfe65b3978",
+      "type": "file",
+      "name": "src/cartographer/drafters/ledger_drafter.py",
+      "filePath": "src/cartographer/drafters/ledger_drafter.py",
+      "summary": "Language: Python | Path: src/cartographer/drafters/ledger_drafter.py | ~106 lines ## Classes - LedgerDrafter(Drafter)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 3,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-d79eb37a652b",
+      "type": "class",
+      "name": "LedgerDrafter",
+      "filePath": "src/cartographer/drafters/ledger_drafter.py",
+      "summary": "class LedgerDrafter(Drafter) (src/cartographer/drafters/ledger_drafter.py:13) ## Methods - draft(self, result: DiscoveryResult, output_dir: Path) -> list[Path]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-3aee85dc689c",
+      "type": "file",
+      "name": "src/cartographer/discovery/service_prober.py",
+      "filePath": "src/cartographer/discovery/service_prober.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/service_prober.py | ~88 lines ## Functions - load_openapi_file(path: Path) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 4,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-723774ce8a79",
+      "type": "file",
+      "name": "contracts/src_cartographer_compatibility_pact_checker/interface.py",
+      "filePath": "contracts/src_cartographer_compatibility_pact_checker/interface.py",
+      "summary": "Language: Python | Path: contracts/src_cartographer_compatibility_pact_checker/interface.py | ~76 lines ## Classes - PactChecker",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 5,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-abc792a328cc",
+      "type": "class",
+      "name": "PactChecker",
+      "filePath": "contracts/src_cartographer_compatibility_pact_checker/interface.py",
+      "summary": "class PactChecker (contracts/src_cartographer_compatibility_pact_checker/interface.py:13)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-cd96d44c7e76",
+      "type": "file",
+      "name": "src/cartographer/compatibility/pact_checker.py",
+      "filePath": "src/cartographer/compatibility/pact_checker.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/pact_checker.py | ~122 lines ## Classes - PactChecker(CompatibilityChecker)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-5b2b33061d75",
+      "type": "class",
+      "name": "PactChecker",
+      "filePath": "src/cartographer/compatibility/pact_checker.py",
+      "summary": "class PactChecker(CompatibilityChecker) (src/cartographer/compatibility/pact_checker.py:15) ## Methods - check(self, config: CartographerConfig, base_dir: Path) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-45a732a0735c",
+      "type": "file",
+      "name": "src/cartographer/drafters/pact_drafter.py",
+      "filePath": "src/cartographer/drafters/pact_drafter.py",
+      "summary": "Language: Python | Path: src/cartographer/drafters/pact_drafter.py | ~85 lines ## Classes - PactDrafter(Drafter)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 4,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-928ccf41eef5",
+      "type": "class",
+      "name": "PactDrafter",
+      "filePath": "src/cartographer/drafters/pact_drafter.py",
+      "summary": "class PactDrafter(Drafter) (src/cartographer/drafters/pact_drafter.py:13) ## Methods - draft(self, result: DiscoveryResult, output_dir: Path) -> list[Path]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-9808e4434158",
+      "type": "file",
+      "name": "src/cartographer/discovery/pact_keys.py",
+      "filePath": "src/cartographer/discovery/pact_keys.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/pact_keys.py | ~15 lines ## Classes - PactKeyScanner",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-f4aa01c9bf78",
+      "type": "class",
+      "name": "PactKeyScanner",
+      "filePath": "src/cartographer/discovery/pact_keys.py",
+      "summary": "class PactKeyScanner (src/cartographer/discovery/pact_keys.py:11) ## Methods - scan(self, file_path: Path, content: str) -> list[DiscoveredPactKey]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-01985ac8983c",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/base.py",
+      "filePath": "src/cartographer/discovery/plugins/base.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/base.py | ~15 lines ## Classes - ScannerPlugin(ABC)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-83a6ececf673",
+      "type": "class",
+      "name": "ScannerPlugin",
+      "filePath": "src/cartographer/discovery/plugins/base.py",
+      "summary": "class ScannerPlugin(ABC) (src/cartographer/discovery/plugins/base.py:11) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-e5fe36850397",
+      "type": "file",
+      "name": "src/cartographer/compatibility/sentinel_checker.py",
+      "filePath": "src/cartographer/compatibility/sentinel_checker.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/sentinel_checker.py | ~159 lines ## Classes - SentinelChecker(CompatibilityChecker)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-e1de38c03007",
+      "type": "class",
+      "name": "SentinelChecker",
+      "filePath": "src/cartographer/compatibility/sentinel_checker.py",
+      "summary": "class SentinelChecker(CompatibilityChecker) (src/cartographer/compatibility/sentinel_checker.py:14) ## Methods - check(self, config: CartographerConfig, base_dir: Path) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-797cbd9aa06f",
+      "type": "file",
+      "name": "src/cartographer/drafters/sentinel_drafter.py",
+      "filePath": "src/cartographer/drafters/sentinel_drafter.py",
+      "summary": "Language: Python | Path: src/cartographer/drafters/sentinel_drafter.py | ~13 lines ## Classes - SentinelDrafter(Drafter)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-eef30a9cec33",
+      "type": "class",
+      "name": "SentinelDrafter",
+      "filePath": "src/cartographer/drafters/sentinel_drafter.py",
+      "summary": "class SentinelDrafter(Drafter) (src/cartographer/drafters/sentinel_drafter.py:12) ## Methods - draft(self, result: DiscoveryResult, output_dir: Path) -> list[Path]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-61899e285dce",
+      "type": "file",
+      "name": "src/cartographer/discovery/live/mongodb.py",
+      "filePath": "src/cartographer/discovery/live/mongodb.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/live/mongodb.py | ~70 lines ## Functions - introspect_mongodb( connection_hint: str, backend_id: str, sample_size: int = 100, ) -> list[DiscoveredModel]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-edde962cc99f",
+      "type": "file",
+      "name": "src/cartographer/discovery/live/kafka.py",
+      "filePath": "src/cartographer/discovery/live/kafka.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/live/kafka.py | ~65 lines ## Functions - introspect_kafka( connection_hint: str, backend_id: str, schema_registry_url: str | None = None, ) -> list[DiscoveredModel]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-97a39a3023d7",
+      "type": "file",
+      "name": "src/cartographer/compatibility/runner.py",
+      "filePath": "src/cartographer/compatibility/runner.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/runner.py | ~26 lines ## Functions - run_checks( config: CartographerConfig, base_dir: Path, tools: list[str] | None = None, ) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-bd9df8269a10",
+      "type": "file",
+      "name": "src/cartographer/discovery/plugins/ruby_scanner.py",
+      "filePath": "src/cartographer/discovery/plugins/ruby_scanner.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/plugins/ruby_scanner.py | ~114 lines ## Classes - RubyScanner(ScannerPlugin)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-8b2400a5e81a",
+      "type": "class",
+      "name": "RubyScanner",
+      "filePath": "src/cartographer/discovery/plugins/ruby_scanner.py",
+      "summary": "class RubyScanner(ScannerPlugin) (src/cartographer/discovery/plugins/ruby_scanner.py:40) ## Methods - scan(self, file_path: Path, content: str) -> DiscoveryResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-d0de4f291ecb",
+      "type": "file",
+      "name": "contracts/src_cartographer_compatibility_arbiter_checker/interface.py",
+      "filePath": "contracts/src_cartographer_compatibility_arbiter_checker/interface.py",
+      "summary": "Language: Python | Path: contracts/src_cartographer_compatibility_arbiter_checker/interface.py | ~51 lines ## Classes - ArbiterChecker",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 4,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-2d236cf03e41",
+      "type": "class",
+      "name": "ArbiterChecker",
+      "filePath": "contracts/src_cartographer_compatibility_arbiter_checker/interface.py",
+      "summary": "class ArbiterChecker (contracts/src_cartographer_compatibility_arbiter_checker/interface.py:13)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-bd53bcb93029",
+      "type": "file",
+      "name": "src/cartographer/compatibility/arbiter_checker.py",
+      "filePath": "src/cartographer/compatibility/arbiter_checker.py",
+      "summary": "Language: Python | Path: src/cartographer/compatibility/arbiter_checker.py | ~100 lines ## Classes - ArbiterChecker(CompatibilityChecker)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-af7fb304297e",
+      "type": "class",
+      "name": "ArbiterChecker",
+      "filePath": "src/cartographer/compatibility/arbiter_checker.py",
+      "summary": "class ArbiterChecker(CompatibilityChecker) (src/cartographer/compatibility/arbiter_checker.py:13) ## Methods - check(self, config: CartographerConfig, base_dir: Path) -> list[CheckResult]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-87547f2d7689",
+      "type": "file",
+      "name": "src/cartographer/discovery/env_vars.py",
+      "filePath": "src/cartographer/discovery/env_vars.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/env_vars.py | ~77 lines ## Classes - EnvVarScanner",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-3fb65a06eb4c",
+      "type": "class",
+      "name": "EnvVarScanner",
+      "filePath": "src/cartographer/discovery/env_vars.py",
+      "summary": "class EnvVarScanner (src/cartographer/discovery/env_vars.py:49) ## Methods - scan(self, file_path: Path, content: str) -> list[DiscoveredEnvVar]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-a5fa375e6747",
+      "type": "file",
+      "name": "src/cartographer/discovery/live/introspector.py",
+      "filePath": "src/cartographer/discovery/live/introspector.py",
+      "summary": "Language: Python | Path: src/cartographer/discovery/live/introspector.py | ~23 lines ## Functions - introspect_backends(backends: list[BackendConfig]) -> list[DiscoveredModel]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-mod-cartographer-580982b3dcc8",
+      "type": "file",
+      "name": "src/cartographer/config/loader.py",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "Language: Python | Path: src/cartographer/config/loader.py | ~91 lines ## Classes - BackendConfig(BaseModel)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 11,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-cafd53557ba7",
+      "type": "class",
+      "name": "BackendConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class BackendConfig(BaseModel) (src/cartographer/config/loader.py:22)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-3356ae6fbd0d",
+      "type": "class",
+      "name": "CartographerConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class CartographerConfig(BaseModel) (src/cartographer/config/loader.py:60)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-f2892a855007",
+      "type": "class",
+      "name": "CompatibilityConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class CompatibilityConfig(BaseModel) (src/cartographer/config/loader.py:54)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-f60dd21a0001",
+      "type": "class",
+      "name": "InfrastructureConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class InfrastructureConfig(BaseModel) (src/cartographer/config/loader.py:30)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-b13429b8bbdc",
+      "type": "class",
+      "name": "ServiceConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class ServiceConfig(BaseModel) (src/cartographer/config/loader.py:34)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-dddef33d2040",
+      "type": "class",
+      "name": "StackConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class StackConfig(BaseModel) (src/cartographer/config/loader.py:45)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-4fd61fc7c005",
+      "type": "class",
+      "name": "TargetsConfig",
+      "filePath": "src/cartographer/config/loader.py",
+      "summary": "class TargetsConfig(BaseModel) (src/cartographer/config/loader.py:39)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-f5cd818106ae",
+      "type": "file",
+      "name": "contracts/src_cartographer_models/interface.py",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "Language: Python | Path: contracts/src_cartographer_models/interface.py | ~169 lines ## Classes - BackendType(Enum)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 18,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-71a266e58bb2",
+      "type": "class",
+      "name": "CompatibilityReport",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class CompatibilityReport (contracts/src_cartographer_models/interface.py:125)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-b2780a320c42",
+      "type": "class",
+      "name": "ComponentType",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class ComponentType(Enum) (contracts/src_cartographer_models/interface.py:24)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-1ac01911b5a7",
+      "type": "class",
+      "name": "DiscoveredComponent",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredComponent (contracts/src_cartographer_models/interface.py:72)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-067a1a7f6356",
+      "type": "class",
+      "name": "DiscoveredEnvVar",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredEnvVar (contracts/src_cartographer_models/interface.py:90)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-6247de1cb537",
+      "type": "class",
+      "name": "DiscoveredField",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredField (contracts/src_cartographer_models/interface.py:45)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-396e03e7ae62",
+      "type": "class",
+      "name": "DiscoveredModel",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredModel (contracts/src_cartographer_models/interface.py:53)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-8f7aebbe3121",
+      "type": "class",
+      "name": "DiscoveredPactKey",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredPactKey (contracts/src_cartographer_models/interface.py:83)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-6131ed6f4068",
+      "type": "class",
+      "name": "DiscoveredRoute",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredRoute (contracts/src_cartographer_models/interface.py:62)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-822cc86bf4e6",
+      "type": "class",
+      "name": "DiscoveredSensitiveField",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveredSensitiveField (contracts/src_cartographer_models/interface.py:98)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-3e24f9225cf3",
+      "type": "class",
+      "name": "DiscoveryResult",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DiscoveryResult (contracts/src_cartographer_models/interface.py:107)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-daea9c874021",
+      "type": "class",
+      "name": "DraftArtifact",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DraftArtifact (contracts/src_cartographer_models/interface.py:141)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-c1204962338c",
+      "type": "class",
+      "name": "DraftField",
+      "filePath": "contracts/src_cartographer_models/interface.py",
+      "summary": "class DraftField (contracts/src_cartographer_models/interface.py:135)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "file",
+      "name": "src/cartographer/models.py",
+      "filePath": "src/cartographer/models.py",
+      "summary": "Language: Python | Path: src/cartographer/models.py | ~171 lines ## Classes - BackendType(str, Enum)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 16,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "artifact",
+        "toolTier": "C"
+      }
+    },
+    {
+      "id": "code-sym-cartographer-47435e928e30",
+      "type": "class",
+      "name": "CompatibilityReport",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class CompatibilityReport(BaseModel) (src/cartographer/models.py:132) ## Methods - has_failures(self) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 2,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-9820deae915d",
+      "type": "class",
+      "name": "ComponentType",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class ComponentType(str, Enum) (src/cartographer/models.py:23)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-9497a8cacbb9",
+      "type": "class",
+      "name": "DiscoveredComponent",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredComponent(BaseModel) (src/cartographer/models.py:74)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-58ab0de0c7c9",
+      "type": "class",
+      "name": "DiscoveredEnvVar",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredEnvVar(BaseModel) (src/cartographer/models.py:92)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-d3ed084df76f",
+      "type": "class",
+      "name": "DiscoveredField",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredField(BaseModel) (src/cartographer/models.py:47)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-53af4eca8482",
+      "type": "class",
+      "name": "DiscoveredModel",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredModel(BaseModel) (src/cartographer/models.py:55)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-b9d7c78eb23e",
+      "type": "class",
+      "name": "DiscoveredPactKey",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredPactKey(BaseModel) (src/cartographer/models.py:85)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-75b75eef1d43",
+      "type": "class",
+      "name": "DiscoveredRoute",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredRoute(BaseModel) (src/cartographer/models.py:64)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-09f2a39f84b6",
+      "type": "class",
+      "name": "DiscoveredSensitiveField",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveredSensitiveField(BaseModel) (src/cartographer/models.py:100)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-3e247100c8a8",
+      "type": "class",
+      "name": "DiscoveryResult",
+      "filePath": "src/cartographer/models.py",
+      "summary": "class DiscoveryResult(BaseModel) (src/cartographer/models.py:109)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "Python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    },
+    {
+      "id": "code-sym-cartographer-1312b934712c",
+      "type": "concept",
+      "name": "Confidence",
+      "filePath": "/Users/jmcentire/Code/cartographer/contracts/src_cartographer_models/interface.py:12",
+      "summary": "class Confidence(Enum) (contracts/src_cartographer_models/interface.py:12) [Merged from: Confidence] class Confidence(Enum) (contracts/schemas/interface.py:45)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "complexity": 1,
+      "languageNotes": {
+        "language": "python",
+        "kindexType": "concept",
+        "toolTier": ""
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "code-sym-cartographer-320ddb0dff8a",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-320ddb0dff8a",
+      "target": "code-sym-cartographer-d624b61cef3e",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-d624b61cef3e",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-d624b61cef3e",
+      "target": "code-sym-cartographer-320ddb0dff8a",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-72e48665e5e9",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-109a0d3b0bc0",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9d29f50c4f7d",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9d29f50c4f7d",
+      "target": "code-sym-cartographer-b1c9ef3a39ec",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b1c9ef3a39ec",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b1c9ef3a39ec",
+      "target": "code-sym-cartographer-9d29f50c4f7d",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-5379ce6208dc",
+      "target": "code-mod-cartographer-f9cfa4e02e67",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-371d970937a4",
+      "target": "code-mod-cartographer-a0c7a8ab9597",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-371d970937a4",
+      "target": "code-mod-cartographer-7e490a1af4b0",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-48e403e3e712",
+      "target": "code-mod-cartographer-c4fa40278c6b",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-48e403e3e712",
+      "target": "code-mod-cartographer-474794d147df",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-48e403e3e712",
+      "target": "code-mod-cartographer-e8f3784644a8",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-48e403e3e712",
+      "target": "code-mod-cartographer-b73512c59f98",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-f9cfa4e02e67",
+      "target": "code-mod-cartographer-5379ce6208dc",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-a0c7a8ab9597",
+      "target": "code-mod-cartographer-371d970937a4",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-c4fa40278c6b",
+      "target": "code-mod-cartographer-48e403e3e712",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-c4fa40278c6b",
+      "target": "code-mod-cartographer-474794d147df",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-c4fa40278c6b",
+      "target": "code-mod-cartographer-e8f3784644a8",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-c4fa40278c6b",
+      "target": "code-mod-cartographer-b73512c59f98",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-7e490a1af4b0",
+      "target": "code-mod-cartographer-371d970937a4",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-474794d147df",
+      "target": "code-mod-cartographer-b73512c59f98",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-474794d147df",
+      "target": "code-mod-cartographer-48e403e3e712",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-474794d147df",
+      "target": "code-mod-cartographer-c4fa40278c6b",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-474794d147df",
+      "target": "code-mod-cartographer-e8f3784644a8",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-e8f3784644a8",
+      "target": "code-mod-cartographer-b73512c59f98",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-e8f3784644a8",
+      "target": "code-mod-cartographer-48e403e3e712",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-e8f3784644a8",
+      "target": "code-mod-cartographer-c4fa40278c6b",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-e8f3784644a8",
+      "target": "code-mod-cartographer-474794d147df",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-b73512c59f98",
+      "target": "code-mod-cartographer-474794d147df",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-b73512c59f98",
+      "target": "code-mod-cartographer-e8f3784644a8",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-b73512c59f98",
+      "target": "code-mod-cartographer-48e403e3e712",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-mod-cartographer-b73512c59f98",
+      "target": "code-mod-cartographer-c4fa40278c6b",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-f9bab0014bfc",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-ea40f220a695",
+      "target": "code-mod-cartographer-de7f70d275a6",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-5876300578ab",
+      "target": "code-mod-cartographer-5379ce6208dc",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-75bd7e13bf2b",
+      "target": "code-mod-cartographer-371d970937a4",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-106d67899073",
+      "target": "code-mod-cartographer-48e403e3e712",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-cf421d8585a7",
+      "target": "code-mod-cartographer-9ca3c1658ce2",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b0b145015cbb",
+      "target": "code-mod-cartographer-f9cfa4e02e67",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-837c9199d4e7",
+      "target": "code-mod-cartographer-a0c7a8ab9597",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-6e6bcbc9d7d9",
+      "target": "code-mod-cartographer-568cf9718ba6",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3d815a9f14db",
+      "target": "code-mod-cartographer-c4fa40278c6b",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-037ccf51409a",
+      "target": "code-mod-cartographer-7e490a1af4b0",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9e9d6346bfd2",
+      "target": "code-mod-cartographer-474794d147df",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9979867e8e6f",
+      "target": "code-mod-cartographer-e8f3784644a8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-ee860af6240c",
+      "target": "code-mod-cartographer-b73512c59f98",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-38d1a99167f9",
+      "target": "code-mod-cartographer-f98acfb47604",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-e1399e120fc2",
+      "target": "code-mod-cartographer-da4d24f29620",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-d79eb37a652b",
+      "target": "code-mod-cartographer-b3dfe65b3978",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-abc792a328cc",
+      "target": "code-mod-cartographer-723774ce8a79",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-5b2b33061d75",
+      "target": "code-mod-cartographer-cd96d44c7e76",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-928ccf41eef5",
+      "target": "code-mod-cartographer-45a732a0735c",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-f4aa01c9bf78",
+      "target": "code-mod-cartographer-9808e4434158",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-83a6ececf673",
+      "target": "code-mod-cartographer-01985ac8983c",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-e1de38c03007",
+      "target": "code-mod-cartographer-e5fe36850397",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-eef30a9cec33",
+      "target": "code-mod-cartographer-797cbd9aa06f",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-8b2400a5e81a",
+      "target": "code-mod-cartographer-bd9df8269a10",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-2d236cf03e41",
+      "target": "code-mod-cartographer-d0de4f291ecb",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-af7fb304297e",
+      "target": "code-mod-cartographer-bd53bcb93029",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3fb65a06eb4c",
+      "target": "code-mod-cartographer-87547f2d7689",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-cafd53557ba7",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3356ae6fbd0d",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-f2892a855007",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-f60dd21a0001",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b13429b8bbdc",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-dddef33d2040",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-4fd61fc7c005",
+      "target": "code-mod-cartographer-580982b3dcc8",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-71a266e58bb2",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-71a266e58bb2",
+      "target": "code-sym-cartographer-47435e928e30",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b2780a320c42",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b2780a320c42",
+      "target": "code-sym-cartographer-9820deae915d",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-1ac01911b5a7",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-1ac01911b5a7",
+      "target": "code-sym-cartographer-9497a8cacbb9",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-067a1a7f6356",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-067a1a7f6356",
+      "target": "code-sym-cartographer-58ab0de0c7c9",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-6247de1cb537",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-6247de1cb537",
+      "target": "code-sym-cartographer-d3ed084df76f",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-396e03e7ae62",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-396e03e7ae62",
+      "target": "code-sym-cartographer-53af4eca8482",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-8f7aebbe3121",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-8f7aebbe3121",
+      "target": "code-sym-cartographer-b9d7c78eb23e",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-6131ed6f4068",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-6131ed6f4068",
+      "target": "code-sym-cartographer-75b75eef1d43",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-822cc86bf4e6",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-822cc86bf4e6",
+      "target": "code-sym-cartographer-09f2a39f84b6",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3e24f9225cf3",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3e24f9225cf3",
+      "target": "code-sym-cartographer-3e247100c8a8",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-daea9c874021",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-c1204962338c",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-47435e928e30",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-47435e928e30",
+      "target": "code-sym-cartographer-71a266e58bb2",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9820deae915d",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9820deae915d",
+      "target": "code-sym-cartographer-b2780a320c42",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9497a8cacbb9",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-9497a8cacbb9",
+      "target": "code-sym-cartographer-1ac01911b5a7",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-58ab0de0c7c9",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-58ab0de0c7c9",
+      "target": "code-sym-cartographer-067a1a7f6356",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-d3ed084df76f",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-d3ed084df76f",
+      "target": "code-sym-cartographer-6247de1cb537",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-53af4eca8482",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-53af4eca8482",
+      "target": "code-sym-cartographer-396e03e7ae62",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b9d7c78eb23e",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-b9d7c78eb23e",
+      "target": "code-sym-cartographer-8f7aebbe3121",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-75b75eef1d43",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-75b75eef1d43",
+      "target": "code-sym-cartographer-6131ed6f4068",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-09f2a39f84b6",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-09f2a39f84b6",
+      "target": "code-sym-cartographer-822cc86bf4e6",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3e247100c8a8",
+      "target": "code-mod-cartographer-8c2a86ce9c60",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-3e247100c8a8",
+      "target": "code-sym-cartographer-3e24f9225cf3",
+      "type": "related",
+      "direction": "outbound",
+      "weight": 0.0108
+    },
+    {
+      "source": "code-sym-cartographer-1312b934712c",
+      "target": "code-mod-cartographer-f5cd818106ae",
+      "type": "contains",
+      "direction": "outbound",
+      "weight": 0.0108
+    }
+  ],
+  "layers": [
+    {
+      "id": "api",
+      "name": "Api",
+      "description": "Kindex-inferred api layer.",
+      "nodeIds": [
+        "code-mod-cartographer-5df7f79d9b09"
+      ]
+    },
+    {
+      "id": "core",
+      "name": "Core",
+      "description": "Kindex-inferred core layer.",
+      "nodeIds": [
+        "code-mod-cartographer-006461129e1d",
+        "code-mod-cartographer-01985ac8983c",
+        "code-mod-cartographer-371d970937a4",
+        "code-mod-cartographer-45a732a0735c",
+        "code-mod-cartographer-474794d147df",
+        "code-mod-cartographer-48e403e3e712",
+        "code-mod-cartographer-4cb1c582a12e",
+        "code-mod-cartographer-5379ce6208dc",
+        "code-mod-cartographer-568cf9718ba6",
+        "code-mod-cartographer-580982b3dcc8",
+        "code-mod-cartographer-7095c7f4d19f",
+        "code-mod-cartographer-723774ce8a79",
+        "code-mod-cartographer-797cbd9aa06f",
+        "code-mod-cartographer-7e490a1af4b0",
+        "code-mod-cartographer-87547f2d7689",
+        "code-mod-cartographer-97a39a3023d7",
+        "code-mod-cartographer-9808e4434158",
+        "code-mod-cartographer-9ca3c1658ce2",
+        "code-mod-cartographer-a0c7a8ab9597",
+        "code-mod-cartographer-b3dfe65b3978",
+        "code-mod-cartographer-b73512c59f98",
+        "code-mod-cartographer-bd53bcb93029",
+        "code-mod-cartographer-bd9df8269a10",
+        "code-mod-cartographer-c4fa40278c6b",
+        "code-mod-cartographer-c936516d585e",
+        "code-mod-cartographer-cd96d44c7e76",
+        "code-mod-cartographer-d0de4f291ecb",
+        "code-mod-cartographer-da4d24f29620",
+        "code-mod-cartographer-de7f70d275a6",
+        "code-mod-cartographer-e5fe36850397",
+        "code-mod-cartographer-e8f3784644a8",
+        "code-mod-cartographer-edde962cc99f",
+        "code-mod-cartographer-f98acfb47604",
+        "code-mod-cartographer-f9cfa4e02e67"
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data",
+      "description": "Kindex-inferred data layer.",
+      "nodeIds": [
+        "code-mod-cartographer-61899e285dce",
+        "code-mod-cartographer-721b82127f69",
+        "code-mod-cartographer-8c2a86ce9c60",
+        "code-mod-cartographer-f5cd818106ae",
+        "code-sym-cartographer-1312b934712c"
+      ]
+    },
+    {
+      "id": "domain",
+      "name": "Domain",
+      "description": "Kindex-inferred domain layer.",
+      "nodeIds": [
+        "code-sym-cartographer-037ccf51409a",
+        "code-sym-cartographer-067a1a7f6356",
+        "code-sym-cartographer-09f2a39f84b6",
+        "code-sym-cartographer-106d67899073",
+        "code-sym-cartographer-109a0d3b0bc0",
+        "code-sym-cartographer-1ac01911b5a7",
+        "code-sym-cartographer-2d236cf03e41",
+        "code-sym-cartographer-320ddb0dff8a",
+        "code-sym-cartographer-3356ae6fbd0d",
+        "code-sym-cartographer-38d1a99167f9",
+        "code-sym-cartographer-396e03e7ae62",
+        "code-sym-cartographer-3d815a9f14db",
+        "code-sym-cartographer-3e247100c8a8",
+        "code-sym-cartographer-3e24f9225cf3",
+        "code-sym-cartographer-3fb65a06eb4c",
+        "code-sym-cartographer-47435e928e30",
+        "code-sym-cartographer-4fd61fc7c005",
+        "code-sym-cartographer-53af4eca8482",
+        "code-sym-cartographer-5876300578ab",
+        "code-sym-cartographer-58ab0de0c7c9",
+        "code-sym-cartographer-5b2b33061d75",
+        "code-sym-cartographer-6131ed6f4068",
+        "code-sym-cartographer-6247de1cb537",
+        "code-sym-cartographer-6e6bcbc9d7d9",
+        "code-sym-cartographer-71a266e58bb2",
+        "code-sym-cartographer-72e48665e5e9",
+        "code-sym-cartographer-75b75eef1d43",
+        "code-sym-cartographer-75bd7e13bf2b",
+        "code-sym-cartographer-822cc86bf4e6",
+        "code-sym-cartographer-837c9199d4e7",
+        "code-sym-cartographer-83a6ececf673",
+        "code-sym-cartographer-8b2400a5e81a",
+        "code-sym-cartographer-8f7aebbe3121",
+        "code-sym-cartographer-928ccf41eef5",
+        "code-sym-cartographer-9497a8cacbb9",
+        "code-sym-cartographer-9820deae915d",
+        "code-sym-cartographer-9979867e8e6f",
+        "code-sym-cartographer-9d29f50c4f7d",
+        "code-sym-cartographer-9e9d6346bfd2",
+        "code-sym-cartographer-abc792a328cc",
+        "code-sym-cartographer-af7fb304297e",
+        "code-sym-cartographer-b0b145015cbb",
+        "code-sym-cartographer-b13429b8bbdc",
+        "code-sym-cartographer-b1c9ef3a39ec",
+        "code-sym-cartographer-b2780a320c42",
+        "code-sym-cartographer-b9d7c78eb23e",
+        "code-sym-cartographer-c1204962338c",
+        "code-sym-cartographer-cafd53557ba7",
+        "code-sym-cartographer-cf421d8585a7",
+        "code-sym-cartographer-d3ed084df76f",
+        "code-sym-cartographer-d624b61cef3e",
+        "code-sym-cartographer-d79eb37a652b",
+        "code-sym-cartographer-daea9c874021",
+        "code-sym-cartographer-dddef33d2040",
+        "code-sym-cartographer-e1399e120fc2",
+        "code-sym-cartographer-e1de38c03007",
+        "code-sym-cartographer-ea40f220a695",
+        "code-sym-cartographer-ee860af6240c",
+        "code-sym-cartographer-eef30a9cec33",
+        "code-sym-cartographer-f2892a855007",
+        "code-sym-cartographer-f4aa01c9bf78",
+        "code-sym-cartographer-f60dd21a0001",
+        "code-sym-cartographer-f9bab0014bfc"
+      ]
+    },
+    {
+      "id": "service",
+      "name": "Service",
+      "description": "Kindex-inferred service layer.",
+      "nodeIds": [
+        "code-mod-cartographer-3aee85dc689c"
+      ]
+    },
+    {
+      "id": "test",
+      "name": "Test",
+      "description": "Kindex-inferred test layer.",
+      "nodeIds": [
+        "code-mod-cartographer-a5fa375e6747"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Api",
+      "description": "Review 1 node(s) in the Api layer.",
+      "nodeIds": [
+        "code-mod-cartographer-5df7f79d9b09"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Core",
+      "description": "Review 34 node(s) in the Core layer.",
+      "nodeIds": [
+        "code-mod-cartographer-006461129e1d",
+        "code-mod-cartographer-01985ac8983c",
+        "code-mod-cartographer-371d970937a4",
+        "code-mod-cartographer-45a732a0735c",
+        "code-mod-cartographer-474794d147df",
+        "code-mod-cartographer-48e403e3e712",
+        "code-mod-cartographer-4cb1c582a12e",
+        "code-mod-cartographer-5379ce6208dc",
+        "code-mod-cartographer-568cf9718ba6",
+        "code-mod-cartographer-580982b3dcc8",
+        "code-mod-cartographer-7095c7f4d19f",
+        "code-mod-cartographer-723774ce8a79",
+        "code-mod-cartographer-797cbd9aa06f",
+        "code-mod-cartographer-7e490a1af4b0",
+        "code-mod-cartographer-87547f2d7689",
+        "code-mod-cartographer-97a39a3023d7",
+        "code-mod-cartographer-9808e4434158",
+        "code-mod-cartographer-9ca3c1658ce2",
+        "code-mod-cartographer-a0c7a8ab9597",
+        "code-mod-cartographer-b3dfe65b3978",
+        "code-mod-cartographer-b73512c59f98",
+        "code-mod-cartographer-bd53bcb93029",
+        "code-mod-cartographer-bd9df8269a10",
+        "code-mod-cartographer-c4fa40278c6b",
+        "code-mod-cartographer-c936516d585e"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Data",
+      "description": "Review 5 node(s) in the Data layer.",
+      "nodeIds": [
+        "code-mod-cartographer-61899e285dce",
+        "code-mod-cartographer-721b82127f69",
+        "code-mod-cartographer-8c2a86ce9c60",
+        "code-mod-cartographer-f5cd818106ae",
+        "code-sym-cartographer-1312b934712c"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Domain",
+      "description": "Review 63 node(s) in the Domain layer.",
+      "nodeIds": [
+        "code-sym-cartographer-037ccf51409a",
+        "code-sym-cartographer-067a1a7f6356",
+        "code-sym-cartographer-09f2a39f84b6",
+        "code-sym-cartographer-106d67899073",
+        "code-sym-cartographer-109a0d3b0bc0",
+        "code-sym-cartographer-1ac01911b5a7",
+        "code-sym-cartographer-2d236cf03e41",
+        "code-sym-cartographer-320ddb0dff8a",
+        "code-sym-cartographer-3356ae6fbd0d",
+        "code-sym-cartographer-38d1a99167f9",
+        "code-sym-cartographer-396e03e7ae62",
+        "code-sym-cartographer-3d815a9f14db",
+        "code-sym-cartographer-3e247100c8a8",
+        "code-sym-cartographer-3e24f9225cf3",
+        "code-sym-cartographer-3fb65a06eb4c",
+        "code-sym-cartographer-47435e928e30",
+        "code-sym-cartographer-4fd61fc7c005",
+        "code-sym-cartographer-53af4eca8482",
+        "code-sym-cartographer-5876300578ab",
+        "code-sym-cartographer-58ab0de0c7c9",
+        "code-sym-cartographer-5b2b33061d75",
+        "code-sym-cartographer-6131ed6f4068",
+        "code-sym-cartographer-6247de1cb537",
+        "code-sym-cartographer-6e6bcbc9d7d9",
+        "code-sym-cartographer-71a266e58bb2"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Service",
+      "description": "Review 1 node(s) in the Service layer.",
+      "nodeIds": [
+        "code-mod-cartographer-3aee85dc689c"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Test",
+      "description": "Review 1 node(s) in the Test layer.",
+      "nodeIds": [
+        "code-mod-cartographer-a5fa375e6747"
+      ]
+    }
+  ]
+}

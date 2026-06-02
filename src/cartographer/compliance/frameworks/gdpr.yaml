@@ -1,0 +1,53 @@
+framework: gdpr
+framework_version: "2016/679"
+controls:
+  - id: GDPR-ART17-ERASURE
+    family: Data Subject Rights
+    framework_ref: Art. 17
+    title: Right to erasure is enforceable for erasable PII
+    description: Ledger fields marked gdpr_erasable must declare an erasure_method.
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_obligation, tier: PII, required_annotation: gdpr_erasable, required_field_key: erasure_method}
+    validation_test: {style: static_assertion, assertion: ledger_annotation_has_companion_field, params: {annotation: gdpr_erasable, companion: erasure_method, tier: PII}}
+  - id: GDPR-ART32-ENCRYPTION
+    family: Security of Processing
+    framework_ref: Art. 32
+    title: PII is encrypted at rest
+    description: PII Ledger fields must carry encrypted_at_rest.
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_tier_encrypted, tier: PII}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: PII}}
+  - id: GDPR-ART30-ROPA
+    family: Accountability
+    framework_ref: Art. 30
+    title: Record of processing activities is present
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: ropa, max_age_days: 365}
+    validation_test: {style: static_assertion, assertion: evidence_present_and_fresh, params: {evidence_path_key: ropa, max_age_days: 365, evidence_index: {}}}
+    evidence_owner: DPO
+  - id: GDPR-ART35-DPIA
+    family: Accountability
+    framework_ref: Art. 35
+    title: DPIA is present and current for high-risk processing
+    severity: must
+    applicability: {tags: [high_risk_processing]}
+    detection: {method: evidence_doc, evidence_path_key: dpia, max_age_days: 365}
+    evidence_owner: DPO
+  - id: GDPR-ART25-MINIMIZATION
+    family: Privacy by Design
+    framework_ref: Art. 25
+    title: Data minimization is represented in source or policy
+    severity: should
+    detection: {method: source_grep, any_of: ["data[_ -]?minimi[sz]ation", "minimum necessary"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "data[_ -]?minimi[sz]ation|minimum necessary", include_glob: "**/*"}}
+  - id: GDPR-ART5-AUDITABILITY
+    family: Accountability
+    framework_ref: Art. 5(2)
+    title: Audit or accountability mechanism exists
+    severity: should
+    detection: {method: source_grep, any_of: ["audit", "accountability"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "audit|accountability", include_glob: "**/*"}}

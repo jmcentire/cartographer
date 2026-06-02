@@ -77,24 +77,21 @@ class LedgerChecker(CompatibilityChecker):
                 if not isinstance(field, dict):
                     continue
                 name = field.get("name", "")
-                anns = field.get("annotations", [])
-                if isinstance(anns, list):
-                    if "gdpr_erasable" in anns and "immutable" in anns:
-                        results.append(CheckResult(
-                            check_id="no_annotation_conflicts",
-                            target=f"{schema_path}:{name}",
-                            severity=Severity.FAIL,
-                            status="FAIL",
-                            message="field is both gdpr_erasable and immutable",
-                            tool="ledger",
-                        ))
+                if _has_annotation(field, "gdpr_erasable") and _has_annotation(field, "immutable"):
+                    results.append(CheckResult(
+                        check_id="no_annotation_conflicts",
+                        target=f"{schema_path}:{name}",
+                        severity=Severity.FAIL,
+                        status="FAIL",
+                        message="field is both gdpr_erasable and immutable",
+                        tool="ledger",
+                    ))
 
             # GDPR erasure check
             for field in fields:
                 if not isinstance(field, dict):
                     continue
-                anns = field.get("annotations", [])
-                if isinstance(anns, list) and "gdpr_erasable" in anns:
+                if _has_annotation(field, "gdpr_erasable"):
                     if "erasure_method" not in field:
                         results.append(CheckResult(
                             check_id="gdpr_erasable_has_erasure_method",
@@ -109,8 +106,7 @@ class LedgerChecker(CompatibilityChecker):
             for field in fields:
                 if not isinstance(field, dict):
                     continue
-                anns = field.get("annotations", [])
-                if isinstance(anns, list) and "audit_field" in anns:
+                if _has_annotation(field, "audit_field"):
                     if "retention_policy" not in field:
                         results.append(CheckResult(
                             check_id="audit_fields_have_retention_policy",
@@ -133,3 +129,14 @@ def _find_registry(config: CartographerConfig, base_dir: Path) -> Path | None:
         if candidate.exists():
             return candidate
     return None
+
+
+def _has_annotation(field: dict, annotation: str) -> bool:
+    annotations = field.get("annotations", [])
+    if isinstance(annotations, list):
+        for item in annotations:
+            if item == annotation:
+                return True
+            if isinstance(item, dict) and item.get("name") == annotation:
+                return True
+    return field.get(annotation) is True

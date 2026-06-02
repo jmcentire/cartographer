@@ -162,6 +162,171 @@ def check(ctx: click.Context, tool_name: str | None, strict: bool, fmt: str) -> 
         sys.exit(1)
 
 
+@main.group()
+def compliance() -> None:
+    """Scan and verify compliance posture."""
+
+
+@compliance.command("scan")
+@click.option("--framework", "frameworks", multiple=True, help="Framework slug to scan.")
+@click.option("--strict", is_flag=True, help="Exit non-zero on any WARN or FAIL.")
+@click.option("--format", "fmt", type=click.Choice(["text", "json"]), default="text", help="Output format.")
+@click.option("--with-llm", is_flag=True, help="Enable optional LLM judgment detectors.")
+@click.pass_context
+def compliance_scan(
+    ctx: click.Context,
+    frameworks: tuple[str, ...],
+    strict: bool,
+    fmt: str,
+    with_llm: bool,
+) -> None:
+    """Run compliance controls and write a coverage report."""
+    config: CartographerConfig = ctx.obj["config"]
+    base_dir: Path = ctx.obj["base_dir"]
+
+    from cartographer.compliance.runner import run_compliance
+    from cartographer.report.generator import build_report, format_text, format_json, save_report
+
+    checks = run_compliance(config, base_dir, list(frameworks) or None, with_llm=with_llm)
+    report = build_report(checks)
+
+    if fmt == "json":
+        click.echo(format_json(report))
+    else:
+        click.echo(format_text(report))
+
+    report_dir = base_dir / ".cartographer" / "compliance" / "reports"
+    save_report(report, report_dir, fmt)
+
+    if report.has_failures:
+        sys.exit(1)
+    if strict and report.score_warn > 0:
+        sys.exit(1)
+
+
+@compliance.command("gen-tests")
+@click.option("--framework", "frameworks", multiple=True, help="Framework slug to render.")
+@click.option("--out", "out_dir", default=None, help="Output directory for generated tests.")
+@click.option("--include-partial", is_flag=True, help="Also render tests for WARN controls.")
+@click.pass_context
+def compliance_gen_tests(
+    ctx: click.Context,
+    frameworks: tuple[str, ...],
+    out_dir: str,
+    include_partial: bool,
+) -> None:
+    """Generate executable validation tests for present controls."""
+    config: CartographerConfig = ctx.obj["config"]
+    base_dir: Path = ctx.obj["base_dir"]
+
+    from cartographer.compliance.registry import load_frameworks
+    from cartographer.compliance.runner import run_compliance
+    from cartographer.compliance.render.goodhart import render_goodhart_suites
+    from cartographer.compliance.render.static import render_static_tests
+
+    checks = run_compliance(config, base_dir, list(frameworks) or None)
+    statuses = {check.check_id: check.status for check in checks}
+    allowed = {"PASS", "WARN"} if include_partial else {"PASS"}
+    controls = [
+        control
+        for profile in load_frameworks(config, base_dir, list(frameworks) or None)
+        for control in profile.controls
+        if statuses.get(control.id) in allowed
+    ]
+    out = base_dir / (out_dir or config.compliance.tests_dir)
+    paths = render_static_tests(controls, out) + render_goodhart_suites(controls, out)
+    for path in paths:
+        click.echo(f"wrote {path}")
+    click.echo(f"Generated {len(paths)} compliance test artifact(s).")
+
+
+@compliance.command("baseline")
+@click.option("--update", is_flag=True, help="Write/replace the compliance baseline.")
+@click.option("--framework", "frameworks", multiple=True, help="Framework slug to baseline.")
+@click.option("--with-llm", is_flag=True, help="Enable optional LLM judgment detectors.")
+@click.pass_context
+def compliance_baseline(
+    ctx: click.Context,
+    update: bool,
+    frameworks: tuple[str, ...],
+    with_llm: bool,
+) -> None:
+    """Manage the compliance regression baseline."""
+    config: CartographerConfig = ctx.obj["config"]
+    base_dir: Path = ctx.obj["base_dir"]
+
+    from cartographer.compliance.verify import baseline_path, write_baseline
+
+    if update:
+        path = write_baseline(config, base_dir, list(frameworks) or None, with_llm=with_llm)
+        click.echo(f"Updated compliance baseline: {path}")
+        return
+    path = baseline_path(config, base_dir)
+    click.echo(path.read_text() if path.exists() else f"No baseline found at {path}")
+
+
+@compliance.command("verify")
+@click.option("--framework", "frameworks", multiple=True, help="Framework slug to verify.")
+@click.option("--with-llm", is_flag=True, help="Enable optional LLM judgment detectors.")
+@click.pass_context
+def compliance_verify(
+    ctx: click.Context,
+    frameworks: tuple[str, ...],
+    with_llm: bool,
+) -> None:
+    """Fail if the current compliance posture regressed from baseline."""
+    config: CartographerConfig = ctx.obj["config"]
+    base_dir: Path = ctx.obj["base_dir"]
+
+    from cartographer.compliance.verify import verify_baseline
+
+    ok, regressions = verify_baseline(config, base_dir, list(frameworks) or None, with_llm=with_llm)
+    if ok:
+        click.echo("Compliance posture held.")
+        return
+    click.echo("Compliance posture regressed:")
+    for regression in regressions:
+        click.echo(f"  {regression}")
+    sys.exit(1)
+
+
+@compliance.command("add-risk")
+@click.option("--framework", required=True, help="Framework slug for the new control.")
+@click.option("--describe", required=True, help="Risk description to convert into a control.")
+@click.option("--dry-run", is_flag=True, help="Print the drafted control without writing.")
+@click.option("--adopt", is_flag=True, help="Append the drafted control to controls_dir.")
+@click.option("--gen-test", is_flag=True, help="Render a validation test for the drafted control.")
+@click.option("--out", "out_dir", default=None, help="Output directory for generated tests.")
+@click.pass_context
+def compliance_add_risk(
+    ctx: click.Context,
+    framework: str,
+    describe: str,
+    dry_run: bool,
+    adopt: bool,
+    gen_test: bool,
+    out_dir: str,
+) -> None:
+    """Draft or adopt a project-local compliance control from a risk description."""
+    config: CartographerConfig = ctx.obj["config"]
+    base_dir: Path = ctx.obj["base_dir"]
+
+    from cartographer.compliance.add_risk import adopt_control, control_to_yaml, draft_risk_control
+    from cartographer.compliance.render.static import render_static_tests
+
+    control = draft_risk_control(config, base_dir, framework.lower(), describe)
+    if dry_run or not adopt:
+        click.echo(control_to_yaml(control, framework.lower()))
+        if not adopt:
+            return
+    path = adopt_control(config, base_dir, control, framework.lower())
+    click.echo(f"Adopted control into {path}")
+    if gen_test:
+        paths = render_static_tests([control], base_dir / (out_dir or config.compliance.tests_dir))
+        for generated in paths:
+            click.echo(f"wrote {generated}")
+
+
 @main.command()
 @click.pass_context
 def report(ctx: click.Context) -> None:

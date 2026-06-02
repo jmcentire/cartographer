@@ -1,0 +1,47 @@
+framework: hipaa
+framework_version: "Security Rule"
+controls:
+  - id: HIPAA-164312-A-ACCESS-CONTROL
+    family: Technical Safeguards
+    framework_ref: 45 CFR 164.312(a)
+    title: Routes expose access-control guard evidence
+    severity: must
+    detection: {method: route_guard, guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}
+    validation_test: {style: static_assertion, assertion: every_route_has_guard, params: {guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}}
+  - id: HIPAA-164312-E-TRANSMISSION
+    family: Technical Safeguards
+    framework_ref: 45 CFR 164.312(e)
+    title: Transmission security is configured
+    severity: must
+    detection: {method: source_grep, any_of: ["https", "TLS", "HSTS", "Strict-Transport-Security"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "https|TLS|HSTS|Strict-Transport-Security", include_glob: "**/*"}}
+  - id: HIPAA-164312-C-INTEGRITY
+    family: Technical Safeguards
+    framework_ref: 45 CFR 164.312(c)
+    title: Integrity controls are represented
+    severity: should
+    detection: {method: source_grep, any_of: ["hash", "signature", "checksum", "integrity"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "hash|signature|checksum|integrity", include_glob: "**/*"}}
+  - id: HIPAA-164312-B-AUDIT
+    family: Technical Safeguards
+    framework_ref: 45 CFR 164.312(b)
+    title: Audit controls are represented
+    severity: must
+    detection: {method: source_grep, any_of: ["audit"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "audit", include_glob: "**/*"}}
+  - id: HIPAA-164308-A-RISK-ANALYSIS
+    family: Administrative Safeguards
+    framework_ref: 45 CFR 164.308(a)(1)(ii)(A)
+    title: Risk analysis evidence is present and current
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: hipaa_risk_analysis, max_age_days: 365}
+    evidence_owner: Security Officer
+  - id: HIPAA-PHI-ENCRYPTION
+    family: Technical Safeguards
+    framework_ref: 45 CFR 164.312
+    title: PII/PHI-classified fields are encrypted at rest
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_tier_encrypted, tier: PII}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: PII}}

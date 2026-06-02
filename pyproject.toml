@@ -22,6 +22,7 @@ kafka = ["confluent-kafka>=2.0"]
 mongo = ["pymongo>=4.0"]
 api = ["uvicorn>=0.27", "starlette>=0.36"]
 mcp = ["mcp[cli]>=1.0"]
+llm = ["anthropic>=0.40"]
 dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
 
 [project.scripts]
@@ -32,4 +33,7 @@ packages = ["src/cartographer"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-x -q"
+addopts = "-x -q --import-mode=importlib"
+# Generated contract suites are retained as reference artifacts until they are
+# regenerated against Cartographer's current public APIs.
+norecursedirs = ["src_cartographer_*"]

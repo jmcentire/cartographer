@@ -1,0 +1,47 @@
+framework: ccpa
+framework_version: "CPRA"
+controls:
+  - id: CCPA-1798-100-NOTICE
+    family: Notice
+    framework_ref: "1798.100"
+    title: Notice at collection evidence exists
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: notice_at_collection, max_age_days: 365}
+    evidence_owner: Privacy Officer
+  - id: CCPA-1798-105-DELETE
+    family: Consumer Rights
+    framework_ref: "1798.105"
+    title: Deletion request handling is represented
+    severity: must
+    detection: {method: source_grep, any_of: ["delete.*request", "erasure", "deletion"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "delete.*request|erasure|deletion", include_glob: "**/*"}}
+  - id: CCPA-1798-110-ACCESS
+    family: Consumer Rights
+    framework_ref: "1798.110"
+    title: Access request handling is represented
+    severity: must
+    detection: {method: source_grep, any_of: ["access.*request", "data.*export", "portability"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "access.*request|data.*export|portability", include_glob: "**/*"}}
+  - id: CCPA-1798-120-OPT-OUT
+    family: Consumer Rights
+    framework_ref: "1798.120"
+    title: Sale/share opt-out handling is represented
+    severity: must
+    detection: {method: source_grep, any_of: ["do not sell", "do_not_sell", "opt[-_ ]?out"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "do not sell|do_not_sell|opt[-_ ]?out", include_glob: "**/*"}}
+  - id: CCPA-1798-150-SECURITY
+    family: Security
+    framework_ref: "1798.150"
+    title: PII is encrypted at rest
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_tier_encrypted, tier: PII}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: PII}}
+  - id: CCPA-RETENTION
+    family: Data Minimization
+    framework_ref: CPRA retention disclosure
+    title: Retention policy evidence exists
+    severity: should
+    detection: {method: evidence_doc, evidence_path_key: retention_policy, max_age_days: 365}
+    evidence_owner: Privacy Officer

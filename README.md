@@ -73,6 +73,37 @@ cartographer check --strict              # exit non-zero on any warning
 cartographer check --format json         # machine-readable output
 ```
 
+## Compliance Posture
+
+`cartographer compliance` verifies compliance posture against declarative
+controls for CJIS, ISO 27001, SOC 2, HIPAA, CCPA/CPRA, GDPR, FedRAMP, and PCI
+DSS. It is
+project-agnostic: project-specific facts come from `cartographer.yaml`, source
+scanning, evidence documents, and the on-disk Ledger registry. Cartographer does
+not reclassify data; Ledger remains the data-classification source of truth.
+
+```bash
+cartographer compliance scan --format json
+cartographer compliance scan --strict
+cartographer compliance gen-tests --out tests/compliance
+cartographer compliance baseline --update
+cartographer compliance verify
+cartographer compliance add-risk --framework gdpr --describe "New risk..." --dry-run
+```
+
+`scan --strict` and `verify` are fail-closed CI gates. LLM judgment controls are
+skipped by default and require `--with-llm` plus `cartographer[llm]`.
+
+Controls with contextual scope skip as informational until the project declares
+the relevant `compliance.project_tags`; for example, PCI DSS controls run when a
+project declares `payment_data`.
+
+Generated validation tests go to `compliance.tests_dir` in `cartographer.yaml`
+(`tests/compliance` by default), or to `--out` for one-off runs.
+
+See [Compliance Scan Results](docs/compliance-scan-results.md) for the current
+Cartographer validation run and first read-only MEA posture snapshot.
+
 ### Checks by Tool
 
 | Tool | Checks | What it validates |

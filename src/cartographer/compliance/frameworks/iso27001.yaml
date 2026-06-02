@@ -1,0 +1,47 @@
+framework: iso27001
+framework_version: "2022"
+controls:
+  - id: ISO27001-A-5-1-POLICIES
+    family: Organizational
+    framework_ref: A.5.1
+    title: Information security policy evidence exists
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: information_security_policy, max_age_days: 365}
+    evidence_owner: Security Officer
+  - id: ISO27001-A-5-15-ACCESS-CONTROL
+    family: Organizational
+    framework_ref: A.5.15
+    title: Access-control evidence exists on routes
+    severity: must
+    detection: {method: route_guard, guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}
+    validation_test: {style: static_assertion, assertion: every_route_has_guard, params: {guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}}
+  - id: ISO27001-A-8-24-CRYPTOGRAPHY
+    family: Technological
+    framework_ref: A.8.24
+    title: Sensitive fields are encrypted at rest
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_tier_encrypted, tier: PII}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: PII}}
+  - id: ISO27001-A-8-15-LOGGING
+    family: Technological
+    framework_ref: A.8.15
+    title: Logging or audit mechanism is represented
+    severity: should
+    detection: {method: source_grep, any_of: ["logging", "audit"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "logging|audit", include_glob: "**/*"}}
+  - id: ISO27001-A-5-30-ICT-READINESS
+    family: Organizational
+    framework_ref: A.5.30
+    title: ICT readiness evidence exists
+    severity: should
+    detection: {method: evidence_doc, evidence_path_key: disaster_recovery, max_age_days: 365}
+    evidence_owner: Operations
+  - id: ISO27001-A-8-8-VULNERABILITY
+    family: Technological
+    framework_ref: A.8.8
+    title: Vulnerability management evidence exists
+    severity: should
+    detection: {method: evidence_doc, evidence_path_key: vulnerability_management, max_age_days: 180}
+    evidence_owner: Security Officer

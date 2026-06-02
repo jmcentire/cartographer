@@ -1,0 +1,47 @@
+framework: fedramp
+framework_version: "Rev 5"
+controls:
+  - id: FEDRAMP-AC-2-ACCOUNT-MANAGEMENT
+    family: Access Control
+    framework_ref: AC-2
+    title: Account-management evidence exists
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: account_management, max_age_days: 365}
+    evidence_owner: Security Officer
+  - id: FEDRAMP-AC-3-ENFORCEMENT
+    family: Access Control
+    framework_ref: AC-3
+    title: Access enforcement appears on routes
+    severity: must
+    detection: {method: route_guard, guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}
+    validation_test: {style: static_assertion, assertion: every_route_has_guard, params: {guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}}
+  - id: FEDRAMP-AU-2-EVENT-LOGGING
+    family: Audit and Accountability
+    framework_ref: AU-2
+    title: Audit event logging is represented
+    severity: must
+    detection: {method: source_grep, any_of: ["audit", "event.*log", "logging"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "audit|event.*log|logging", include_glob: "**/*"}}
+  - id: FEDRAMP-IA-2-IDENTIFICATION
+    family: Identification and Authentication
+    framework_ref: IA-2
+    title: MFA or strong authentication is represented
+    severity: must
+    detection: {method: source_grep, any_of: ["MFA", "multi[-_ ]?factor", "webauthn", "totp"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "MFA|multi[-_ ]?factor|webauthn|totp", include_glob: "**/*"}}
+  - id: FEDRAMP-SC-13-CRYPTOGRAPHIC-PROTECTION
+    family: System and Communications Protection
+    framework_ref: SC-13
+    title: Sensitive fields are encrypted at rest
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_tier_encrypted, tier: PII}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: PII}}
+  - id: FEDRAMP-CA-5-POAM
+    family: Assessment, Authorization, and Monitoring
+    framework_ref: CA-5
+    title: POA&M evidence exists
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: poam, max_age_days: 90}
+    evidence_owner: Security Officer

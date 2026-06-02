@@ -1,0 +1,47 @@
+framework: soc2
+framework_version: "Trust Services Criteria"
+controls:
+  - id: SOC2-CC6-ACCESS-CONTROL
+    family: Common Criteria
+    framework_ref: CC6
+    title: Logical access controls are represented
+    severity: must
+    detection: {method: route_guard, guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}
+    validation_test: {style: static_assertion, assertion: every_route_has_guard, params: {guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}}
+  - id: SOC2-CC7-MONITORING
+    family: Common Criteria
+    framework_ref: CC7
+    title: Monitoring or audit signals are represented
+    severity: should
+    detection: {method: source_grep, any_of: ["monitor", "audit", "alert"], include_glob: "**/*"}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "monitor|audit|alert", include_glob: "**/*"}}
+  - id: SOC2-CC8-CHANGE-MANAGEMENT
+    family: Common Criteria
+    framework_ref: CC8
+    title: Change-management evidence exists
+    severity: should
+    detection: {method: evidence_doc, evidence_path_key: change_management, max_age_days: 365}
+    evidence_owner: Operations
+  - id: SOC2-CC9-RISK-MANAGEMENT
+    family: Common Criteria
+    framework_ref: CC9
+    title: Risk-management evidence exists
+    severity: must
+    detection: {method: evidence_doc, evidence_path_key: risk_register, max_age_days: 365}
+    evidence_owner: Security Officer
+  - id: SOC2-C1-CONFIDENTIALITY
+    family: Confidentiality
+    framework_ref: C1
+    title: Confidential data is encrypted at rest
+    severity: must
+    classification_tier: PII
+    applicability: {requires_ledger_registry: true, data_tiers: [PII]}
+    detection: {method: ledger_tier_encrypted, tier: PII}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: PII}}
+  - id: SOC2-P1-PRIVACY-NOTICE
+    family: Privacy
+    framework_ref: P1
+    title: Privacy notice evidence exists
+    severity: should
+    detection: {method: evidence_doc, evidence_path_key: privacy_notice, max_age_days: 365}
+    evidence_owner: Privacy Officer

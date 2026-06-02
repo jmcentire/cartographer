@@ -1,0 +1,61 @@
+framework: pcidss
+framework_version: "4.0"
+controls:
+  - id: PCIDSS-3-3-SENSITIVE-AUTH-DATA
+    family: Protect Account Data
+    framework_ref: Req. 3.3
+    title: Sensitive authentication data is not stored in source-handled exports or logs
+    description: Source should not contain obvious storage/export/logging of CVV/CVC or track data.
+    severity: must
+    applicability: {tags: [payment_data]}
+    detection: {method: source_grep, none_of: ["(store|save|log|export).*(cvv|cvc|track2|magstripe)", "(cvv|cvc|track2|magstripe).*(store|save|log|export)"], include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"], exclude_glob: ["src/cartographer/compliance/frameworks/*"]}
+    validation_test: {style: static_assertion, assertion: source_pattern_absent, params: {pattern: "(store|save|log|export).*(cvv|cvc|track2|magstripe)|(cvv|cvc|track2|magstripe).*(store|save|log|export)", include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"], exclude_glob: ["src/cartographer/compliance/frameworks/*"]}}
+  - id: PCIDSS-3-5-PAN-ENCRYPTION
+    family: Protect Account Data
+    framework_ref: Req. 3.5
+    title: Financial account data is encrypted at rest
+    severity: must
+    classification_tier: FINANCIAL
+    applicability: {requires_ledger_registry: true, data_tiers: [FINANCIAL]}
+    detection: {method: ledger_tier_encrypted, tier: FINANCIAL}
+    validation_test: {style: static_assertion, assertion: ledger_tier_all_encrypted, params: {tier: FINANCIAL}}
+  - id: PCIDSS-4-2-TRANSMISSION-ENCRYPTION
+    family: Protect Data in Transit
+    framework_ref: Req. 4.2
+    title: Cardholder-data transmission security is represented
+    severity: must
+    applicability: {tags: [payment_data]}
+    detection: {method: source_grep, any_of: ["https://", "TLS", "HSTS", "Strict-Transport-Security"], include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"]}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "https://|TLS|HSTS|Strict-Transport-Security", include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"]}}
+  - id: PCIDSS-7-2-ACCESS-CONTROL
+    family: Strong Access Control
+    framework_ref: Req. 7.2
+    title: Access control is enforced on application routes
+    severity: must
+    applicability: {tags: [payment_data]}
+    detection: {method: route_guard, guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}
+    validation_test: {style: static_assertion, assertion: every_route_has_guard, params: {guard_patterns: ["Depends", "require_auth", "require_role", "authorize"]}}
+  - id: PCIDSS-8-4-MFA
+    family: Strong Access Control
+    framework_ref: Req. 8.4
+    title: MFA or strong authentication is represented
+    severity: must
+    applicability: {tags: [payment_data]}
+    detection: {method: source_grep, any_of: ["MFA", "multi[-_ ]?factor", "webauthn", "totp.*verify", "verify.*totp"], include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"]}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "MFA|multi[-_ ]?factor|webauthn|totp.*verify|verify.*totp", include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"]}}
+  - id: PCIDSS-10-2-AUDIT-LOGGING
+    family: Monitor and Test Networks
+    framework_ref: Req. 10.2
+    title: Audit logging is represented
+    severity: must
+    applicability: {tags: [payment_data]}
+    detection: {method: source_grep, any_of: ["audit", "event.*log", "logging"], include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"]}
+    validation_test: {style: static_assertion, assertion: source_pattern_present, params: {pattern: "audit|event.*log|logging", include_glob: ["src/**", "services/*/src/**", "frontend/**", "app/**", "lib/**", "infra/**", "terraform/**", "*.tf"]}}
+  - id: PCIDSS-12-1-POLICY
+    family: Maintain Security Policy
+    framework_ref: Req. 12.1
+    title: PCI/security policy evidence exists
+    severity: should
+    applicability: {tags: [payment_data]}
+    detection: {method: evidence_doc, evidence_path_key: pci_security_policy, max_age_days: 365}
+    evidence_owner: Security Officer

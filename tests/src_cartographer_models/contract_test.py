@@ -1482,4 +1482,3 @@ class TestPerformance:
         
         # Should be well under 1ms (O(1) operation)
         assert p95 < 1.0, f"p95 latency {p95}ms exceeds 1ms requirement"
-"""

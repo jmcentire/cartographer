@@ -52,6 +52,41 @@ A good solution maintains strict read-only behavior while providing comprehensiv
 - Service probing respects rate limits and doesn't impact target performance
 - Reports include confidence levels and discovery method attribution
 
+## Compliance Posture Verification
+
+Cartographer includes a generic `cartographer compliance` command group. It
+loads framework controls from packaged YAML and project overrides, runs
+mechanical detectors over source/config/evidence/Ledger registry files, emits
+standard `CompatibilityReport` output, renders executable pytest controls, and
+supports a baseline diff gate with `cartographer compliance verify`.
+Packaged framework controls cover CJIS, ISO 27001, SOC 2, HIPAA, CCPA/CPRA,
+GDPR, FedRAMP, and PCI DSS.
+
+Controls with contextual scope skip as informational until a project declares
+the relevant `compliance.project_tags`; PCI DSS controls run for projects tagged
+`payment_data`.
+
+Command reference:
+
+```bash
+cartographer compliance scan --strict
+cartographer compliance gen-tests --out tests/compliance
+cartographer compliance baseline --update
+cartographer compliance verify
+cartographer compliance add-risk --framework gdpr --describe "Describe the risk" --dry-run
+```
+
+Generated validation tests go to `compliance.tests_dir` in `cartographer.yaml`
+(`tests/compliance` by default), or to `--out` for one-off runs.
+
+LLM scan prompt summary: judge controls as PRESENT, PARTIAL, MISSING, or
+SKIPPED using concrete evidence only; Ledger is the authoritative source for
+data classification; comments or intent alone do not satisfy a control.
+
+Risk-authoring prompt summary: convert one described risk into a valid
+ControlDef YAML entry; prefer mechanical detection methods; avoid id collisions;
+use Ledger tiers and annotations when data classification is involved.
+
 ## Trust and Authority Model
 
 The system handles multiple data classification tiers through discovery operations. PII and FINANCIAL data may be discovered during backend introspection and must be handled with elevated trust requirements and human gates. AUTH data (credentials, tokens) requires the highest protection with extended soak periods. COMPLIANCE data follows regulatory requirements with mandatory human review.

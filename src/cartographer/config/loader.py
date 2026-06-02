@@ -57,12 +57,23 @@ class CompatibilityConfig(BaseModel):
     min_baton_schema_version: str = "2.0"
 
 
+class ComplianceConfig(BaseModel):
+    frameworks: list[str] = Field(default_factory=list)
+    controls_dir: str = "./compliance/controls"
+    tests_dir: str = "tests/compliance"
+    project_tags: list[str] = Field(default_factory=list)
+    public_route_patterns: list[str] = Field(default_factory=list)
+    evidence_index: dict[str, str] = Field(default_factory=dict)
+    baseline: str = ".cartographer/compliance/baseline.json"
+
+
 class CartographerConfig(BaseModel):
     version: str = "1.0"
     targets: TargetsConfig = Field(default_factory=TargetsConfig)
     stack: StackConfig = Field(default_factory=StackConfig)
     output_dir: str = ".cartographer/drafts/"
     compatibility: CompatibilityConfig = Field(default_factory=CompatibilityConfig)
+    compliance: ComplianceConfig = Field(default_factory=ComplianceConfig)
 
 
 DEFAULT_CONFIG_NAME = "cartographer.yaml"

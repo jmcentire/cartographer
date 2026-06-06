@@ -200,6 +200,39 @@ def test_source_grep_ignores_tool_cache_and_generated_compliance_artifacts(tmp_p
     assert result.verdict == "missing"
 
 
+def test_source_grep_ignores_terraform_provider_cache(tmp_path):
+    provider = tmp_path / "infra" / ".terraform" / "providers" / "provider"
+    provider.parent.mkdir(parents=True)
+    provider.write_text("store cvv\n")
+    control = ControlDef(
+        id="NO-CARD-DATA",
+        family="security",
+        framework_ref="local",
+        title="no card data",
+        detection={"method": "source_grep", "none_of": ["store.*cvv"], "include_glob": "**/*"},
+    )
+
+    result = evaluate_control(control, CartographerConfig(), tmp_path)
+
+    assert result.verdict == "present"
+
+
+def test_source_grep_ignores_binary_files(tmp_path):
+    artifact = tmp_path / "artifact.bin"
+    artifact.write_bytes(b"\x7fELF\x00store cvv")
+    control = ControlDef(
+        id="NO-CARD-DATA",
+        family="security",
+        framework_ref="local",
+        title="no card data",
+        detection={"method": "source_grep", "none_of": ["store.*cvv"], "include_glob": "**/*"},
+    )
+
+    result = evaluate_control(control, CartographerConfig(), tmp_path)
+
+    assert result.verdict == "present"
+
+
 def test_generated_assertions_ignore_tool_cache_artifacts(tmp_path):
     (tmp_path / ".pytest_cache").mkdir()
     (tmp_path / ".pytest_cache" / "CACHEDIR.TAG").write_text("https\n")

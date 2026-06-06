@@ -15,6 +15,7 @@ DEFAULT_EXCLUDED_DIRS = frozenset(
         ".nox",
         ".pytest_cache",
         ".ruff_cache",
+        ".terraform",
         ".tox",
         ".venv",
         "__pycache__",
@@ -44,6 +45,8 @@ def matching_files(base_dir: Path, include_glob: str | list[str], exclude_globs:
         rel = rel_path.as_posix()
         if _excluded_by_default(rel_path, rel):
             continue
+        if _is_binary(path):
+            continue
         if any(fnmatch.fnmatch(rel, pattern) or fnmatch.fnmatch(path.name, pattern) for pattern in exclude_globs):
             continue
         if any(fnmatch.fnmatch(rel, pattern) or fnmatch.fnmatch(path.name, pattern) for pattern in include_globs):
@@ -57,3 +60,11 @@ def _excluded_by_default(rel_path: Path, rel: str) -> bool:
     if any(part.startswith("src_cartographer_") for part in rel_path.parts):
         return True
     return any(rel.startswith(prefix) for prefix in DEFAULT_EXCLUDED_PREFIXES)
+
+
+def _is_binary(path: Path) -> bool:
+    try:
+        with path.open("rb") as handle:
+            return b"\0" in handle.read(8192)
+    except OSError:
+        return True

@@ -179,6 +179,8 @@ def test_source_grep_accepts_multiple_include_globs(tmp_path):
 def test_source_grep_ignores_tool_cache_and_generated_compliance_artifacts(tmp_path):
     (tmp_path / ".pytest_cache").mkdir()
     (tmp_path / ".pytest_cache" / "CACHEDIR.TAG").write_text("https\n")
+    (tmp_path / ".claude" / "worktrees" / "agent-a" / "src").mkdir(parents=True)
+    (tmp_path / ".claude" / "worktrees" / "agent-a" / "src" / "scratch.py").write_text("https\n")
     (tmp_path / "compliance" / "controls").mkdir(parents=True)
     (tmp_path / "compliance" / "controls" / "local.yaml").write_text("https\n")
     (tmp_path / "tests" / "compliance").mkdir(parents=True)
